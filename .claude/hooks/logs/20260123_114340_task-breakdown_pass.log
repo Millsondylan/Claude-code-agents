@@ -1,0 +1,1 @@
+{"timestamp":"2026-01-23T11:43:40Z","agent":"task-breakdown","valid":true,"errors":[],"warnings":[],"preview":"{\'status\': \'completed\', \'prompt\': \'test - checking if hooks finish now\', \'agentId\': \'a3b95d1\', \'content\': [{\'type\': \'text\', \'text\': \'## TaskSpec\n\n### Request Summary\nUser is testing if hooks finish"}

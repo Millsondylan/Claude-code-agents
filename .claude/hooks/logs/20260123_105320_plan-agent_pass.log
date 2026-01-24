@@ -1,0 +1,1 @@
+{"timestamp":"2026-01-23T10:53:20Z","agent":"plan-agent","valid":true,"errors":[],"warnings":[],"preview":"## Implementation Plan  ### Batch 1: Authentication Foundation  **Features:** F1, F2  **Files to Create:** - /app/auth/login.py - Login handler - /app/auth/reset.py - Password reset handler  **Files t"}

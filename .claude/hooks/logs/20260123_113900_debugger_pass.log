@@ -1,0 +1,1 @@
+{"timestamp":"2026-01-23T11:39:00Z","agent":"debugger","valid":true,"errors":[],"warnings":["Missing section: Budget tracking (recommended)"],"preview":"{\'status\': \'completed\', \'prompt\': \'<task>\nFind and fix JSON parse error in hooks.\n</task>\n\n<context>\nUser reported: \"There was a minor JSON parse error in a hook\"\nThis is likely in settings.json"}

@@ -1,0 +1,2 @@
+{"timestamp": "20260122_123819", "event": "PostToolUse", "tool": "Read", "session": "unknown", "output_preview": "file content here\n"}
+{"timestamp": "20260122_123819", "event": "PostToolUse", "tool": "Bash", "session": "22c129bb-bd7d-4861-9c29-e1256b8edf81", "output_preview": "{\n  \"stdout\": \"{\\\"decision\\\": \\\"approve\\\", \\\"reason\\\": \\\"Tool response logged for observability\\\"}\",\n  \"stderr\": \"\",\n  \"interrupted\": false,\n  \"isImage\": false\n}\n"}

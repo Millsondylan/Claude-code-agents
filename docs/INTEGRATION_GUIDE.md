@@ -139,7 +139,6 @@ You are the **My Custom Agent**...
 ## Customizing the ACM
 
 The ACM (`.ai/README.md`) controls:
-- Change budgets
 - Safety protocols
 - Quality standards
 - Re-run rules
@@ -147,9 +146,6 @@ The ACM (`.ai/README.md`) controls:
 Modify these sections as needed for your organization:
 
 ```markdown
-## Change Budget Policy
-[Adjust limits per agent type]
-
 ## Safety Protocols
 [Add organization-specific rules]
 

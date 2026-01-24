@@ -174,14 +174,11 @@ Task tool:
 **Build Agent Chaining (Stage 4) - CYCLES:**
 ```
 build-agent-1 → build-agent-2 → build-agent-3 → build-agent-4 → build-agent-5
-     ↓               ↓               ↓               ↓               ↓
-  FRESH           FRESH           FRESH           FRESH           FRESH
-  budget          budget          budget          budget          budget
      ↑                                                               |
      └───────────────────── cycles back ─────────────────────────────┘
 ```
 - Always start with `build-agent-1`
-- If budget exhausted → dispatch next agent (1→2→3→4→5→1→...)
+- If work incomplete → dispatch next agent (1→2→3→4→5→1→...)
 - Pass: what's done + what remains
 - Cycle continues until work is COMPLETE
 - Max 3 cycles (15 agents) before asking user
@@ -214,7 +211,7 @@ Retrying Stage [N] with improved prompt:
 - [specific guidance to fix the issue]
 ```
 
-**CONTINUE** - Agent made progress but didn't finish (budget exhausted, etc.)
+**CONTINUE** - Agent made progress but didn't finish
 ```
 Output: Partial completion
 Continuing with [agent-name-2] to complete remaining work
@@ -242,9 +239,8 @@ Dispatching [requested-agent] before continuing
 - Missing risk assessment
 → RETRY with: "Be more specific. Each feature needs 3+ measurable acceptance criteria."
 
-**build-agent budget exhausted:**
+**build-agent needs continuation:**
 - Completed F1, F2, but F3 incomplete
-- Budget shows 10/10 simple consumed
 → CONTINUE with build-agent-2: "Continue from F3. F1 and F2 are done."
 
 ---
@@ -307,7 +303,6 @@ Create real tests with actual assertions.
 
 All agents must read `.ai/README.md` at session start. It contains:
 - Anti-destruction rules (read before edit, no overwrites, real tests)
-- Change budgets (10 simple, 5 medium-low, 3 medium, 1 high per instance)
 - Safety protocols
 - Quality standards
 

@@ -1,0 +1,1 @@
+{"timestamp": "20260122_124248", "event": "PostToolUse", "tool": "Bash", "session": "22c129bb-bd7d-4861-9c29-e1256b8edf81", "output_preview": "{\n  \"stdout\": \"\",\n  \"stderr\": \"\",\n  \"interrupted\": false,\n  \"isImage\": false\n}\n"}

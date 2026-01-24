@@ -1,0 +1,1 @@
+{"timestamp":"2026-01-22T10:38:41Z","agent":"debugger","valid":true,"errors":[],"warnings":[],"preview":"{\'status\': \'completed\', \'prompt\': \'<task>\nURGENT: Only 1 of 4 PostToolUse hooks executes. Find out why and fix ALL of them.\n</task>\n\n<requirements>\n1. Read the FULL settings.json to see all PostT"}

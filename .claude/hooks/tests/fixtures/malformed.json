@@ -1,0 +1,6 @@
+{
+  "cwd": "/Volumes/Code_system/Users/Claude-code-agents",
+  "tool_input": {
+    "subagent_type": "task-breakdown"
+  },
+  "tool_response": "This is not valid JSON content - but the wrapper is valid

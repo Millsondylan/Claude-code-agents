@@ -1,0 +1,2 @@
+{"timestamp": "20260123_073220", "event": "PostToolUse", "tool": "Grep", "session": "22c129bb-bd7d-4861-9c29-e1256b8edf81", "output_preview": "{\n  \"mode\": \"count\",\n  \"numFiles\": 0,\n  \"filenames\": [],\n  \"content\": \"3\",\n  \"numMatches\": 0\n}\n"}
+{"timestamp": "20260123_073220", "event": "PostToolUse", "tool": "Grep", "session": "22c129bb-bd7d-4861-9c29-e1256b8edf81", "output_preview": "{\n  \"mode\": \"count\",\n  \"numFiles\": 0,\n  \"filenames\": [],\n  \"content\": \"3\",\n  \"numMatches\": 0\n}\n"}

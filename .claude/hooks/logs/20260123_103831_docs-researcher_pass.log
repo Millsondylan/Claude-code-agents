@@ -1,0 +1,1 @@
+{"timestamp":"2026-01-23T10:38:31Z","agent":"docs-researcher","valid":true,"errors":[],"warnings":["Missing section: API Syntax examples (recommended)"],"preview":"{\'status\': \'completed\', \'prompt\': \"<task>\nResearch Claude Code hooks API documentation to verify correct JSON schema for hooks.\n</task>\n\n<context>\nWe\'re fixing hooks in .claude/hooks/ directory. "}

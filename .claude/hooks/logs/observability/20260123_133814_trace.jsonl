@@ -1,0 +1,1 @@
+{"timestamp": "20260123_133814", "event": "PreToolUse", "tool": "unknown", "session": "1769168294", "input_preview": "{\"tool_name\": \"Test\", \"session_id\": \"fix-test\", \"tool_input\": {\"description\": \"Multi\nline\ndescription\"}}"}

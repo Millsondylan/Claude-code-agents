@@ -1,0 +1,1 @@
+{"timestamp":"2026-01-23T11:12:53Z","agent":"test-agent","valid":true,"errors":[],"warnings":["Missing section: Coverage information (recommended)"],"preview":"{\'status\': \'completed\', \'prompt\': \'<task>\nRun all hooks tests and report results.\n</task>\n\n<commands>\n1. bash /Volumes/Code_system/Users/Claude-code-agents/.claude/hooks/tests/run_all_tests.sh\n2"}

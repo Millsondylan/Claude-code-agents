@@ -1,0 +1,1 @@
+{"timestamp":"2026-01-23T11:43:16Z","agent":"debugger","valid":true,"errors":[],"warnings":["Missing section: Budget tracking (recommended)"],"preview":"{\'status\': \'completed\', \'prompt\': \'<task>\nDebug why hooks never finish - they hang during \"Running PostToolUse hooks\".\n</task>\n\n<problem>\nUser reports hooks never finish - they show \"Running Post"}

@@ -3,7 +3,7 @@
 Execute the full multi-agent pipeline for the current task.
 
 ## Usage
-This command initiates the 9-stage multi-agent pipeline starting with task-breakdown.
+This command initiates the 10-stage multi-agent pipeline starting with prompt-optimizer (Stage -1).
 
 ## Instructions for Claude
 
@@ -12,6 +12,7 @@ When this command is invoked:
 1. **DO NOT use tools directly** - You are the orchestrator
 2. **Start with Stage 0** - Dispatch to task-breakdown agent
 3. **Follow the pipeline sequentially**:
+   - Stage -1: prompt-optimizer (ALWAYS FIRST)
    - Stage 0: task-breakdown
    - Stage 1: code-discovery
    - Stage 2: plan-agent
@@ -30,6 +31,7 @@ When this command is invoked:
 
 ```
 ## Pipeline Status
+- [x] Stage -1: prompt-optimizer [Run 1]
 - [x] Stage 0: task-breakdown [Run 1]
 - [x] Stage 1: code-discovery [Run 1]
 - [ ] Stage 2: plan-agent [Run 1] (IN PROGRESS)

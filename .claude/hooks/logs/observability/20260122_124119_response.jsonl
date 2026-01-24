@@ -1,0 +1,2 @@
+{"timestamp": "20260122_124119", "event": "PostToolUse", "tool": "Glob", "session": "22c129bb-bd7d-4861-9c29-e1256b8edf81", "output_preview": "{\n  \"filenames\": [],\n  \"durationMs\": 1106,\n  \"numFiles\": 0,\n  \"truncated\": false\n}\n"}
+{"timestamp": "20260122_124119", "event": "PostToolUse", "tool": "Glob", "session": "22c129bb-bd7d-4861-9c29-e1256b8edf81", "output_preview": "{\n  \"filenames\": [],\n  \"durationMs\": 1432,\n  \"numFiles\": 0,\n  \"truncated\": false\n}\n"}

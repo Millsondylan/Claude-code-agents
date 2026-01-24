@@ -1,0 +1,1 @@
+{"timestamp":"2026-01-23T11:23:06Z","agent":"debugger","valid":true,"errors":[],"warnings":["Missing section: Budget tracking (recommended)"],"preview":"{\'status\': \'completed\', \'prompt\': \'<task>\nDebug why Claude Code hooks aren\\'t being triggered or respected during actual operation.\n</task>\n\n<problem>\n- Tests pass when running hook scripts direc"}

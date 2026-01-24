@@ -1,0 +1,1 @@
+{"timestamp":"2026-01-22T10:40:35Z","agent":"task-breakdown","valid":true,"errors":[],"warnings":["Missing section: Assumptions (recommended)"],"preview":"## TaskSpec ### Features F1: Test Feature ### Acceptance Criteria - AC1 - AC2 ### Risks - R1 "}

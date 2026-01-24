@@ -1,0 +1,1 @@
+{"timestamp":"2026-01-22T07:22:07Z","agent":"debugger","valid":true,"errors":[],"warnings":[],"preview":"{\'status\': \'completed\', \'prompt\': \"<task>\nDebug: PostToolUse hooks don\'t always run - investigate and fix\n</task>\n\n<requirements>\n1. Read the current settings.json to see PostToolUse hook configu"}

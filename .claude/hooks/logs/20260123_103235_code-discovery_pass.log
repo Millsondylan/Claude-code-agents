@@ -1,0 +1,1 @@
+{"timestamp":"2026-01-23T10:32:35Z","agent":"code-discovery","valid":true,"errors":[],"warnings":[],"preview":"{\'status\': \'completed\', \'prompt\': \'<task>\nAnalyze the Claude Code hooks system in .claude/hooks/ to create a RepoProfile for fixing hooks.\n</task>\n\n<context>\nTaskSpec Summary: Fix pre-tool and po"}

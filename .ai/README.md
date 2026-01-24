@@ -66,23 +66,6 @@ When conflicts arise:
 
 ---
 
-## Change Budget Policy
-
-**Per agent instance (FRESH budget each run):**
-
-| Complexity | Max Changes | Examples |
-|------------|-------------|----------|
-| Simple | 10 | Add import, add function call, rename variable, add docstring |
-| Medium-Low | 5 | Add small function (<20 lines), modify logic, add test |
-| Medium | 3 | Add class, refactor function, complex logic changes |
-| High | 1 | Major refactor, new architecture component, database migration |
-
-**Budget Rules:**
-- Each agent instance receives a FRESH budget
-- Re-runs spawn NEW instances with NEW budgets
-- Exceeding budget: STOP immediately and request new agent instance
-- Track all changes in a ledger
-
 ## Safety Protocols
 
 ### NEVER
@@ -101,7 +84,6 @@ When conflicts arise:
 ### ALWAYS
 - Follow the smallest-correct-change principle
 - Preserve existing code style and conventions
-- Track budget consumption accurately
 - Document assumptions made during work
 - Create/update tests for new features
 - Use environment variables for configuration
@@ -165,13 +147,12 @@ When conflicts arise:
 - Map files to TaskSpec features
 
 ### Plan-Agent (Stage 2)
-- Batch features within budget limits
+- Batch features logically
 - Consider dependencies between features
 - Include test criteria
 
 ### Build-Agent (Stage 4)
 - Track every change in ledger
-- Stop at budget exhaustion
 - Follow existing patterns exactly
 
 ### Logical-Agent (Stage 5.5)
@@ -179,7 +160,7 @@ When conflicts arise:
 - Detect off-by-one errors, boundary issues
 - Identify race conditions and null dereference risks
 - Check edge case handling (empty, single, max values)
-- Read-only verification (0 change budget)
+- Read-only verification
 - Request build-agent/debugger for fixes
 
 ### Test-Agent (Stage 6)
@@ -197,6 +178,30 @@ When conflicts arise:
 - Output only: COMPLETE, RESTART, or ESCALATE
 - Justify decision with evidence
 
+## PITER Framework
+
+This pipeline implements the **PITER methodology** for autonomous software engineering:
+
+| Phase | Description | Stage(s) | Agent(s) |
+|-------|-------------|----------|----------|
+| **P**lan | Analyze request, discover codebase, create implementation plan | 0, 1, 2 | task-breakdown, code-discovery, plan-agent |
+| **I**mplement | Research docs, write code per the plan | 3, 4 | docs-researcher, build-agent-1/2/3/4/5 |
+| **T**est | Run test suite, report results, never block pipeline | 6 | test-agent |
+| **E**valuate | Review against acceptance criteria, check anti-destruction | 7 | review-agent |
+| **R**efine | Fix errors, verify logic, cycle back as needed | 5, 5.5 | debugger, logical-agent |
+
+### PITER Cycle Flow
+```
+P -> I -> T -> E -> [pass?] -> COMPLETE
+              |    [fail]
+              +---> R -> back to I (or T)
+```
+
+### Zero-to-Engineer (ZTE) Goal
+The ultimate goal is **autonomous shipping**: the codebase ships itself through the PITER cycle without human intervention.
+
+---
+
 ## Re-run Eligibility
 
 | Agent | Re-run Eligible | Notes |
@@ -206,8 +211,8 @@ When conflicts arise:
 | code-discovery | YES | Can be re-run for deeper scan |
 | plan-agent | YES | Can be re-run with new info |
 | web-syntax-researcher | YES | Can be re-run for more research |
-| build-agent | YES | NEW instance with FRESH budget |
-| debugger | YES | NEW instance with FRESH budget |
+| build-agent | YES | Can be re-run to continue work |
+| debugger | YES | Can be re-run for additional fixes |
 | logical-agent | YES | Can be re-run after logic fixes |
 | test-agent | YES | Can be re-run after fixes |
 | review-agent | YES | Can be re-run after fixes |
@@ -217,15 +222,14 @@ When conflicts arise:
 
 ### On Test Failures
 1. test-agent MUST request debugger
-2. debugger attempts fixes within budget
+2. debugger attempts fixes
 3. test-agent re-runs to verify
-4. Loop until pass or budget exhausted
+4. Loop until pass or escalate
 
-### On Budget Exhaustion
-1. Stop current work immediately
-2. Report what was completed
-3. Request new agent instance for remaining work
-4. Include context for continuation
+### On Large Tasks
+1. Report what was completed
+2. Request continuation with context for remaining work
+3. Include context for continuation
 
 ### On External Blockers
 1. Document the blocker clearly
@@ -238,9 +242,8 @@ When conflicts arise:
 **Every agent MUST at session start:**
 1. Read this ACM file
 2. Apply all rules to subsequent work
-3. Follow budget constraints
-4. Honor safety protocols
-5. Track changes in ledger (if applicable)
+3. Honor safety protocols
+4. Track changes in ledger (if applicable)
 
 ---
 

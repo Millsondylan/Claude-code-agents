@@ -1,0 +1,1 @@
+{"timestamp":"2026-01-23T10:35:07Z","agent":"plan-agent","valid":true,"errors":[],"warnings":["Missing section: Budget allocation (recommended)"],"preview":"{\'status\': \'completed\', \'prompt\': \'<task>\nCreate implementation plan for fixing Claude Code hooks.\n</task>\n\n<taskspec>\nFeatures:\n- F1: Audit hook activation and CWD resolution\n- F2: Fix error h"}

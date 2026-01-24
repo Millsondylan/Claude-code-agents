@@ -1,0 +1,1 @@
+{"timestamp":"2026-01-23T11:39:53Z","agent":"task-breakdown","valid":true,"errors":[],"warnings":[],"preview":"{\'status\': \'completed\', \'prompt\': \'hi\', \'agentId\': \'a48bb01\', \'content\': [{\'type\': \'text\', \'text\': \'I have read the ACM. Now I will produce the TaskSpec for this greeting request.\n\n---\n\n## TaskSpe"}

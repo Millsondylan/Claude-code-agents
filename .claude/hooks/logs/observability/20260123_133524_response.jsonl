@@ -1,0 +1,2 @@
+{"timestamp": "20260123_133524", "event": "PostToolUse", "tool": "Bash", "session": "b3516701-12bb-49eb-9079-df7b6f14afef", "output_preview": "{\n  \"stdout\": \"Extra data: line 2 column 1 (char 679)\",\n  \"stderr\": \"\",\n  \"interrupted\": false,\n  \"isImage\": false\n}\n"}
+{"timestamp": "20260123_133524", "event": "PostToolUse", "tool": "Bash", "session": "b3516701-12bb-49eb-9079-df7b6f14afef", "output_preview": "{\n  \"stdout\": \"Extra data: line 2 column 1 (char 679)\",\n  \"stderr\": \"\",\n  \"interrupted\": false,\n  \"isImage\": false\n}\n"}

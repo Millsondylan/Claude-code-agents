@@ -12,8 +12,7 @@ When this command is invoked:
 1. **Review current todo list** - Check TodoWrite for active tasks
 2. **Display pipeline status** - Show which stages are complete/pending
 3. **Show agent dispatch chain** - List agents that have run
-4. **Report budget consumption** - Show changes used vs. available
-5. **Indicate next steps** - What stage runs next
+4. **Indicate next steps** - What stage runs next
 
 ## Output Template
 
@@ -38,12 +37,6 @@ When this command is invoked:
 1. task-breakdown (Run 1) - COMPLETE
 2. code-discovery (Run 1) - COMPLETE
 3. plan-agent (Run 1) - IN PROGRESS
-
-### Budget Consumption
-- Simple: [X/10]
-- Medium-Low: [Y/5]
-- Medium: [Z/3]
-- High: [W/1]
 
 ### Next Steps
 [What will happen next in the pipeline]

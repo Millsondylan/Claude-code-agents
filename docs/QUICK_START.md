@@ -85,14 +85,6 @@ Dispatching to task-breakdown...
 
 ## Key Concepts
 
-### Budget System
-
-Each agent instance has a change budget:
-- 10 simple changes
-- 5 medium-low changes
-- 3 medium changes
-- 1 high change
-
 ### Agent Outputs
 
 - **task-breakdown** -> TaskSpec
@@ -107,7 +99,6 @@ Each agent instance has a change budget:
 ### Re-run Rules
 
 - All agents except decide-agent can be re-run
-- Each re-run spawns a NEW instance with FRESH budget
 - decide-agent is terminal - can only output decisions
 
 ## Response Format
@@ -122,7 +113,6 @@ Every orchestrator response includes:
 Pipeline Iteration: [N]
 Current Stage: [name]
 Agent Re-runs: [count]
-Budget Consumed: [breakdown]
 
 ## Agent Dispatch Chain
 [Sequential list of agents]
@@ -145,12 +135,11 @@ Objective: [what]
 1. Check current stage status
 2. Look for agent REQUEST outputs
 3. If debugger requested, it will be dispatched
-4. If budget exhausted, new agent instance needed
 
 ### Tests Failing
 
 Test-agent will automatically request debugger on any failure.
-The loop continues until tests pass or budget is exhausted.
+The loop continues until tests pass or escalate.
 
 ### Decide-Agent Outputs RESTART
 

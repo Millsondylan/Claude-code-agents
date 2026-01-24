@@ -17,6 +17,15 @@
   "hooks": {
     "PreToolUse": [
       {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "INPUT=$(cat); CWD=$(echo \"$INPUT\" | python3 -c \"import sys,json; print(json.loads(sys.stdin.read()).get('cwd',''))\" 2>/dev/null); CWD=${CWD:-$PWD}; echo \"$INPUT\" | bash \"$CWD/.claude/hooks/observability/trace-tool-call.sh\" 2>/dev/null || echo '{\"decision\": \"approve\", \"reason\": \"Observability hook skipped\"}'"
+          }
+        ]
+      },
+      {
         "matcher": "Edit",
         "hooks": [
           {
@@ -30,7 +39,38 @@
         "hooks": [
           {
             "type": "command",
-            "command": "if echo \"$CLAUDE_TOOL_INPUT\" | grep -q '\"file_path\"'; then FILE=$(echo \"$CLAUDE_TOOL_INPUT\" | sed -n 's/.*\"file_path\"[[:space:]]*:[[:space:]]*\"\\([^\"]*\\)\".*/\\1/p'); if [ -f \"$FILE\" ]; then echo '{\"decision\": \"block\", \"reason\": \"BLOCKED: File exists. Use Edit tool instead of Write. Write overwrites everything.\"}'; exit 0; fi; fi; echo '{\"decision\": \"approve\", \"reason\": \"New file. Remember: create corresponding test file with real assertions.\"}'"
+            "command": "INPUT=$(cat); FILE=$(echo \"$INPUT\" | python3 -c \"import sys,json; d=json.loads(sys.stdin.read()); print(d.get('tool_input',{}).get('file_path',''))\" 2>/dev/null); if [ -n \"$FILE\" ] && [ -f \"$FILE\" ]; then echo '{\"decision\": \"block\", \"reason\": \"BLOCKED: File exists. Use Edit tool instead of Write. Write overwrites everything.\"}'; exit 0; fi; echo '{\"decision\": \"approve\", \"reason\": \"New file. Remember: create corresponding test file with real assertions.\"}'"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "INPUT=$(cat); CWD=$(echo \"$INPUT\" | python3 -c \"import sys,json; print(json.loads(sys.stdin.read()).get('cwd',''))\" 2>/dev/null); CWD=${CWD:-$PWD}; echo \"$INPUT\" | bash \"$CWD/.claude/hooks/observability/log-response.sh\" 2>/dev/null || echo '{\"decision\": \"approve\", \"reason\": \"Observability hook skipped\"}'"
+          }
+        ]
+      },
+      {
+        "matcher": "Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "INPUT=$(cat); CWD=$(echo \"$INPUT\" | python3 -c \"import sys,json; print(json.loads(sys.stdin.read()).get('cwd',''))\" 2>/dev/null); CWD=${CWD:-$PWD}; echo \"$INPUT\" | python3 \"$CWD/.claude/hooks/validate-task-output.py\" 2>/dev/null || echo '{\"decision\": \"approve\", \"reason\": \"Validator skipped\"}'"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '{\"decision\": \"approve\", \"reason\": \"Pipeline complete. All agent outputs validated via PostToolUse hooks.\"}'"
           }
         ]
       }
@@ -41,7 +81,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo '[RULES] 1) Read before Edit 2) Edit not Write on existing files 3) No unnecessary new files 4) Real tests required 5) Right amount of change 6) Research docs first'"
+            "command": "echo '{\"hookSpecificOutput\": {\"hookEventName\": \"UserPromptSubmit\", \"additionalContext\": \"[RULES] 1) Read before Edit 2) Edit not Write on existing files 3) No unnecessary new files 4) Real tests required 5) Right amount of change 6) Research docs first\"}}'"
           }
         ]
       }

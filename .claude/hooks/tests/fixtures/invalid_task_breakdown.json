@@ -1,0 +1,7 @@
+{
+  "cwd": "/Volumes/Code_system/Users/Claude-code-agents",
+  "tool_input": {
+    "subagent_type": "task-breakdown"
+  },
+  "tool_response": "This is just some random text without any proper structure.\n\nIt has no TaskSpec section.\nIt has no Features.\nIt has no acceptance criteria.\n\nJust plain text that should fail validation."
+}

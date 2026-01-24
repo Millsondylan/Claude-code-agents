@@ -1,0 +1,2 @@
+{"timestamp": "20260123_133843", "event": "PostToolUse", "tool": "Bash", "session": "b3516701-12bb-49eb-9079-df7b6f14afef", "output_preview": "{\n  \"stdout\": \"settings.json: VALID\",\n  \"stderr\": \"\",\n  \"interrupted\": false,\n  \"isImage\": false\n}"}
+{"timestamp": "20260123_133843", "event": "PostToolUse", "tool": "Bash", "session": "b3516701-12bb-49eb-9079-df7b6f14afef", "output_preview": "{\n  \"stdout\": \"settings.json: VALID\",\n  \"stderr\": \"\",\n  \"interrupted\": false,\n  \"isImage\": false\n}"}

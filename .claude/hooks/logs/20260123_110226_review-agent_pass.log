@@ -1,0 +1,1 @@
+{"timestamp":"2026-01-23T11:02:26Z","agent":"review-agent","valid":true,"errors":[],"warnings":[],"preview":"{\'status\': \'completed\', \'prompt\': \'<task>\nReview the Claude Code hooks implementation against acceptance criteria.\n</task>\n\n<acceptance_criteria>\n**F1: CWD Resolution**\n- [ ] CWD extraction has "}

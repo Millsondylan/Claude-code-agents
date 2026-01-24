@@ -1,0 +1,7 @@
+{
+  "cwd": "/Volumes/Code_system/Users/Claude-code-agents",
+  "tool_input": {
+    "subagent_type": "plan-agent"
+  },
+  "tool_response": "Here is what I will do:\n\n1. Do some stuff\n2. Write code\n3. Test it\n4. Ship it\n\nThis output has no structure at all."
+}

@@ -1,0 +1,1 @@
+{"timestamp": "20260123_134453", "event": "PostToolUse", "tool": "Bash", "session": "22c129bb-bd7d-4861-9c29-e1256b8edf81", "output_preview": "{\n  \"stdout\": \"Transfer starting: 2 files\\n\\nsent 107 bytes  received 20 bytes  60476 bytes/sec\\ntotal size is 911  speedup is 7.17\",\n  \"stderr\": \"\",\n  \"interrupted\": false,\n  \"isImage\": false\n}"}

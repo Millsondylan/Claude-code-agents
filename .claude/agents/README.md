@@ -38,7 +38,7 @@ This directory contains the agent definition files for the multi-agent framework
 **Re-run eligible:** YES
 
 ### Stage 4: build-agent.md
-**Role:** Implements assigned features within budget constraints
+**Role:** Implements assigned features per the plan
 **Always required:** NO (triggered when code changes needed)
 **Re-run eligible:** YES
 **Instances:** build-agent-1 through build-agent-5
@@ -78,6 +78,12 @@ This directory contains the agent definition files for the multi-agent framework
 **Re-run eligible:** YES
 **Special:** Can ONLY modify PROJECT-SPECIFIC sections (between markers), NEVER base rules
 
+### Utility: claude-in-chrome.md
+**Role:** Browser automation specialist using Claude in Chrome MCP tools
+**Trigger:** On-demand for browser automation tasks
+**Re-run eligible:** YES
+**Special:** Controls Chrome browser via MCP tools (navigate, click, type, screenshot)
+
 ## Usage
 
 These agent definitions are intended to be used with Claude's Task tool to spawn subagents. Each definition provides:
@@ -87,9 +93,8 @@ These agent definitions are intended to be used with Claude's Task tool to spawn
 3. **Responsibilities**: What the agent must do
 4. **Outputs**: Required output format
 5. **Tools**: Which tools the agent can use
-6. **Budget**: Change budget constraints (if applicable)
-7. **Re-run Rules**: When and how the agent can request other agents
-8. **Quality Standards**: Checklists and best practices
+6. **Re-run Rules**: When and how the agent can request other agents
+7. **Quality Standards**: Checklists and best practices
 
 ## Installation
 
@@ -130,17 +135,7 @@ These stages run only when needed:
 
 ### Re-run Rules
 - **Any agent (except decide-agent) can request re-runs** of other agents
-- **Each agent instance gets FRESH budget** (10 simple, 5 medium-low, 3 medium, 1 high)
 - **decide-agent is terminal** — it CANNOT request other agents, only output COMPLETE/RESTART/ESCALATE
-
-### Budget Policy
-Per agent instance:
-- 10 simple changes max
-- 5 medium-low changes max
-- 3 medium changes max
-- 1 high change max
-
-Exceeding budget -> STOP -> request new agent instance
 
 ## Agent Request Hierarchy
 
@@ -177,7 +172,7 @@ Exceeding budget -> STOP -> request new agent instance
 
 When creating or modifying agent definitions:
 
-1. Follow the standard structure (Identity, Inputs, Responsibilities, Outputs, Tools, Budget, Re-run Rules)
+1. Follow the standard structure (Identity, Inputs, Responsibilities, Outputs, Tools, Re-run Rules)
 2. Include examples for common scenarios
 3. Document quality checklists
 4. Specify tool usage guidelines

@@ -1,0 +1,1 @@
+{"timestamp":"2026-01-21T07:58:14Z","agent":"web-syntax-researcher","valid":true,"errors":[],"warnings":["Missing section: Gotchas/Notes (recommended)"],"preview":"## SyntaxReport ### Research Question How to use React hooks? ### Technology React 18 ### Findings Use useState for state management ### Confidence Level High (90%) ### Source https://react.dev "}

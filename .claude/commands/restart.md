@@ -10,9 +10,8 @@ This command restarts the pipeline from the beginning (task-breakdown).
 When this command is invoked:
 
 1. **Clear current pipeline state** - Reset all stage statuses
-2. **Reset budget tracking** - Each new agent instance gets fresh budget
-3. **Restart from Stage 0** - Dispatch to task-breakdown
-4. **Preserve context** - Include learnings from previous run if applicable
+2. **Restart from Stage 0** - Dispatch to task-breakdown
+3. **Preserve context** - Include learnings from previous run if applicable
 
 ## When to Use
 
@@ -32,7 +31,6 @@ When this command is invoked:
 ### New Pipeline Started
 - Pipeline Iteration: [N+1]
 - Starting Stage: 0 (task-breakdown)
-- Fresh budget allocated
 
 ### Pipeline Status
 - [ ] Stage 0: task-breakdown [Run 1] (STARTING)
