@@ -2,8 +2,44 @@
 .claude/.prompts/*.md
 !.claude/.prompts/README.md
 !.claude/.prompts/.gitkeep
+
+# Environment
 .env
+.env.*
 
+# Logs
+*.log
+.claude/hooks/logs/
 
-# Observability logs (auto-deleted after 24 hours)
-.claude/hooks/logs/observability/*.jsonl
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+
+# Coverage
+.coverage
+.coverage.*
+htmlcov/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Exports and screenshots (user data)
+exports/
+screenshots/
+
+# Virtual environment
+venv/
+.venv/
