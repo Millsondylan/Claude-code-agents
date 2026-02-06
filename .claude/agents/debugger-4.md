@@ -3,6 +3,7 @@ name: debugger-4
 description: Fourth debugger agent. Continues from debugger-3. If incomplete, passes to debugger-5.
 tools: Read, Edit, Grep, Glob, Bash
 model: opus
+color: red
 hooks:
   validator: .claude/hooks/validators/validate-debugger.sh
 ---

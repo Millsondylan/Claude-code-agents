@@ -3,6 +3,7 @@ name: task-breakdown
 description: ALWAYS FIRST. Analyzes user requests and creates structured TaskSpec with features, acceptance criteria, risks, and assumptions. Use this agent to start any task pipeline.
 tools: Read, Grep, Glob, Bash
 model: opus
+color: yellow
 hooks:
   validator: .claude/hooks/validators/validate-task-breakdown.sh
 ---

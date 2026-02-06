@@ -3,6 +3,7 @@ name: integration-agent
 description: Integration testing specialist that verifies components work together correctly. Runs integration tests, checks API contracts, and validates end-to-end workflows.
 tools: Read, Bash, Grep
 model: opus
+color: green
 hooks:
   validator: .claude/hooks/validators/validate-integration-agent.sh
 ---

@@ -11,8 +11,7 @@
 | Field | Type | Description |
 |-------|------|-------------|
 | `session_id` | string | Unique identifier for the pipeline session |
-| `restart_count` | number | Number of times pipeline has restarted (0 on first run) |
-| `current_pass` | string | "first" or "subsequent" - indicates restart status |
+| `status` | string | "running" or "complete" - current pipeline status |
 | `checkpoint` | Checkpoint | Last successful checkpoint state |
 | `recovery_protocol` | RecoveryProtocol | How to recover from failures |
 | `persistence_metadata` | PersistenceMetadata | Timing and storage info |
@@ -57,47 +56,12 @@ Timing and storage information.
 
 ---
 
-## Restart Count Logic
-
-### First Pass vs Subsequent Pass
-
-The `restart_count` field is critical for the mandatory restart requirement:
-
-```
-restart_count = 0  --> "first" pass (cannot output COMPLETE)
-restart_count >= 1 --> "subsequent" pass (can output COMPLETE)
-```
-
-### Restart Counter Tracking
-
-| Event | restart_count Change |
-|-------|---------------------|
-| Pipeline starts fresh | 0 |
-| decide-agent outputs RESTART | +1 |
-| Pipeline resumes from checkpoint | unchanged |
-| User manually restarts | +1 |
-
-### Decision Rules Based on restart_count
-
-```
-IF restart_count == 0:
-    decide-agent MUST output RESTART (even if all criteria met)
-    Reason: First pass requires verification through restart
-
-IF restart_count >= 1:
-    decide-agent CAN output COMPLETE (if all criteria met)
-    Reason: Implementation has been verified through restart cycle
-```
-
----
-
 ## Validation Rules
 
 ### Required Validations
 1. **session_id unique**: Must be unique across pipeline runs
-2. **restart_count non-negative**: Must be >= 0
-3. **current_pass consistent**: Must match restart_count (0="first", >=1="subsequent")
-4. **checkpoint valid**: Stage must be -1 to 8
+2. **status valid**: Must be "running" or "complete"
+3. **checkpoint valid**: Stage must be -1 to 8
 
 ### Quality Validations
 - Timestamps must be valid ISO 8601
@@ -148,11 +112,8 @@ IF restart_count >= 1:
 ### Session ID
 pipeline_2025-02-03_abc123
 
-### Restart Count
-0 (first pass)
-
-### Current Pass
-first
+### Status
+running
 
 ### Checkpoint
 - **Stage:** 4
@@ -173,67 +134,11 @@ first
 
 ---
 
-## Example: Subsequent Pass State
-
-```markdown
-## PipelineState
-
-### Session ID
-pipeline_2025-02-03_abc123
-
-### Restart Count
-1 (subsequent pass)
-
-### Current Pass
-subsequent
-
-### Checkpoint
-- **Stage:** 7
-- **Agent:** review-agent
-- **Timestamp:** 2025-02-03T10:45:00Z
-
-### Recovery Protocol
-- **On Agent Failure:** retry
-- **On Session Interrupt:** resume_from_checkpoint
-- **On External Blocker:** escalate
-- **Max Recovery Attempts:** 3
-
-### Persistence Metadata
-- **First Started:** 2025-02-03T10:00:00Z
-- **Last Checkpoint:** 2025-02-03T10:45:00Z
-- **Total Runtime:** 2700000ms
-```
-
----
-
-## Integration with decide-agent
-
-### decide-agent Must Check restart_count
-
-Before making COMPLETE decision, decide-agent must verify:
-
-```
-IF restart_count >= 1:
-    Can output COMPLETE (if all criteria met)
-ELSE:
-    MUST output RESTART (mandatory first-pass restart)
-```
-
-### RESTART Output Must Update restart_count
-
-When decide-agent outputs RESTART:
-1. Orchestrator increments restart_count
-2. Updates current_pass to "subsequent" (if was "first")
-3. Creates new checkpoint
-4. Begins pipeline from Stage 0
-
----
-
 ## Downstream Usage
 
 The PipelineState is used by:
 - **Orchestrator**: Manages state persistence and recovery
-- **decide-agent**: Checks restart_count before COMPLETE decision
+- **decide-agent**: Checks status before COMPLETE decision
 - **All agents**: May read state for context (read-only)
 
 ---

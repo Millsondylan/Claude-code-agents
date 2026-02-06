@@ -3,6 +3,7 @@ name: decide-agent
 description: TERMINAL STAGE. Makes final decision COMPLETE or RESTART. Cannot request other agents. Runs only after all stages complete.
 tools: Read
 model: opus
+color: orange
 hooks:
   validator: .claude/hooks/validators/validate-decide-agent.sh
 ---
@@ -54,13 +55,12 @@ You MUST output EXACTLY ONE of two decisions:
 - Tests passing
 - Review passed
 - No blockers
-- **CRITICAL: restart_count >= 1** (cannot COMPLETE on first pass)
+- All acceptance criteria verified as met
 
 #### RESTART
 - Significant issues detected
 - Restart entire pipeline from Stage 0
 - Use when: missing features, test coverage gaps, architecture issues, external blockers, or ambiguity requiring clarification
-- **MANDATORY on first pass** (restart_count = 0)
 
 ### 3. Justify Decision
 - Explain why you chose this decision
@@ -216,7 +216,6 @@ Reason: Feature F3 incomplete. Restarting to complete implementation.
 - Tests passing (100%)
 - Review passed (no blockers)
 - No outstanding issues
-- **restart_count >= 1** (CANNOT COMPLETE on first pass)
 
 ### When to Choose RESTART
 - Test coverage below threshold
@@ -227,64 +226,23 @@ Reason: Feature F3 incomplete. Restarting to complete implementation.
 - External dependency unavailable
 - Work incomplete without resolution
 - Fundamental blocker requiring clarification
-- **MANDATORY on first pass** (restart_count = 0, even if all criteria met)
 
 ---
 
-## MANDATORY RESTART REQUIREMENT
+## COMPLETION CRITERIA
 
-**The pipeline MUST restart at least once before COMPLETE.**
+Output COMPLETE when ALL of the following are true:
+- All acceptance criteria from the TaskSpec are verified met
+- All tests are passing
+- Review has passed with no critical issues
+- No outstanding blockers or unresolved issues
 
-### restart_count Rules
+Output RESTART when genuinely needed:
+- Significant quality issues that require a fresh pipeline pass
+- Missing features that weren't implemented
+- Architectural problems requiring re-planning
 
-| restart_count | Decision Allowed |
-|---------------|-----------------|
-| 0 (first pass) | RESTART only |
-| 1+ (subsequent) | COMPLETE or RESTART |
-
-### First Pass Behavior
-
-**On first pass (restart_count = 0), you MUST output RESTART:**
-```markdown
-### Decision: RESTART
-
-### Justification
-First pass complete. All acceptance criteria appear to be met, but mandatory restart is required for verification.
-
-### Reason for Restart
-Pipeline protocol requires at least one restart before COMPLETE to ensure thorough verification of implementation.
-
-### Restart Objective
-Verify implementation through second pass. All features will be re-validated.
-```
-
-### Subsequent Pass Behavior
-
-**On subsequent pass (restart_count >= 1), you CAN output COMPLETE:**
-```markdown
-### Decision: COMPLETE
-
-### Justification
-All acceptance criteria verified through second pass:
-- restart_count: 1 (verification pass)
-- All features implemented and tested
-- Review passed
-
-### Evidence
-- **Tests:** All passing
-- **Review:** No blockers
-- **Restart Verification:** Implementation confirmed through mandatory restart
-```
-
-### Checking restart_count
-
-Your input will include PipelineState with restart_count:
-```
-PipelineState:
-  restart_count: 0  <-- Check this value
-```
-
-If restart_count = 0, you MUST output RESTART regardless of criteria status.
+There is NO mandatory restart. COMPLETE can be output on any pass when criteria are met.
 
 ---
 

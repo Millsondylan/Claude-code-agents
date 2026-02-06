@@ -3,6 +3,7 @@ name: web-syntax-researcher
 description: DEPRECATED - use docs-researcher instead. Researches APIs, frameworks, and syntax patterns via web search.
 tools: WebSearch, WebFetch, Read
 model: opus
+color: pink
 hooks:
   validator: .claude/hooks/validators/validate-web-syntax-researcher.sh
 ---

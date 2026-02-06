@@ -134,27 +134,12 @@ When conflicts arise:
 - Read-only analysis of codebase for context enrichment
 - Output ONLY the optimized prompt (no explanations)
 - Apply anti-laziness, persistence, and verification rules
-- Model: haiku (fast optimization)
+- Model: opus
 
 ### Task-Breakdown (Stage 0)
 - Create TaskSpec for EVERY request (even simple ones)
 - Document all assumptions
 - Flag ambiguities explicitly
-
-### Intent-Confirmer (Stage 0.25)
-- Confirm TaskSpec accurately reflects user intent
-- Validate scope, features, and acceptance criteria alignment
-- Request task-breakdown for regeneration if misaligned
-- Read-only verification
-- Model: opus (careful intent analysis)
-
-### Context-Validator (Stage 0.5)
-- Validate PipelineContext integrity after each stage
-- Verify all required context for target stage is present
-- Check context completeness and quality
-- Request source agents for missing context
-- Read-only verification
-- Model: haiku (fast validation)
 
 ### Code-Discovery (Stage 1)
 - Document verified commands only
@@ -163,6 +148,7 @@ When conflicts arise:
 
 ### Plan-Agent (Stage 2)
 - Batch features logically
+- Produce micro-batches of 1-2 files per build-agent
 - Consider dependencies between features
 - Include test criteria
 
@@ -172,9 +158,10 @@ When conflicts arise:
 - Check plan consistency before build starts
 - Report blockers with fix instructions
 - Request plan-agent for conflict resolution
-- Model: haiku (fast checks)
+- Model: opus
 
 ### Build-Agent (Stage 4) - 55 agents
+- Each agent handles 1-2 files max. Runs nested sub-pipeline
 - Track every change in ledger
 - Follow existing patterns exactly
 - Chain: build-agent-1 through build-agent-55, cycles back to 1
@@ -216,7 +203,7 @@ This pipeline implements the **PITER methodology** for autonomous software engin
 
 | Phase | Description | Stage(s) | Agent(s) |
 |-------|-------------|----------|----------|
-| **P**lan | Analyze request, validate context, discover codebase, create implementation plan | 0, 0.25, 0.5, 1, 2 | task-breakdown, intent-confirmer, context-validator, code-discovery, plan-agent |
+| **P**lan | Analyze request, discover codebase, create implementation plan | 0, 1, 2 | task-breakdown, code-discovery, plan-agent |
 | **I**mplement | Research docs, pre-flight checks, write code per the plan | 3, 3.5, 4 | docs-researcher, pre-flight-checker, build-agent-1 through build-agent-55 |
 | **T**est | Run unit tests, integration tests, never block pipeline | 6, 6.5 | test-agent, integration-agent |
 | **E**valuate | Review against acceptance criteria, check anti-destruction | 7 | review-agent |
@@ -240,8 +227,6 @@ The ultimate goal is **autonomous shipping**: the codebase ships itself through 
 |-------|-----------------|-------|
 | prompt-optimizer | YES | Can be re-run for different target agents |
 | task-breakdown | YES | Can be re-run for clarification |
-| intent-confirmer | YES | Can be re-run after TaskSpec regeneration |
-| context-validator | YES | Can be re-run after missing context provided |
 | code-discovery | YES | Can be re-run for deeper scan |
 | plan-agent | YES | Can be re-run with new info |
 | docs-researcher | YES | Can be re-run for more research |

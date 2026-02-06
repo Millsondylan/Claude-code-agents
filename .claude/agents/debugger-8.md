@@ -3,6 +3,7 @@ name: debugger-8
 description: Eighth debugger agent. Continues from debugger-7. If incomplete, passes to debugger-9.
 tools: Read, Edit, Grep, Glob, Bash
 model: opus
+color: red
 hooks:
   validator: .claude/hooks/validators/validate-debugger.sh
 ---

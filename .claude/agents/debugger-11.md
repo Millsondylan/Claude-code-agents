@@ -3,6 +3,7 @@ name: debugger-11
 description: Eleventh debugger agent. Continues from debugger-10. If incomplete, cycles back to debugger.
 tools: Read, Edit, Grep, Glob, Bash
 model: opus
+color: red
 hooks:
   validator: .claude/hooks/validators/validate-debugger.sh
 ---

@@ -18,7 +18,7 @@ Invoke the prompt-optimizer agent to transform a raw prompt into an optimized, c
 ```
 
 ## What It Does
-1. Dispatches to prompt-optimizer agent (haiku model)
+1. Dispatches to prompt-optimizer agent (opus model)
 2. Analyzes codebase for context
 3. Applies anti-laziness, persistence, and verification rules
 4. Returns ONLY the optimized prompt

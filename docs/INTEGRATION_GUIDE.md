@@ -20,8 +20,6 @@ Claude-code-agents/
 │   │   ├── README.md
 │   │   ├── prompt-optimizer.md
 │   │   ├── task-breakdown.md
-│   │   ├── intent-confirmer.md
-│   │   ├── context-validator.md
 │   │   ├── code-discovery.md
 │   │   ├── plan-agent.md
 │   │   ├── docs-researcher.md

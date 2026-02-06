@@ -3,6 +3,7 @@ name: code-discovery
 description: Discovers repository structure, tech stack, conventions, and test infrastructure. Creates RepoProfile for downstream agents. Use after task-breakdown.
 tools: Read, Grep, Glob, Bash
 model: opus
+color: cyan
 hooks:
   validator: .claude/hooks/validators/validate-code-discovery.sh
 ---

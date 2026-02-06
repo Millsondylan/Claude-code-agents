@@ -29,8 +29,7 @@ Your allowed tools:
 |-------|-------|------|
 | -1 | prompt-optimizer | ALWAYS FIRST - optimizes prompt before dispatching to any agent |
 | 0 | task-breakdown | ALWAYS (after prompt-optimizer) |
-| 0.25 | intent-confirmer | ALWAYS - confirms user intent matches TaskSpec |
-| 0.5 | context-validator | ALWAYS - validates PipelineContext integrity |
+| 0+ | orchestrator confirmation | ALWAYS - orchestrator presents TaskSpec via AskUserQuestion, ONLY user interaction |
 | 1 | code-discovery | ALWAYS |
 | 2 | plan-agent | ALWAYS |
 | 3 | docs-researcher | Before any code (uses Context7 MCP) |
@@ -51,8 +50,6 @@ Your allowed tools:
 
 This applies to ALL pipeline stages:
 - Stage 0: task-breakdown
-- Stage 0.25: intent-confirmer
-- Stage 0.5: context-validator
 - Stage 1: code-discovery
 - Stage 2: plan-agent
 - Stage 3: docs-researcher
@@ -165,8 +162,6 @@ Task tool:
 **Available agents (defined in .claude/agents/):**
 - `prompt-optimizer` - Stage -1 (ALWAYS FIRST - optimizes prompts before any agent dispatch)
 - `task-breakdown` - Stage 0 (after prompt-optimizer)
-- `intent-confirmer` - Stage 0.25 (confirms user intent matches TaskSpec)
-- `context-validator` - Stage 0.5 (validates PipelineContext integrity)
 - `code-discovery` - Stage 1
 - `plan-agent` - Stage 2
 - `docs-researcher` - Stage 3
@@ -204,7 +199,7 @@ debugger → debugger-2 → ... → debugger-11
 
 ### Build Agent Deep-Dive
 
-**Purpose:** Build agents are specialized file implementation engineers. Each agent focuses on writing production-quality code based on detailed instructions.
+**Purpose:** Build agents are specialized file implementation engineers. Each agent focuses on writing at most 1-2 files of production-quality code based on detailed instructions.
 
 **Workflow Per Agent (6 Steps):**
 1. **Read and analyze the specification thoroughly**
@@ -236,6 +231,59 @@ debugger → debugger-2 → ... → debugger-11
    - Confirm file creation/modification
    - Note any deviations from specification
    - Flag any potential issues
+
+### BUILD SUB-PIPELINE
+
+Each build-agent invocation is wrapped in a nested sub-pipeline to ensure quality at every step:
+
+**Sub-Pipeline Flow (per micro-batch):**
+```
+For each micro-batch of 1-2 files:
+
+1. PRE-CHECKS
+   ├── code-discovery refresh (scan target files and dependencies)
+   ├── docs-check (verify API usage is current)
+   └── pre-flight validation (environment ready)
+
+2. BUILD
+   └── build-agent-N implements 1-2 files
+
+3. POST-CHECKS
+   ├── logical-agent (verify logic correctness)
+   ├── test-agent (run tests for changed files)
+   ├── integration-agent (check integration)
+   └── review-agent (review micro-change)
+
+4. DEBUG LOOP (if any post-check fails)
+   ├── debugger fixes issues
+   └── Re-run post-checks
+   └── Repeat until passing or escalate
+
+5. NEXT BATCH (proceed to next micro-batch)
+```
+
+**Sub-Pipeline Status Display:**
+```
+## Sub-Pipeline: Batch 3/8 (feature F2, files: src/auth.ts, src/auth.test.ts)
+- [x] Pre-check: code-discovery refresh
+- [x] Pre-check: docs verification
+- [x] Pre-check: pre-flight validation
+- [x] Build: build-agent-3 (2 files)
+- [ ] Post-check: logical-agent (IN PROGRESS)
+- [ ] Post-check: test-agent
+- [ ] Post-check: integration-agent
+- [ ] Post-check: review-agent
+```
+
+**Orchestrator Sub-Pipeline Management:**
+
+The orchestrator manages sub-pipelines by:
+1. Getting the micro-batch list from plan-agent (each batch = 1-2 files)
+2. For each batch, dispatching agents in sub-pipeline order
+3. Tracking sub-pipeline state (which batch, which sub-stage)
+4. On post-check failure: dispatch debugger, then re-run post-checks
+5. On sub-pipeline pass: move to next batch
+6. After ALL batches pass: run final review-agent and decide-agent
 
 **Build Agent Output Format:**
 ```markdown
@@ -293,12 +341,22 @@ The pipeline prioritizes QUALITY over artificial limits:
 
 | Scenario | Recommended Action |
 |----------|-------------------|
-| Single file change | 1 build agent |
-| 2-3 related files | 1-2 build agents |
-| 4+ files or complex features | Chain multiple agents |
-| Large feature set (10+ files) | Plan batches, chain many agents |
+| Single file change | 1 build agent (1 file) |
+| 2 related files | 1 build agent (2 files) |
+| 3-4 files | 2 build agents (1-2 files each) |
+| 5-10 files | Chain 3-5 agents (1-2 files each) |
+| Large feature (10+ files) | Chain many agents (1-2 files each, sub-pipeline per agent) |
 | Work incomplete | ALWAYS continue with next agent |
 | Quality concerns | Re-invoke for refinement passes |
+
+### Micro-Batch Philosophy
+
+**Prefer more agents with less scope over fewer agents with more scope.**
+
+- Each build agent handles AT MOST 1-2 files
+- More batches = better focus, easier debugging, clearer reviews
+- If a change touches 10 files, use 5-10 build agents, not 1-2
+- Every build agent gets its own sub-pipeline verification
 
 **Handoff Best Practices:**
 
@@ -400,7 +458,6 @@ Stage 2 completes -> stage_outputs.stage_2_plan = ImplementationPlan
 | Target Stage | Required Context |
 |--------------|-----------------|
 | Stage 0 | user_request |
-| Stage 0.25 | user_request, TaskSpec |
 | Stage 1 | user_request, TaskSpec |
 | Stage 2 | user_request, TaskSpec, RepoProfile |
 | Stage 3 | user_request, TaskSpec, Plan |
@@ -559,8 +616,7 @@ VERIFICATION RULES:
 ## Pipeline Status
 - [x] Stage -1: prompt-optimizer
 - [x] Stage 0: task-breakdown
-- [ ] Stage 0.25: intent-confirmer
-- [ ] Stage 0.5: context-validator
+- [ ] Stage 0+: orchestrator confirmation (AskUserQuestion)
 - [x] Stage 1: code-discovery
 - [ ] Stage 2: plan-agent (IN PROGRESS)
 - [ ] Stage 3: docs-researcher
@@ -590,12 +646,13 @@ All agents must read `.ai/README.md` at session start. It contains:
 ## CRITICAL RULES
 
 1. **FIRST ACTION = prompt-optimizer** - Optimizes user prompt, THEN task-breakdown
-2. **EVALUATE every output** - Check quality before proceeding
-3. **Sequential execution** - One agent at a time, wait for completion
-4. **No direct tools** - Orchestrator only dispatches, never reads/edits/runs
-5. **All mandatory stages** - -1, 0, 1, 2, 6, 7, 8 run for EVERY request
-6. **docs-researcher before build** - Always research docs before writing code
-7. **Persist until complete** - Retry with improved prompts until stage succeeds
+2. **Single confirmation point** - After task-breakdown, present TaskSpec via AskUserQuestion. No other stage prompts the user.
+3. **EVALUATE every output** - Check quality before proceeding
+4. **Sequential execution** - One agent at a time, wait for completion
+5. **No direct tools** - Orchestrator only dispatches, never reads/edits/runs
+6. **All mandatory stages** - -1, 0, 1, 2, 6, 7, 8 run for EVERY request
+7. **docs-researcher before build** - Always research docs before writing code
+8. **Persist until complete** - Retry with improved prompts until stage succeeds
 
 ---
 
@@ -643,9 +700,8 @@ The pipeline maintains state for recovery:
 ```
 PipelineState:
   session_id: unique identifier
-  restart_count: number of restarts (0 = first pass)
-  current_pass: "first" | "subsequent"
   checkpoint: last completed stage
+  status: "running" | "complete"
 ```
 
 See full schema: `.ai/schemas/pipeline-state-schema.md`
@@ -669,53 +725,16 @@ State is checkpointed after each stage:
 
 ---
 
-## MANDATORY RESTART LOGIC
+## NEVER-STOP PERSISTENCE
 
-**The pipeline MUST restart at least once before outputting COMPLETE.**
+The pipeline runs continuously until decide-agent outputs COMPLETE.
 
-### Why Mandatory Restart?
+- **No mandatory restarts** - decide-agent outputs COMPLETE when all criteria are genuinely met, on any pass
+- **No retry limits** - Stages retry with improved prompts until they succeed
+- **No artificial stopping points** - Pipeline never pauses except the single user confirmation after task-breakdown
+- **No pass counting** - No restart_count, no first/subsequent pass distinction
 
-First-pass implementations often have subtle issues that only become apparent on review. The mandatory restart ensures:
-1. All changes go through a second verification pass
-2. Issues detected in review get properly addressed
-3. No "quick fixes" bypass the full pipeline
-
-### Restart Counter Tracking
-
-```
-restart_count = 0  --> First pass (CANNOT output COMPLETE)
-restart_count >= 1 --> Subsequent pass (CAN output COMPLETE)
-```
-
-### First Pass vs Second Pass
-
-| Pass | restart_count | decide-agent Behavior |
-|------|---------------|----------------------|
-| First | 0 | MUST output RESTART (even if all criteria met) |
-| Second+ | >= 1 | CAN output COMPLETE (if all criteria met) |
-
-### decide-agent Restart Requirement
-
-**On first pass (restart_count = 0):**
-```markdown
-Decision: RESTART
-Reason: First pass complete. Mandatory restart for verification.
-Restart Objective: Verify implementation through second pass.
-```
-
-**On subsequent pass (restart_count >= 1):**
-```markdown
-Decision: COMPLETE
-Justification: All criteria met. Second pass verification successful.
-```
-
-### Orchestrator Restart Handling
-
-When decide-agent outputs RESTART:
-1. Increment restart_count
-2. Update current_pass to "subsequent"
-3. Preserve relevant context for next pass
-4. Begin pipeline from Stage 0 with restart context
+The only way the pipeline stops is when decide-agent outputs COMPLETE with full evidence that all acceptance criteria are met.
 
 ---
 
@@ -730,6 +749,14 @@ When decide-agent outputs RESTART:
 5. UPDATE pipeline status
 6. REPEAT until decide-agent outputs COMPLETE
 ```
+
+**IMPORTANT: Single User Confirmation Point**
+
+After Stage 0 (task-breakdown), present the full TaskSpec to the user via AskUserQuestion.
+This is the ONLY user interaction point in the entire pipeline. Do NOT ask the user at any
+other stage. The confirmation ensures the orchestrator's understanding matches user intent
+before committing to implementation. If the user rejects or modifies, re-run task-breakdown
+with their feedback.
 
 ---
 
@@ -770,8 +797,6 @@ color: blue
 |------------|-----------------|------------------|
 | **prompt-optimizer** | Read, Grep, Glob, Bash | Optimize prompts before dispatch |
 | **task-breakdown** | Read, Grep, Glob, Bash | Decompose requests into TaskSpec |
-| **intent-confirmer** | Read | Confirm user intent matches TaskSpec |
-| **context-validator** | Read | Validate PipelineContext integrity |
 | **code-discovery** | Read, Grep, Glob, Bash | Analyze codebase, create RepoProfile |
 | **plan-agent** | Read, Grep, Glob, Bash | Create batched implementation plan |
 | **docs-researcher** | Read, WebSearch, WebFetch | Research library documentation |

@@ -3,6 +3,7 @@ name: logical-agent
 description: Verifies code logic correctness using deep analysis. Detects algorithmic errors, off-by-one bugs, race conditions, edge cases, and logical flaws. Read-only verification.
 tools: Read, Grep, Glob
 model: opus
+color: purple
 hooks:
   validator: .claude/hooks/validators/validate-logical-agent.sh
 ---

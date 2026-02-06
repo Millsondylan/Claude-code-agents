@@ -63,15 +63,6 @@ if echo "$OUTPUT" | grep -qiE "REQUEST:.*agent|REQUEST:.*debugger|REQUEST:.*buil
     ERRORS+=("Resolve this Validation error in decide-agent output: Prohibited action - decide-agent cannot REQUEST other agents (use RESTART instead)")
 fi
 
-# Check for restart_count requirement when COMPLETE is output
-if [ "$HAS_COMPLETE" -gt 0 ]; then
-    # If COMPLETE decision is made, should mention restart_count or verification pass
-    HAS_RESTART_REF=$(echo "$OUTPUT" | grep -ciE "restart_count|restart.*count|verification.*pass|second.*pass|subsequent.*pass" 2>/dev/null) || HAS_RESTART_REF=0
-    if [ "$HAS_RESTART_REF" -eq 0 ]; then
-        WARNINGS+=("COMPLETE decision should reference restart_count verification (restart_count >= 1 required)")
-    fi
-fi
-
 # Output result as JSON
 if [ ${#ERRORS[@]} -eq 0 ]; then
     WARN_JSON="[]"

@@ -3,6 +3,7 @@ name: debugger-6
 description: Sixth debugger agent. Continues from debugger-5. If incomplete, passes to debugger-7.
 tools: Read, Edit, Grep, Glob, Bash
 model: opus
+color: red
 hooks:
   validator: .claude/hooks/validators/validate-debugger.sh
 ---

@@ -8,21 +8,11 @@ This directory contains the agent definition files for the multi-agent framework
 **Role:** Intercepts and optimizes prompts before they reach target sub-agents
 **Always required:** YES (MANDATORY - runs FIRST before any agent dispatch)
 **Re-run eligible:** YES
-**Special:** Outputs ONLY the optimized prompt, uses haiku model for fast processing
-**Model:** Haiku (for speed)
+**Special:** Outputs ONLY the optimized prompt, uses opus model for thorough processing
+**Model:** Opus
 
 ### Stage 0: task-breakdown.md
 **Role:** Analyzes user requests and creates structured TaskSpec
-**Always required:** YES
-**Re-run eligible:** YES
-
-### Stage 0.25: intent-confirmer.md
-**Role:** Validates TaskSpec intent matches user's original request
-**Always required:** YES (validates TaskSpec before proceeding)
-**Re-run eligible:** YES
-
-### Stage 0.5: context-validator.md
-**Role:** Validates PipelineContext integrity between stages
 **Always required:** YES
 **Re-run eligible:** YES
 
@@ -144,8 +134,6 @@ To use these agents in your repository:
 These stages MUST run for EVERY request:
 - Stage -1: prompt-optimizer (ALWAYS FIRST - optimizes prompt before any dispatch)
 - Stage 0: task-breakdown (after prompt-optimizer)
-- Stage 0.25: intent-confirmer (validates TaskSpec intent)
-- Stage 0.5: context-validator (validates PipelineContext integrity)
 - Stage 1: code-discovery
 - Stage 2: plan-agent
 - Stage 3: docs-researcher (MANDATORY before any build-agent)
@@ -175,8 +163,6 @@ These stages run only when needed:
 |-------|-------------|----------------|
 | prompt-optimizer | None (outputs optimized prompt only) | All agents |
 | task-breakdown | Any agent | decide-agent mid-pipeline |
-| intent-confirmer | task-breakdown (for re-clarification) | decide-agent mid-pipeline |
-| context-validator | Any agent | decide-agent mid-pipeline |
 | code-discovery | Any agent | decide-agent mid-pipeline |
 | plan-agent | Any agent | decide-agent mid-pipeline |
 | docs-researcher | Any agent | decide-agent mid-pipeline |

@@ -29,8 +29,7 @@ Runs the complete multi-agent pipeline:
 
 1. **Stage -1: prompt-optimizer** - Optimizes the task prompt
 2. **Stage 0: task-breakdown** - Creates TaskSpec with features and acceptance criteria
-3. **Stage 0.5: context-validator** - Validates pipeline context integrity
-4. **Stage 1: code-discovery** - Discovers codebase structure and conventions
+3. **Stage 1: code-discovery** - Discovers codebase structure and conventions
 5. **Stage 2: plan-agent** - Creates batched implementation plan
 6. **Stage 3: docs-researcher** - Researches relevant documentation
 7. **Stage 3.5: pre-flight-checker** - Pre-implementation sanity checks
@@ -44,14 +43,7 @@ Runs the complete multi-agent pipeline:
 
 ## Completion Behavior
 
-The pipeline enforces a mandatory restart for verification:
-
-| Pass | restart_count | decide-agent Behavior |
-|------|---------------|----------------------|
-| First | 0 | MUST output RESTART (mandatory verification) |
-| Second+ | >= 1 | CAN output COMPLETE (if all criteria met) |
-
-This ensures every implementation goes through at least two verification passes before completion.
+The pipeline runs continuously until the task is complete. There are no artificial restart requirements or pass limits. The decide-agent outputs COMPLETE when all acceptance criteria are met and tests pass, or RESTART if issues remain that need further work.
 
 ## Orchestrator Integration
 
@@ -71,7 +63,6 @@ Pipeline status updates after each stage:
 ## Pipeline Status
 - [x] Stage -1: prompt-optimizer
 - [x] Stage 0: task-breakdown
-- [x] Stage 0.5: context-validator
 - [x] Stage 1: code-discovery
 - [ ] Stage 2: plan-agent (IN PROGRESS)
 - [ ] Stage 3: docs-researcher

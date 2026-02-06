@@ -134,7 +134,7 @@ When conflicts arise:
 - Read-only analysis of codebase for context enrichment
 - Output ONLY the optimized prompt (no explanations)
 - Apply anti-laziness, persistence, and verification rules
-- Model: haiku (fast optimization)
+- Model: opus
 
 ### Task-Breakdown (Stage 0)
 - Create TaskSpec for EVERY request (even simple ones)
@@ -154,7 +154,7 @@ When conflicts arise:
 - Check context completeness and quality
 - Request source agents for missing context
 - Read-only verification
-- Model: haiku (fast validation)
+- Model: opus
 
 ### Code-Discovery (Stage 1)
 - Document verified commands only
@@ -172,7 +172,7 @@ When conflicts arise:
 - Check plan consistency before build starts
 - Report blockers with fix instructions
 - Request plan-agent for conflict resolution
-- Model: haiku (fast checks)
+- Model: opus
 
 ### Build-Agent (Stage 4) - 55 agents
 - Track every change in ledger

@@ -3,6 +3,7 @@ name: claude-in-chrome
 description: Browser automation agent using Claude in Chrome MCP tools
 tools: mcp__claude-in-chrome__computer, mcp__claude-in-chrome__navigate, mcp__claude-in-chrome__read_page, mcp__claude-in-chrome__find, mcp__claude-in-chrome__form_input, mcp__claude-in-chrome__javascript_tool, mcp__claude-in-chrome__get_page_text, mcp__claude-in-chrome__tabs_context_mcp, mcp__claude-in-chrome__tabs_create_mcp, mcp__claude-in-chrome__screenshot, mcp__claude-in-chrome__upload_image, mcp__claude-in-chrome__gif_creator
 model: opus
+color: pink
 hooks:
   validator: .claude/hooks/validators/validate-claude-in-chrome.sh
 ---

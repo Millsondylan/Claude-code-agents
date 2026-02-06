@@ -3,6 +3,7 @@ name: debugger-5
 description: Fifth debugger agent. Continues from debugger-4. If incomplete, passes to debugger-6.
 tools: Read, Edit, Grep, Glob, Bash
 model: opus
+color: red
 hooks:
   validator: .claude/hooks/validators/validate-debugger.sh
 ---

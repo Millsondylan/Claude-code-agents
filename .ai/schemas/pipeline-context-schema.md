@@ -29,7 +29,6 @@ Aggregated outputs from each completed stage.
 |-------|------|----------|-------------|
 | `stage_neg1_prompt` | string | No | Optimized prompt from prompt-optimizer |
 | `stage_0_taskspec` | TaskSpec | No | TaskSpec from task-breakdown |
-| `stage_0_5_context_validation` | ContextValidation | No | Context validation from context-validator |
 | `stage_1_repoprofile` | RepoProfile | No | RepoProfile from code-discovery |
 | `stage_2_plan` | ImplementationPlan | No | Plan from plan-agent |
 | `stage_3_docs` | DocsResearchOutput | No | Documentation from docs-researcher |
@@ -40,6 +39,19 @@ Aggregated outputs from each completed stage.
 | `stage_6_tests` | TestReport | No | Test report from test-agent |
 | `stage_6_5_integration` | IntegrationTestReport | No | Integration test report from integration-agent |
 | `stage_7_review` | ReviewReport | No | Review report from review-agent |
+| `sub_pipeline_results` | array[SubPipelineResult] | No | Results from nested build sub-pipelines |
+
+### SubPipelineResult
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `build_agent` | string | Yes | Build agent ID |
+| `files_targeted` | array[string] | Yes | Files assigned (1-2 max) |
+| `pre_check_passed` | boolean | Yes | Pre-checks passed |
+| `build_completed` | boolean | Yes | Build completed |
+| `post_check_passed` | boolean | Yes | Post-checks passed |
+| `debug_iterations` | number | Yes | Debug attempts (0+) |
+| `final_status` | string | Yes | "success" or "needs_external_debug" |
 
 ### LoopBackTrigger
 

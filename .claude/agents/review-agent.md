@@ -3,6 +3,7 @@ name: review-agent
 description: MANDATORY. Reviews changes against acceptance criteria. Checks for anti-destruction violations (overwrites, unnecessary files, placeholder tests). Read-only.
 tools: Read, Grep, Glob
 model: opus
+color: orange
 hooks:
   validator: .claude/hooks/validators/validate-review-agent.sh
 ---

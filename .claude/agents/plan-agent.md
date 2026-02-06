@@ -3,6 +3,7 @@ name: plan-agent
 description: Creates batched implementation plan with feature assignments. Use after code-discovery to plan implementation.
 tools: Read, Grep, Glob, Bash
 model: opus
+color: purple
 hooks:
   validator: .claude/hooks/validators/validate-plan-agent.sh
 ---
@@ -40,9 +41,10 @@ You are the **Plan Agent**. You receive a TaskSpec (from task-breakdown) and Rep
 - Identify implementation risks
 
 ### 2. Create Feature Batches
-- Group features into logical batches
+- Group features into micro-batches of 1-2 files per build-agent
 - Assign each batch to a build-agent instance (build-agent-1, build-agent-2, etc.)
 - Ensure batch order respects dependencies
+- Prefer smaller batches for better isolation and parallel debugging
 
 ### 3. Define Implementation Steps
 - For each feature, specify:
@@ -146,6 +148,7 @@ You are the **Plan Agent**. You receive a TaskSpec (from task-breakdown) and Rep
 ### Plan Quality Checklist
 - [ ] All TaskSpec features are included
 - [ ] Features are batched appropriately
+- [ ] Each batch targets at most 1-2 files
 - [ ] Each feature has implementation steps
 - [ ] Files to modify/create are specified
 - [ ] Test criteria are defined

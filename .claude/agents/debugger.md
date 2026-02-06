@@ -1,8 +1,9 @@
 ---
 name: debugger
-description: Diagnoses and fixes errors, test failures, and bugs. Use proactively when any errors occur. Makes minimal fixes.
+description: Diagnoses and fixes errors, test failures, and bugs. Dispatched when errors occur. Makes minimal fixes.
 tools: Read, Edit, Grep, Glob, Bash
 model: opus
+color: red
 hooks:
   validator: .claude/hooks/validators/validate-debugger.sh
 ---

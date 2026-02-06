@@ -16,8 +16,6 @@ These validators are designed to work with Claude's PostToolUse hooks. They:
 |-----------|-------|-------|-------------------|
 | `validate-prompt-optimizer.sh` | prompt-optimizer | -1 | XML structured prompt |
 | `validate-task-breakdown.sh` | task-breakdown | 0 | TaskSpec, Features, Acceptance Criteria |
-| `validate-intent-confirmer.sh` | intent-confirmer | 0.25 | Intent Confirmation, User Approval |
-| `validate-context-validator.sh` | context-validator | 0.5 | Context Validation Report, Completeness Checks |
 | `validate-code-discovery.sh` | code-discovery | 1 | RepoProfile, Directory Structure, Tech Stack |
 | `validate-plan-agent.sh` | plan-agent | 2 | Implementation Plan, Batches, File Mappings |
 | `validate-docs-researcher.sh` | docs-researcher | 3 | Documentation Report, Libraries Researched |

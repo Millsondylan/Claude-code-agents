@@ -85,6 +85,7 @@
 ### Quality Validations
 - Dependencies between features should be respected in batch order
 - Complex features may span multiple batches
+- Each batch should target at most 1-2 files
 - Implementation notes should reference RepoProfile patterns
 - Test criteria should map to TaskSpec acceptance criteria
 

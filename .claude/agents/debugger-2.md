@@ -3,6 +3,7 @@ name: debugger-2
 description: Second debugger agent. Continues from debugger. If incomplete, passes to debugger-3.
 tools: Read, Edit, Grep, Glob, Bash
 model: opus
+color: red
 hooks:
   validator: .claude/hooks/validators/validate-debugger.sh
 ---

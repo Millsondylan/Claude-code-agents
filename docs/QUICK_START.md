@@ -37,8 +37,6 @@ cp -r /path/to/Claude-code-agents/.ai /path/to/your/project/
 |-------|-------|---------|
 | -1 | prompt-optimizer | Optimize prompts before dispatch |
 | 0 | task-breakdown | Analyze request, create TaskSpec |
-| 0.25 | intent-confirmer | Confirm TaskSpec matches user intent |
-| 0.5 | context-validator | Validate pipeline context integrity |
 | 1 | code-discovery | Explore codebase, create RepoProfile |
 | 2 | plan-agent | Create implementation plan |
 | 3 | docs-researcher | Research library documentation (Context7 MCP) |
@@ -94,7 +92,7 @@ Dispatching to task-breakdown...
 ## Pipeline Status
 - [x] Stage -1: prompt-optimizer
 - [x] Stage 0: task-breakdown
-- [ ] Stage 0.25: intent-confirmer (IN PROGRESS)
+- [ ] Stage 1: code-discovery (IN PROGRESS)
 ...
 
 [continues through all stages until decide-agent outputs COMPLETE]
@@ -106,8 +104,6 @@ Dispatching to task-breakdown...
 
 - **prompt-optimizer** -> Optimized Prompt (XML structured)
 - **task-breakdown** -> TaskSpec
-- **intent-confirmer** -> Intent Confirmation
-- **context-validator** -> Validation Report
 - **code-discovery** -> RepoProfile
 - **plan-agent** -> Implementation Plan
 - **docs-researcher** -> Documentation Research

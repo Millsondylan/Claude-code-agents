@@ -3,6 +3,7 @@ name: docs-researcher
 description: MANDATORY before build-agent. Researches current library/framework documentation via Context7 MCP. Ensures correct, up-to-date syntax and best practices.
 tools: Read, WebSearch, WebFetch
 model: opus
+color: cyan
 hooks:
   validator: .claude/hooks/validators/validate-docs-researcher.sh
 ---
