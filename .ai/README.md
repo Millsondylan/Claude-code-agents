@@ -64,6 +64,11 @@ When conflicts arise:
 - **If tests fail after your change, REVERT and try again**
 - **Never commit code that breaks existing tests**
 
+### Rule 6: SEQUENTIAL DISPATCH ONLY
+- **NEVER dispatch multiple Task tool calls in a single response**
+- **NEVER use run_in_background on Task calls**
+- **One agent at a time: dispatch, wait for output, evaluate, then dispatch next**
+
 ---
 
 ## Safety Protocols
