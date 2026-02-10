@@ -133,13 +133,20 @@ When conflicts arise:
 
 ## Agent-Specific Rules
 
+### Model Specifications
+- All pipeline agents use **Claude Opus 4.6** (YAML alias: `opus`)
+- Context window: 200K tokens (default), 1M tokens (beta extended context)
+- Max output: 128K tokens (subagent output may be capped at ~32K)
+- The `model: opus` value in agent YAML frontmatter is the correct alias — do NOT use full model IDs
+- YAML frontmatter does NOT support `contextWindow` or `max_tokens` fields
+
 ### Prompt-Optimizer (Stage -1) - MANDATORY
 - **ALWAYS runs FIRST** before any other agent dispatch
 - Intercepts and optimizes prompts before target agents
 - Read-only analysis of codebase for context enrichment
 - Output ONLY the optimized prompt (no explanations)
 - Apply anti-laziness, persistence, and verification rules
-- Model: opus
+- Model: Opus 4.6 (alias: opus)
 
 ### Task-Breakdown (Stage 0)
 - Create TaskSpec for EVERY request (even simple ones)
@@ -163,13 +170,23 @@ When conflicts arise:
 - Check plan consistency before build starts
 - Report blockers with fix instructions
 - Request plan-agent for conflict resolution
-- Model: opus
+- Model: Opus 4.6 (alias: opus)
 
 ### Build-Agent (Stage 4) - 55 agents
 - Each agent handles 1-2 files max. Runs nested sub-pipeline
 - Track every change in ledger
 - Follow existing patterns exactly
 - Chain: build-agent-1 through build-agent-55, cycles back to 1
+
+### Test-Writer (Stage 4.5)
+- Writes comprehensive test files after build-agent completes
+- Maps acceptance criteria to test functions (1+ test per AC)
+- Creates unit tests, error path tests, and edge case tests
+- Detects and rejects placeholder tests (pass, assert True, no assertions)
+- Follows repository test conventions (file naming, framework, fixtures)
+- NO mocks allowed - all tests use real objects and real assertions
+- Can request build-agent if implementation gaps found
+- Model: Opus 4.6 (alias: opus)
 
 ### Logical-Agent (Stage 5.5)
 - Verify algorithmic correctness (loops, recursion, invariants)
@@ -190,7 +207,7 @@ When conflicts arise:
 - Run integration tests, check API contracts
 - Validate end-to-end workflows
 - NEVER block pipeline - request debugger on failures
-- Model: opus (deep analysis)
+- Model: Opus 4.6 (alias: opus) (deep analysis)
 
 ### Review-Agent (Stage 7)
 - Check acceptance criteria thoroughly
@@ -209,7 +226,7 @@ This pipeline implements the **PITER methodology** for autonomous software engin
 | Phase | Description | Stage(s) | Agent(s) |
 |-------|-------------|----------|----------|
 | **P**lan | Analyze request, discover codebase, create implementation plan | 0, 1, 2 | task-breakdown, code-discovery, plan-agent |
-| **I**mplement | Research docs, pre-flight checks, write code per the plan | 3, 3.5, 4 | docs-researcher, pre-flight-checker, build-agent-1 through build-agent-55 |
+| **I**mplement | Research docs, pre-flight checks, write code per the plan, write tests | 3, 3.5, 4, 4.5 | docs-researcher, pre-flight-checker, build-agent-1 through build-agent-55, test-writer |
 | **T**est | Run unit tests, integration tests, never block pipeline | 6, 6.5 | test-agent, integration-agent |
 | **E**valuate | Review against acceptance criteria, check anti-destruction | 7 | review-agent |
 | **R**efine | Fix errors, verify logic, cycle back as needed | 5, 5.5 | debugger, logical-agent |
@@ -237,6 +254,7 @@ The ultimate goal is **autonomous shipping**: the codebase ships itself through 
 | docs-researcher | YES | Can be re-run for more research |
 | pre-flight-checker | YES | Can be re-run after blockers resolved |
 | build-agent-1 through 55 | YES | Can be re-run to continue work |
+| test-writer | YES | Can be re-run after build changes |
 | debugger through debugger-11 | YES | Can be re-run for additional fixes |
 | logical-agent | YES | Can be re-run after logic fixes |
 | test-agent | YES | Can be re-run after fixes |

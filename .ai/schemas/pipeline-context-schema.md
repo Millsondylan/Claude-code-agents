@@ -34,6 +34,7 @@ Aggregated outputs from each completed stage.
 | `stage_3_docs` | DocsResearchOutput | No | Documentation from docs-researcher |
 | `stage_3_5_preflight` | PreFlightCheck | No | Pre-flight check from pre-flight-checker |
 | `stage_4_builds` | array[BuildReport] | No | Build reports from build-agent-N |
+| `stage_4_5_test_writing` | TestWritingReport | No | Test writing report from test-writer |
 | `stage_5_debug` | array[DebugReport] | No | Debug reports from debugger |
 | `stage_5_5_logic` | LogicVerification | No | Logic verification from logical-agent |
 | `stage_6_tests` | TestReport | No | Test report from test-agent |
@@ -155,6 +156,15 @@ Stage 1 completes --> stage_outputs.stage_1_repoprofile = RepoProfile
   ... continues ...
      |
      v
+Stage 4 completes --> stage_outputs.stage_4_builds = array[BuildReport]
+     |
+     v
+Stage 4.5 completes --> stage_outputs.stage_4_5_test_writing = TestWritingReport
+     |
+     v
+  ... continues ...
+     |
+     v
 Agent requests loop-back --> loop_back_triggers.push(LoopBackTrigger)
      |
      v
@@ -207,6 +217,7 @@ The orchestrator parses this and creates a LoopBackTrigger:
 | Stage 2 | user_request, stage_0_taskspec, stage_1_repoprofile |
 | Stage 3 | user_request, stage_0_taskspec, stage_2_plan |
 | Stage 4 | user_request, stage_0_taskspec, stage_1_repoprofile, stage_2_plan, stage_3_docs |
+| Stage 4.5 | user_request, stage_0_taskspec, stage_1_repoprofile, stage_4_builds |
 | Stage 5 | user_request, stage_0_taskspec, stage_4_builds, stage_6_tests (if available) |
 | Stage 5.5 | user_request, stage_0_taskspec, stage_4_builds |
 | Stage 6 | user_request, stage_0_taskspec, stage_1_repoprofile, stage_4_builds |

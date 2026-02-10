@@ -68,6 +68,7 @@ Parallel Bash tool calls (e.g., rsync to multiple targets) are acceptable for no
 | 3 | docs-researcher | Before any code (uses Context7 MCP) |
 | 3.5 | pre-flight-checker | ALWAYS - pre-implementation sanity checks |
 | 4 | build-agent-N | If code needed |
+| 4.5 | test-writer | ALWAYS - writes tests for implemented features |
 | 5 | debugger | If errors |
 | 5.5 | logical-agent | After build, verifies logic correctness |
 | 6 | test-agent | ALWAYS |
@@ -88,6 +89,7 @@ This applies to ALL pipeline stages:
 - Stage 3: docs-researcher
 - Stage 3.5: pre-flight-checker
 - Stage 4: build-agent-1 through build-agent-55
+- Stage 4.5: test-writer
 - Stage 5: debugger
 - Stage 5.5: logical-agent
 - Stage 6: test-agent
@@ -200,6 +202,7 @@ Task tool:
 - `docs-researcher` - Stage 3
 - `pre-flight-checker` - Stage 3.5 (pre-implementation sanity checks)
 - `build-agent-1` through `build-agent-55` - Stage 4 (implementation agents, chain sequentially)
+- `test-writer` - Stage 4.5 (writes tests for implemented features)
 - `debugger` through `debugger-11` - Stage 5 (debugging agents, chain sequentially)
 - `logical-agent` - Stage 5.5 (verifies code logic correctness)
 - `test-agent` - Stage 6
@@ -281,7 +284,11 @@ For each micro-batch of 1-2 files:
 2. BUILD
    └── build-agent-N implements 1-2 files
 
+2.5 TEST WRITING
+   └── test-writer generates tests for implemented files
+
 3. POST-CHECKS
+   ├── test-writer (generate tests for implemented files)
    ├── logical-agent (verify logic correctness)
    ├── test-agent (run tests for changed files)
    ├── integration-agent (check integration)
@@ -302,6 +309,7 @@ For each micro-batch of 1-2 files:
 - [x] Pre-check: docs verification
 - [x] Pre-check: pre-flight validation
 - [x] Build: build-agent-3 (2 files)
+- [ ] Post-check: test-writer
 - [ ] Post-check: logical-agent (IN PROGRESS)
 - [ ] Post-check: test-agent
 - [ ] Post-check: integration-agent
@@ -495,6 +503,7 @@ Stage 2 completes -> stage_outputs.stage_2_plan = ImplementationPlan
 | Stage 2 | user_request, TaskSpec, RepoProfile |
 | Stage 3 | user_request, TaskSpec, Plan |
 | Stage 4 | user_request, TaskSpec, RepoProfile, Plan, Docs |
+| Stage 4.5 | user_request, TaskSpec, RepoProfile, BuildReports |
 | Stage 5 | user_request, TaskSpec, BuildReports, TestReport |
 | Stage 5.5 | user_request, TaskSpec, BuildReports |
 | Stage 6 | user_request, TaskSpec, RepoProfile, BuildReports |
@@ -636,6 +645,7 @@ VERIFICATION RULES:
 | code-discovery | Directories to scan, patterns to identify, tech stack |
 | plan-agent | Batching strategy, file paths, dependencies |
 | build-agent | Implementation details, code patterns, error handling |
+| test-writer | Acceptance criteria, test patterns, coverage requirements |
 | debugger | Error context, stack traces, expected vs actual |
 | test-agent | Features to test, coverage requirements |
 | review-agent | Acceptance criteria, security, code quality |
@@ -657,6 +667,7 @@ VERIFICATION RULES:
 - [ ] Stage 4: build-agent-1
 - [ ] Stage 4: build-agent-2 (if needed)
 - [ ] Stage 4: build-agent-3 (if needed)
+- [ ] Stage 4.5: test-writer
 - [ ] Stage 5: debugger
 - [ ] Stage 5.5: logical-agent
 - [ ] Stage 6: test-agent
@@ -683,7 +694,7 @@ All agents must read `.ai/README.md` at session start. It contains:
 3. **EVALUATE every output** - Check quality before proceeding
 4. **Sequential execution** - ONE Task tool call per response. NEVER dispatch multiple agents in parallel. NEVER use run_in_background on Task calls. Dispatch one agent, wait for output, evaluate, then dispatch next.
 5. **No direct tools** - Orchestrator only dispatches, never reads/edits/runs
-6. **All mandatory stages** - -1, 0, 1, 2, 6, 7, 8 run for EVERY request
+6. **All mandatory stages** - -1, 0, 1, 2, 4.5, 6, 7, 8 run for EVERY request
 7. **docs-researcher before build** - Always research docs before writing code
 8. **Persist until complete** - Retry with improved prompts until stage succeeds
 
@@ -704,6 +715,50 @@ Stage 2 (plan-agent): Attempt 2
 Issue: Plan missing test file locations
 Retrying with: "Include specific test file paths for each feature"
 ```
+
+---
+
+## OPUS 4.6 CONTEXT WINDOW & TOKEN MANAGEMENT
+
+### Model Capabilities
+
+| Capability | Value | Notes |
+|------------|-------|-------|
+| Default context window | 200K tokens | Generally available |
+| Extended context window | 1M tokens | Beta only; requires `anthropic-beta: context-1m-2025-08-07` header and Tier 4 org |
+| Max output tokens | 128K tokens | Up from 64K on prior models |
+
+### Context Management Strategy
+
+Claude Code manages context internally. There is no user-facing YAML configuration for the context window size. The orchestrator and agents do not need to set `contextWindow` or `max_tokens` in agent definition frontmatter -- these are handled automatically by the runtime.
+
+**Subagent output cap:** Subagent (Task tool) output may be truncated at approximately 32K tokens regardless of environment variable settings. This is a known limitation. When dispatching build agents for large implementations, prefer smaller micro-batches (1-2 files) to keep output within the cap.
+
+### Compaction Strategy
+
+When context usage grows high, Claude Code automatically compacts the conversation. The compaction threshold can be overridden:
+
+```
+export CLAUDE_AUTOCOMPACT_PCT_OVERRIDE=70
+```
+
+This triggers compaction when context usage reaches 70% (default varies by runtime). Lower values compact more aggressively, preserving headroom for long pipelines. For multi-stage pipelines, a value between 50-70 is recommended to avoid mid-stage compaction.
+
+### Environment Variables
+
+| Variable | Purpose | Default |
+|----------|---------|---------|
+| `CLAUDE_CODE_MAX_OUTPUT_TOKENS` | Set max output tokens per response | Runtime default |
+| `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE` | Override compaction threshold (percentage) | Runtime default |
+
+**Note:** `CLAUDE_CODE_MAX_OUTPUT_TOKENS` may not fully apply to subagent output due to the ~32K subagent cap. Use it for top-level responses only.
+
+### Deprecated Features on Opus 4.6
+
+The following features from prior Claude models are **not available** on Opus 4.6:
+
+- **`budget_tokens` parameter** -- Deprecated. Extended thinking on Opus 4.6 uses adaptive thinking, which automatically allocates thinking effort. Do not pass `budget_tokens` in API calls.
+- **Assistant message prefilling** -- Removed on Opus 4.6. You cannot pre-fill the assistant turn with partial content. Prompts that relied on prefilling must be restructured.
 
 ---
 
@@ -838,6 +893,7 @@ color: blue
 | **docs-researcher** | Read, WebSearch, WebFetch | Research library documentation |
 | **pre-flight-checker** | Read, Bash, Glob | Pre-implementation sanity checks |
 | **build-agent-1 to 55** | Write, Read, Edit, Grep, Glob, Bash, TodoWrite | Implement code changes |
+| **test-writer** | Write, Read, Edit, Grep, Glob, Bash | Write tests for implemented features |
 | **debugger to debugger-11** | Read, Edit, Grep, Glob, Bash | Fix errors and bugs |
 | **logical-agent** | Read, Grep, Glob | Verify code logic correctness |
 | **test-agent** | Read, Bash, Grep, Glob | Run tests, verify implementation |

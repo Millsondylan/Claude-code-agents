@@ -21,6 +21,7 @@ These validators are designed to work with Claude's PostToolUse hooks. They:
 | `validate-docs-researcher.sh` | docs-researcher | 3 | Documentation Report, Libraries Researched |
 | `validate-pre-flight-checker.sh` | pre-flight-checker | 3.5 | Pre-Flight Check Report, Blockers |
 | `validate-build-agent.sh` | build-agent-1 through build-agent-55 | 4 | Build Report, Files Changed, Change Ledger |
+| `validate-test-writer.sh` | test-writer | 4.5 | Test Writing Report, Tests Created, Coverage Analysis |
 | `validate-debugger.sh` | debugger through debugger-11 | 5 | Debug Report, Root Cause, Fix Applied |
 | `validate-logical-agent.sh` | logical-agent | 5.5 | Logic Verification Report, Issues Found |
 | `validate-test-agent.sh` | test-agent | 6 | Test Report, Tests Run, Results |
