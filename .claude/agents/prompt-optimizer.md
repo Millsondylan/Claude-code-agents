@@ -2,7 +2,7 @@
 name: prompt-optimizer
 description: Intercepts and optimizes all prompts before they reach target sub-agents. Runs first, outputs only the optimized prompt.
 tools: Read, Grep, Glob, Bash
-model: opus
+model: inherit
 color: pink
 hooks:
   validator: .claude/hooks/validators/validate-prompt-optimizer.sh

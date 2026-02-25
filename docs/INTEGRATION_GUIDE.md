@@ -37,9 +37,15 @@ Claude-code-agents/
 │   │   ├── status.md
 │   │   └── restart.md
 │   └── skills/                 # Custom skills (empty)
+├── model-switch/
+│   ├── switcher.zsh            # Auto-routing launcher for Kimi/Claude
+│   ├── generate-proxy-config.sh
+│   ├── .env.example            # Template
+│   └── .env.local              # Local secrets (gitignored)
 └── docs/
     ├── QUICK_START.md
-    └── INTEGRATION_GUIDE.md
+    ├── INTEGRATION_GUIDE.md
+    └── MODEL_SWITCHING.md
 ```
 
 ## Global vs. Project Configuration

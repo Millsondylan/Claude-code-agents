@@ -6,10 +6,14 @@
 # Environment
 .env
 .env.*
+!model-switch/.env.example
+model-switch/.env.local
+model-switch/proxy-config.json
 
 # Logs
 *.log
 .claude/hooks/logs/
+model-switch/*.log
 
 # Database
 *.db

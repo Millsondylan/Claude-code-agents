@@ -2,7 +2,7 @@
 name: build-agent
 description: DEPRECATED - Use build-agent-1 through build-agent-5 instead. This is the base template.
 tools: Read, Edit, Write, Grep, Glob, Bash
-model: opus
+model: inherit
 color: blue
 hooks:
   validator: .claude/hooks/validators/validate-build-agent.sh

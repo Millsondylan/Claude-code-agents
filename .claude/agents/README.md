@@ -2,6 +2,10 @@
 
 This directory contains the agent definition files for the multi-agent framework. Each agent has a specific role in the multi-stage pipeline (Stages -1 through 8, including sub-stages).
 
+## Model Selection
+
+All agents are configured with `model: inherit` so sub-agents follow the active model selected by the user (`/model`, `--model`, or `cc-model`).
+
 ## Agent Files
 
 ### Stage -1: prompt-optimizer.md
@@ -9,7 +13,7 @@ This directory contains the agent definition files for the multi-agent framework
 **Always required:** YES (MANDATORY - runs FIRST before any agent dispatch)
 **Re-run eligible:** YES
 **Special:** Outputs ONLY the optimized prompt, uses opus model for thorough processing
-**Model:** Opus 4.6
+**Model:** Inherit (active model)
 
 ### Stage 0: task-breakdown.md
 **Role:** Analyzes user requests and creates structured TaskSpec
@@ -55,7 +59,7 @@ This directory contains the agent definition files for the multi-agent framework
 **Always required:** YES (when build-agent runs)
 **Re-run eligible:** YES
 **Special:** Creates unit tests, edge case tests, and error path tests. NO mocks, NO placeholders, NO assert True. Maps tests to acceptance criteria. Targets 100% coverage.
-**Model:** Opus 4.6
+**Model:** Inherit (active model)
 
 ### Stage 5: debugger through debugger-11
 **Role:** Diagnoses and fixes errors, test failures, and bugs
@@ -64,11 +68,11 @@ This directory contains the agent definition files for the multi-agent framework
 **Instances:** 11 debugger agents (debugger, debugger-2 through debugger-11)
 
 ### Stage 5.5: logical-agent.md
-**Role:** Verifies code logic correctness using deep Opus 4.6 reasoning
+**Role:** Verifies code logic correctness with deep reasoning
 **Always required:** NO (triggered after build-agent, before test-agent)
 **Re-run eligible:** YES
 **Special:** Read-only verification, detects off-by-one, race conditions, null handling, edge cases
-**Model:** Opus 4.6 (for deep logical reasoning)
+**Model:** Inherit (active model)
 
 ### Stage 6: test-agent.md
 **Role:** Runs test suite and reports results (NEVER blocks)

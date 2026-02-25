@@ -20,6 +20,12 @@ ln -sf ~/Claude-code-agents/.claude/agents ~/.claude/agents
 ln -sf ~/Claude-code-agents/.claude/commands ~/.claude/commands
 ```
 
+### Model Switching Setup (Kimi + Claude)
+
+This repo includes portable model switching. See:
+
+`docs/MODEL_SWITCHING.md`
+
 ### Per-Project Installation
 
 To use in a specific project only:

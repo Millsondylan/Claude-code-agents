@@ -2,7 +2,7 @@
 # Syncs agent framework to global ~/.claude/ and optionally to a repo
 # Copies ALL components: agents, commands, skills, settings, ACM, CLAUDE.md, .mcp.json
 
-SOURCE_DIR="/Volumes/Code_system/Users/Claude-code-agents"
+SOURCE_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 sync_to_global() {
     TARGET_DIR="$HOME/.claude"

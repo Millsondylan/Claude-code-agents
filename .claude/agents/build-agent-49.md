@@ -2,7 +2,7 @@
 name: build-agent-49
 description: Implements 1-2 files as part of the sequential build pipeline. Specialist for writing 1-2 specific files based on detailed instructions and context. Dispatched by the orchestrator only.
 tools: Write, Read, Edit, Grep, Glob, Bash, TodoWrite
-model: opus
+model: inherit
 color: blue
 ---
 

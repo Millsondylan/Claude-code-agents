@@ -2,7 +2,7 @@
 name: pre-flight-checker
 description: Pre-implementation sanity checks before build-agent starts. Verifies environment, dependencies, and prerequisites are ready. Fast validation to catch issues early.
 tools: Read, Bash, Glob
-model: opus
+model: inherit
 color: orange
 hooks:
   validator: .claude/hooks/validators/validate-pre-flight-checker.sh

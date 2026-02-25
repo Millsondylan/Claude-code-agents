@@ -2,7 +2,7 @@
 name: plan-agent
 description: Creates batched implementation plan with feature assignments. Use after code-discovery to plan implementation.
 tools: Read, Grep, Glob, Bash
-model: opus
+model: inherit
 color: purple
 hooks:
   validator: .claude/hooks/validators/validate-plan-agent.sh

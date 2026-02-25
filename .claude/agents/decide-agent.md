@@ -2,7 +2,7 @@
 name: decide-agent
 description: TERMINAL STAGE. Makes final decision COMPLETE or RESTART. Cannot request other agents. Runs only after all stages complete.
 tools: Read
-model: opus
+model: inherit
 color: orange
 hooks:
   validator: .claude/hooks/validators/validate-decide-agent.sh

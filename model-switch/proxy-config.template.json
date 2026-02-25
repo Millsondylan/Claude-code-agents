@@ -1,0 +1,12 @@
+{
+  "nvidia_url": "https://integrate.api.nvidia.com/v1/chat/completions",
+  "nvidia_base_url": "https://integrate.api.nvidia.com/v1",
+  "nvidia_key": "<set-via-env-local>",
+  "port": 3001,
+  "models": {
+    "moonshotai/kimi-k2.5": {
+      "max_tokens": 8192,
+      "context_window": 256000
+    }
+  }
+}
