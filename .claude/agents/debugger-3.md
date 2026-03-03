@@ -2,7 +2,7 @@
 name: debugger-3
 description: Third debugger agent. Continues from debugger-2. If incomplete, passes to debugger-4.
 tools: Read, Edit, Grep, Glob, Bash
-model: inherit
+model: sonnet
 color: red
 hooks:
   validator: .claude/hooks/validators/validate-debugger.sh

@@ -1,0 +1,27 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "anthropic/claude-opus-4-6",
+  "small_model": "anthropic/claude-haiku-4-5-20251001",
+  "instructions": [
+    "../CLAUDE.md",
+    "../.claude/rules/01-pipeline-orchestration.md",
+    "../.claude/rules/02-prompt-optimization.md",
+    "../.claude/rules/03-agent-dispatch.md",
+    "../.claude/rules/04-evaluation-and-context.md",
+    "../.claude/rules/05-operational-policies.md"
+  ],
+  "permission": {
+    "bash": "allow",
+    "edit": "allow",
+    "write": "allow",
+    "webfetch": "allow",
+    "websearch": "allow"
+  },
+  "mcp": {
+    "context7": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp"]
+    }
+  }
+}

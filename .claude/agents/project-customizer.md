@@ -2,7 +2,7 @@
 name: project-customizer
 description: Updates project-specific sections in CLAUDE.md and ACM. Can ONLY modify PROJECT-SPECIFIC sections (between markers), NEVER base rules.
 tools: Read, Edit, Grep, Glob
-model: inherit
+model: haiku
 color: pink
 hooks:
   validator: .claude/hooks/validators/validate-project-customizer.sh

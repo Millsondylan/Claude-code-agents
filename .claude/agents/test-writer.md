@@ -2,7 +2,7 @@
 name: test-writer
 description: Writes comprehensive, real, fully functional tests with 100% coverage for implemented features. NO mocks, NO placeholders, NO assert True, NO pass stubs. Maps every test to TaskSpec acceptance criteria.
 tools: Write, Read, Edit, Grep, Glob, Bash
-model: inherit
+model: sonnet
 color: cyan
 hooks:
   validator: .claude/hooks/validators/validate-test-writer.sh

@@ -2,7 +2,7 @@
 name: debugger-10
 description: Tenth debugger agent. Continues from debugger-9. If incomplete, passes to debugger-11.
 tools: Read, Edit, Grep, Glob, Bash
-model: inherit
+model: sonnet
 color: red
 hooks:
   validator: .claude/hooks/validators/validate-debugger.sh

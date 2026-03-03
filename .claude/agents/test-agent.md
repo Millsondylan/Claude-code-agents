@@ -2,7 +2,7 @@
 name: test-agent
 description: MANDATORY. Runs test suite and reports results. NEVER blocks pipeline - always requests debugger on failure. Detects placeholder tests.
 tools: Read, Bash, Grep, Glob
-model: inherit
+model: haiku
 color: green
 hooks:
   validator: .claude/hooks/validators/validate-test-agent.sh

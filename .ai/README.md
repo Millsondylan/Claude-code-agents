@@ -140,6 +140,16 @@ When conflicts arise:
 - The `model: opus` value in agent YAML frontmatter is the correct alias — do NOT use full model IDs
 - YAML frontmatter does NOT support `contextWindow` or `max_tokens` fields
 
+### Pipeline-Scaler (Stage -2) - MANDATORY FIRST
+- **ALWAYS runs FIRST** — before prompt-optimizer, before everything
+- Receives raw, unmodified user request (no optimization, no breakdown yet)
+- Analyzes request complexity across five dimensions: feature count, cross-dependencies, estimated file count, domain mixing, risk/urgency
+- Outputs a ScalingPlan specifying the number of sequential pipeline runs and per-run workstream partitioning
+- Default bias: favor 1 run unless genuinely warranted to split
+- NEVER implements, modifies code, optimizes prompts, or runs pipeline stages
+- Re-run eligible: YES (for ambiguous or conflicting scope)
+- Model: Opus 4.6 (alias: opus)
+
 ### Prompt-Optimizer (Stage -1) - MANDATORY
 - **ALWAYS runs FIRST** before any other agent dispatch
 - Intercepts and optimizes prompts before target agents
@@ -225,7 +235,7 @@ This pipeline implements the **PITER methodology** for autonomous software engin
 
 | Phase | Description | Stage(s) | Agent(s) |
 |-------|-------------|----------|----------|
-| **P**lan | Analyze request, discover codebase, create implementation plan | 0, 1, 2 | task-breakdown, code-discovery, plan-agent |
+| **P**lan | Analyze request complexity, discover codebase, create implementation plan | -2, 0, 1, 2 | pipeline-scaler, task-breakdown, code-discovery, plan-agent |
 | **I**mplement | Research docs, pre-flight checks, write code per the plan, write tests | 3, 3.5, 4, 4.5 | docs-researcher, pre-flight-checker, build-agent-1 through build-agent-55, test-writer |
 | **T**est | Run unit tests, integration tests, never block pipeline | 6, 6.5 | test-agent, integration-agent |
 | **E**valuate | Review against acceptance criteria, check anti-destruction | 7 | review-agent |
@@ -247,6 +257,7 @@ The ultimate goal is **autonomous shipping**: the codebase ships itself through 
 
 | Agent | Re-run Eligible | Notes |
 |-------|-----------------|-------|
+| pipeline-scaler | YES | Can be re-run for ambiguous or conflicting scope |
 | prompt-optimizer | YES | Can be re-run for different target agents |
 | task-breakdown | YES | Can be re-run for clarification |
 | code-discovery | YES | Can be re-run for deeper scan |

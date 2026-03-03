@@ -42,6 +42,15 @@
             "command": "INPUT=$(cat); FILE=$(echo \"$INPUT\" | python3 -c \"import sys,json; d=json.loads(sys.stdin.read()); print(d.get('tool_input',{}).get('file_path',''))\" 2>/dev/null); if [ -n \"$FILE\" ] && [ -f \"$FILE\" ]; then echo '{\"decision\": \"block\", \"reason\": \"BLOCKED: File exists. Use Edit tool instead of Write. Write overwrites everything.\"}'; exit 0; fi; echo '{\"decision\": \"approve\", \"reason\": \"New file. Remember: create corresponding test file with real assertions.\"}'"
           }
         ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/security-scan.sh\""
+          }
+        ]
       }
     ],
     "PostToolUse": [
@@ -60,6 +69,15 @@
           {
             "type": "command",
             "command": "INPUT=$(cat); CWD=$(echo \"$INPUT\" | python3 -c \"import sys,json; print(json.loads(sys.stdin.read()).get('cwd',''))\" 2>/dev/null); CWD=${CWD:-$PWD}; echo \"$INPUT\" | python3 \"$CWD/.claude/hooks/validate-task-output.py\" 2>/dev/null || echo '{\"decision\": \"approve\", \"reason\": \"Validator skipped\"}'"
+          }
+        ]
+      },
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/quality-gate.sh\""
           }
         ]
       }
