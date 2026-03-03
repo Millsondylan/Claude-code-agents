@@ -11,8 +11,10 @@ IF YOU ARE CODEX OR CODEX-CLI: Ignore this file. Operate normally.
 
 You do NOT use tools directly. You ONLY dispatch to subagents via the task tool.
 
-**Allowed tools:** task, todowrite, askuserquestion
+**Allowed tools:** task, todowrite
 **Forbidden tools:** read, edit, write, bash, grep, glob, webfetch, websearch
+
+To ask the user a question, present it directly in your response text. Do NOT use any other tool for user interaction.
 
 ---
 
@@ -23,7 +25,7 @@ You do NOT use tools directly. You ONLY dispatch to subagents via the task tool.
 | -2 | pipeline-scaler | ALWAYS FIRST - meta-orchestrator for task scaling |
 | -1 | prompt-optimizer | Optimizes prompt before any agent dispatch |
 | 0 | task-breakdown | Decomposes request into TaskSpec |
-| 0+ | orchestrator confirmation | Presents TaskSpec via askuserquestion (ONLY user interaction) |
+| 0+ | orchestrator confirmation | Present TaskSpec to user in response (ONLY user interaction) |
 | 1 | code-discovery | Analyzes codebase, creates RepoProfile |
 | 2 | plan-agent | Creates batched implementation plan |
 | 3 | docs-researcher | Researches library docs via Context7 MCP |
@@ -39,13 +41,14 @@ You do NOT use tools directly. You ONLY dispatch to subagents via the task tool.
 
 ---
 
-## Detailed Rules (auto-loaded from .claude/rules/)
+## Detailed Rules (auto-loaded from .opencode/rules/)
 
-- `.claude/rules/01-pipeline-orchestration.md` — Pipeline flow, sequential dispatch, status display, workflow, critical rules
-- `.claude/rules/02-prompt-optimization.md` — Prompt-optimizer dispatch protocol, XML detection, examples
-- `.claude/rules/03-agent-dispatch.md` — Agent list, build deep-dive, sub-pipeline, micro-batch, agent internals
-- `.claude/rules/04-evaluation-and-context.md` — Orchestrator evaluation, context passing, prompt engineering templates
-- `.claude/rules/05-operational-policies.md` — ACM, retry guidance, token management, anti-destruction, persistence
+- `.opencode/rules/01-pipeline-orchestration.md` — Pipeline flow, sequential dispatch, status display, workflow, critical rules
+- `.opencode/rules/02-prompt-optimization.md` — Prompt-optimizer dispatch protocol, XML detection, examples
+- `.opencode/rules/03-agent-dispatch.md` — Agent list, build deep-dive, sub-pipeline, micro-batch, agent internals
+- `.opencode/rules/04-evaluation-and-context.md` — Orchestrator evaluation, context passing, prompt engineering templates
+- `.opencode/rules/05-operational-policies.md` — ACM, retry guidance, token management, anti-destruction, persistence
+- `.opencode/rules/06-multi-run-orchestration.md` — Multi-run loop, context inheritance, dependency gates, per-run recovery, aggregated final review
 
 ---
 
@@ -55,13 +58,32 @@ All agents read `.ai/README.md` at session start for safety protocols and qualit
 
 ---
 
+## Multi-Run Orchestration
+
+When pipeline-scaler (Stage -2) outputs a ScalingPlan with N > 1 runs, the orchestrator
+executes a full sequential pipeline (Stages -1 through 8) for each run — one after another.
+
+**How it works:**
+- After pipeline-scaler, the orchestrator loops: for each run R (1 to N), execute the full inner pipeline
+- Each run's task-breakdown receives ONLY that run's features from the ScalingPlan
+- User confirmation happens once — after Run 1 task-breakdown only (present in response)
+- Context (files modified, features done) accumulates across runs and is passed to code-discovery and plan-agent in each subsequent run
+- If a run's decide-agent outputs RESTART, retry that run only — completed runs are never restarted
+- After all N runs complete, one final cross-run review-agent and decide-agent pass closes the pipeline
+
+See `.opencode/rules/06-multi-run-orchestration.md` for the full execution loop, status display
+format, dependency gate logic, and aggregated final review protocol.
+
+---
+
 ## Quick Reference
 
 1. **FIRST ACTION = pipeline-scaler** — Stage -2 scales the task, then prompt-optimizer, then task-breakdown
 2. **Sequential execution** — ONE task call per response, never parallel, never background
-3. **Single confirmation** — After task-breakdown only, via askuserquestion
+3. **Single confirmation** — After task-breakdown only, present TaskSpec to user in response
 4. **Evaluate every output** — ACCEPT / RETRY / CONTINUE / HANDLE REQUEST
 5. **Persist until complete** — No artificial limits, no timeouts, no retry caps
+6. **Multi-run** — If ScalingPlan has N > 1 runs, execute full pipeline per run; see rule 06
 
 <!-- BASE RULES - DO NOT MODIFY - END -->
 
@@ -69,7 +91,7 @@ All agents read `.ai/README.md` at session start for safety protocols and qualit
 
 ## Hooks as Prompt Instructions
 
-These rules replace the .claude/hooks/ behavior inline. You MUST follow them on every tool use.
+These rules replace hook behavior inline. You MUST follow them on every tool use.
 
 ### Security Rules (enforced on every write and edit)
 

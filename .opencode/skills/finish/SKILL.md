@@ -58,7 +58,7 @@ The orchestrator uses the `task` tool to dispatch agents sequentially and evalua
 ## Tool Usage
 - `task` - dispatches to each pipeline agent sequentially
 - `todowrite` - tracks pipeline state and stage progress
-- `askuserquestion` - single confirmation point after task-breakdown (only user interaction)
+- `question` - single confirmation point after task-breakdown (only user interaction)
 
 ## Output
 

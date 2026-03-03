@@ -5,12 +5,13 @@
 **IMPORTANT: You do NOT use tools directly. You ONLY dispatch to subagents.**
 
 Your allowed tools:
-- **Task** - dispatch to subagents
-- **TodoWrite** - track pipeline state
-- **AskUserQuestion** - clarify with user
+- **task** - dispatch to subagents
+- **todowrite** - track pipeline state
+
+To ask the user a question, present it directly in your response text.
 
 **FORBIDDEN tools (orchestrator cannot use directly):**
-- Read, Edit, Write, Bash, Grep, Glob, WebFetch, WebSearch
+- read, edit, write, bash, grep, glob, webfetch, websearch
 
 ---
 
@@ -19,27 +20,27 @@ Your allowed tools:
 **The orchestrator MUST dispatch exactly ONE agent at a time. No exceptions.**
 
 ### Rules
-1. **ONE Task call per response** - NEVER place more than one Task tool call in a single message/response
-2. **NEVER use run_in_background** - NEVER set `run_in_background: true` on any Task tool call
+1. **ONE task call per response** - NEVER place more than one task tool call in a single message/response
+2. **NEVER use run_in_background** - NEVER set `run_in_background: true` on any task tool call
 3. **WAIT for output** - ALWAYS wait for an agent to return its complete output before dispatching the next agent
 4. **Evaluate before proceeding** - After receiving output, evaluate quality BEFORE dispatching the next agent
 
 ### WRONG (parallel dispatch - FORBIDDEN)
 ```
-<!-- This is WRONG - two Task calls in one response -->
-Task tool call 1: subagent_type: "build-agent-1", prompt: "..."
-Task tool call 2: subagent_type: "build-agent-2", prompt: "..."
+<!-- This is WRONG - two task calls in one response -->
+task tool call 1: subagent_type: "build-agent-1", prompt: "..."
+task tool call 2: subagent_type: "build-agent-2", prompt: "..."
 ```
 
 ### CORRECT (sequential dispatch - REQUIRED)
 ```
 <!-- Step 1: Dispatch ONE agent -->
-Task tool call: subagent_type: "build-agent-1", prompt: "..."
+task tool call: subagent_type: "build-agent-1", prompt: "..."
 
 <!-- Step 2: WAIT for build-agent-1 to return output -->
 <!-- Step 3: EVALUATE the output -->
 <!-- Step 4: THEN dispatch next agent -->
-Task tool call: subagent_type: "build-agent-2", prompt: "..."
+task tool call: subagent_type: "build-agent-2", prompt: "..."
 ```
 
 ### Exception
@@ -56,7 +57,7 @@ Parallel Bash tool calls (e.g., rsync to multiple targets) are acceptable for no
 | -2 | pipeline-scaler | ALWAYS FIRST - meta-orchestrator for task scaling |
 | -1 | prompt-optimizer | ALWAYS - optimizes prompt before dispatching to any agent |
 | 0 | task-breakdown | ALWAYS (after prompt-optimizer) |
-| 0+ | orchestrator confirmation | ALWAYS - orchestrator presents TaskSpec via AskUserQuestion, ONLY user interaction |
+| 0+ | orchestrator confirmation | ALWAYS - orchestrator presents TaskSpec in response to user, ONLY user interaction |
 | 1 | code-discovery | ALWAYS |
 | 2 | plan-agent | ALWAYS |
 | 3 | docs-researcher | Before any code (uses Context7 MCP) |
@@ -78,7 +79,7 @@ When pipeline-scaler returns a ScalingPlan with N > 1 runs, this single-run pipe
 becomes the **inner pipeline** executed once per run. The outer loop, context inheritance,
 dependency gates, per-run recovery, and aggregated final review are defined in:
 
-`.claude/rules/06-multi-run-orchestration.md`
+`.opencode/rules/06-multi-run-orchestration.md`
 
 For N = 1, follow this file as written. For N > 1, wrap this pipeline in the multi-run loop.
 
@@ -87,9 +88,9 @@ For N = 1, follow this file as written. For N > 1, wrap this pipeline in the mul
 ## CRITICAL RULES
 
 1. **FIRST ACTION = pipeline-scaler (Stage -2)** - Meta-orchestrator scales the task, then prompt-optimizer, then task-breakdown
-2. **Single confirmation point** - After task-breakdown, present TaskSpec via AskUserQuestion. No other stage prompts the user.
+2. **Single confirmation point** - After task-breakdown, present TaskSpec in response to user. No other stage prompts the user.
 3. **EVALUATE every output** - Check quality before proceeding
-4. **Sequential execution** - ONE Task tool call per response. NEVER dispatch multiple agents in parallel. NEVER use run_in_background on Task calls. Dispatch one agent, wait for output, evaluate, then dispatch next.
+4. **Sequential execution** - ONE task tool call per response. NEVER dispatch multiple agents in parallel. NEVER use run_in_background on task calls. Dispatch one agent, wait for output, evaluate, then dispatch next.
 5. **No direct tools** - Orchestrator only dispatches, never reads/edits/runs
 6. **All mandatory stages** - -2, -1, 0, 1, 2, 4.5, 6, 7, 8 run for EVERY request
 7. **docs-researcher before build** - Always research docs before writing code
@@ -104,7 +105,7 @@ For N = 1, follow this file as written. For N > 1, wrap this pipeline in the mul
 - [ ] Stage -2: pipeline-scaler
 - [ ] Stage -1: prompt-optimizer
 - [ ] Stage 0: task-breakdown
-- [ ] Stage 0+: orchestrator confirmation (AskUserQuestion)
+- [ ] Stage 0+: orchestrator confirmation (present TaskSpec in response)
 - [ ] Stage 1: code-discovery
 - [ ] Stage 2: plan-agent
 - [ ] Stage 3: docs-researcher
@@ -135,11 +136,11 @@ For N = 1, follow this file as written. For N > 1, wrap this pipeline in the mul
 6. REPEAT until decide-agent outputs COMPLETE
 ```
 
-**CRITICAL: One Task call per response. Never dispatch multiple agents in the same message. Never use run_in_background on Task calls.**
+**CRITICAL: One task call per response. Never dispatch multiple agents in the same message. Never use run_in_background on task calls.**
 
 **IMPORTANT: Single User Confirmation Point**
 
-After Stage 0 (task-breakdown), present the full TaskSpec to the user via AskUserQuestion.
+After Stage 0 (task-breakdown), present the full TaskSpec to the user in response to user.
 This is the ONLY user interaction point in the entire pipeline. Do NOT ask the user at any
 other stage. The confirmation ensures the orchestrator's understanding matches user intent
 before committing to implementation. If the user rejects or modifies, re-run task-breakdown
@@ -157,4 +158,4 @@ with their feedback.
 - Track attempts and display status
 - No shortcuts, no exceptions
 - Persist until each stage succeeds
-- **ONE Task call per response** - Never dispatch multiple agents in parallel, never use run_in_background
+- **ONE task call per response** - Never dispatch multiple agents in parallel, never use run_in_background

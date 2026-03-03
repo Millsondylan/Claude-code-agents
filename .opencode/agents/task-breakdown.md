@@ -1,6 +1,6 @@
 ---
 description: "ALWAYS FIRST. Analyzes user requests and creates structured TaskSpec with features, acceptance criteria, risks, and assumptions. Use this agent to start any task pipeline."
-mode: primary
+mode: subagent
 model: kimi-for-coding/k2p5
 hidden: false
 color: "#FFD700"

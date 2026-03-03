@@ -10,7 +10,7 @@
 #   .ai/schemas/                  <- 15 agent output schema files
 #   .claude/rules/                <- 5 shared orchestration rule files
 #   .opencode/opencode.json       <- OpenCode config (model, permissions, MCP)
-#   .opencode/agent/              <- 83 generated agent definitions
+#   .opencode/agents/              <- 83 generated agent definitions
 #   .opencode/command/            <- 4 pipeline commands
 #   .opencode/skills/             <- 2 OpenCode skills
 #   .opencode/generate-agents.sh  <- Agent regeneration script
@@ -104,8 +104,8 @@ sync_dir "${SOURCE_DIR}/.claude/rules" "${TARGET_DIR}/.claude/rules"
 echo "Copying OpenCode config..."
 sync_file "${SOURCE_DIR}/.opencode/opencode.json" "${TARGET_DIR}/.opencode/opencode.json"
 
-echo "Copying OpenCode agents ($(ls -1 "${SOURCE_DIR}/.opencode/agent/"*.md 2>/dev/null | wc -l | tr -d ' ') files)..."
-sync_dir "${SOURCE_DIR}/.opencode/agent" "${TARGET_DIR}/.opencode/agent"
+echo "Copying OpenCode agents ($(ls -1 "${SOURCE_DIR}/.opencode/agents/"*.md 2>/dev/null | wc -l | tr -d ' ') files)..."
+sync_dir "${SOURCE_DIR}/.opencode/agents" "${TARGET_DIR}/.opencode/agents"
 
 echo "Copying OpenCode commands..."
 sync_dir "${SOURCE_DIR}/.opencode/command" "${TARGET_DIR}/.opencode/command"
@@ -127,7 +127,7 @@ echo "  ${TARGET_DIR}/.ai/README.md"
 echo "  ${TARGET_DIR}/.ai/schemas/  ($(ls -1 "${TARGET_DIR}/.ai/schemas/" 2>/dev/null | wc -l | tr -d ' ') files)"
 echo "  ${TARGET_DIR}/.claude/rules/  ($(ls -1 "${TARGET_DIR}/.claude/rules/" 2>/dev/null | wc -l | tr -d ' ') files)"
 echo "  ${TARGET_DIR}/.opencode/opencode.json"
-echo "  ${TARGET_DIR}/.opencode/agent/  ($(ls -1 "${TARGET_DIR}/.opencode/agent/"*.md 2>/dev/null | wc -l | tr -d ' ') agents)"
+echo "  ${TARGET_DIR}/.opencode/agents/  ($(ls -1 "${TARGET_DIR}/.opencode/agents/"*.md 2>/dev/null | wc -l | tr -d ' ') agents)"
 echo "  ${TARGET_DIR}/.opencode/command/  ($(ls -1 "${TARGET_DIR}/.opencode/command/" 2>/dev/null | wc -l | tr -d ' ') files)"
 echo "  ${TARGET_DIR}/.opencode/skills/  ($(ls -1 "${TARGET_DIR}/.opencode/skills/" 2>/dev/null | wc -l | tr -d ' ') files)"
 echo "  ${TARGET_DIR}/.opencode/generate-agents.sh"
@@ -155,7 +155,7 @@ Next steps:
      <!-- PROJECT-SPECIFIC - AUTO-UPDATED - END -->
 
 2. Verify agent count.
-     ls .opencode/agent/ | wc -l
+     ls .opencode/agents/ | wc -l
    Should print 83.
 
 3. Verify rules are present.

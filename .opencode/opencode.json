@@ -3,12 +3,13 @@
   "model": "anthropic/claude-opus-4-6",
   "small_model": "anthropic/claude-haiku-4-5-20251001",
   "instructions": [
-    "../CLAUDE.md",
-    "../.claude/rules/01-pipeline-orchestration.md",
-    "../.claude/rules/02-prompt-optimization.md",
-    "../.claude/rules/03-agent-dispatch.md",
-    "../.claude/rules/04-evaluation-and-context.md",
-    "../.claude/rules/05-operational-policies.md"
+    "../AGENTS.md",
+    "rules/01-pipeline-orchestration.md",
+    "rules/02-prompt-optimization.md",
+    "rules/03-agent-dispatch.md",
+    "rules/04-evaluation-and-context.md",
+    "rules/05-operational-policies.md",
+    "rules/06-multi-run-orchestration.md"
   ],
   "permission": {
     "bash": "allow",
@@ -19,9 +20,8 @@
   },
   "mcp": {
     "context7": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "@upstash/context7-mcp"]
+      "type": "local",
+      "command": ["npx", "-y", "@upstash/context7-mcp"]
     }
   }
 }

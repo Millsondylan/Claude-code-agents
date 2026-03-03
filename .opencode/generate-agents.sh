@@ -1,7 +1,7 @@
 #!/bin/bash
 # generate-agents.sh
 # Generates all OpenCode agent .md files from Claude Code agent files.
-# Reads from .claude/agents/ and writes to .opencode/agent/
+# Reads from .claude/agents/ and writes to .opencode/agents/
 # Idempotent: safe to re-run (overwrites existing output files).
 
 set -euo pipefail
@@ -13,7 +13,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 SOURCE_DIR="${REPO_ROOT}/.claude/agents"
-TARGET_DIR="${REPO_ROOT}/.opencode/agent"
+TARGET_DIR="${REPO_ROOT}/.opencode/agents"
 
 # ---------------------------------------------------------------------------
 # Helpers

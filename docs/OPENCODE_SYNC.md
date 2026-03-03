@@ -12,12 +12,12 @@ This repository contains a multi-agent orchestration framework that works with
 two AI coding tools simultaneously:
 
 - **Claude Code** (`.claude/`) - Anthropic's CLI, uses CLAUDE.md + `.claude/agents/`
-- **OpenCode** (`.opencode/`) - An alternative AI coding tool, uses AGENTS.md + `.opencode/agent/`
+- **OpenCode** (`.opencode/`) - An alternative AI coding tool, uses AGENTS.md + `.opencode/agents/`
 
 Both tools run the same pipeline of specialized agents that decompose tasks,
 discover code, plan implementations, build features, write tests, debug errors,
 and make completion decisions. The agent definitions live in `.claude/agents/`
-(the source of truth) and are generated into `.opencode/agent/` by a conversion
+(the source of truth) and are generated into `.opencode/agents/` by a conversion
 script.
 
 The `.claude/rules/` directory contains shared orchestration rules that are
@@ -54,7 +54,7 @@ Claude-code-agents/                  <- this repo (the framework source)
 |   +-- agent/                       <- GENERATED: 83 OpenCode agent definitions
 |   +-- command/                     <- 4 OpenCode commands (pipeline, prompt, restart, status)
 |   +-- skills/                      <- 2 OpenCode skills (finish, prompt)
-|   +-- generate-agents.sh           <- Conversion script: .claude/agents/ -> .opencode/agent/
+|   +-- generate-agents.sh           <- Conversion script: .claude/agents/ -> .opencode/agents/
 |
 +-- scripts/
 |   +-- sync-opencode.sh             <- Helper: copies framework to a target project
@@ -73,7 +73,7 @@ These files must be present in the target project for the OpenCode pipeline to w
 |-------------|-------------|---------|
 | `AGENTS.md` | `AGENTS.md` | Orchestrator system prompt for OpenCode |
 | `.opencode/opencode.json` | `.opencode/opencode.json` | OpenCode config: model, permissions, MCP tools |
-| `.opencode/agent/` | `.opencode/agent/` | 83 agent definitions (pipeline workers) |
+| `.opencode/agents/` | `.opencode/agents/` | 83 agent definitions (pipeline workers) |
 | `.opencode/command/` | `.opencode/command/` | 4 pipeline commands |
 | `.opencode/skills/` | `.opencode/skills/` | 2 OpenCode skills |
 | `.opencode/generate-agents.sh` | `.opencode/generate-agents.sh` | Agent regeneration script |
@@ -138,7 +138,7 @@ rsync -av --mkpath .claude/rules/ "$TARGET/.claude/rules/"
 
 # OpenCode config and agents
 rsync -av --mkpath .opencode/opencode.json "$TARGET/.opencode/opencode.json"
-rsync -av --mkpath .opencode/agent/ "$TARGET/.opencode/agent/"
+rsync -av --mkpath .opencode/agents/ "$TARGET/.opencode/agents/"
 rsync -av --mkpath .opencode/command/ "$TARGET/.opencode/command/"
 rsync -av --mkpath .opencode/skills/ "$TARGET/.opencode/skills/"
 rsync -av .opencode/generate-agents.sh "$TARGET/.opencode/generate-agents.sh"
@@ -153,7 +153,7 @@ After running the sync, verify the setup is correct:
 
 1. **Verify agent count**
    ```bash
-   ls /path/to/your/project/.opencode/agent/ | wc -l
+   ls /path/to/your/project/.opencode/agents/ | wc -l
    # Should print 83
    ```
 
@@ -205,7 +205,7 @@ After running the sync, verify the setup is correct:
 
 ## How to Regenerate Agents
 
-The `.opencode/agent/` files are generated from `.claude/agents/`. If you ever
+The `.opencode/agents/` files are generated from `.claude/agents/`. If you ever
 update the source agent definitions in `.claude/agents/` (e.g., to add new agents
 or change prompts), run the generation script to rebuild the OpenCode versions:
 
@@ -218,7 +218,7 @@ The script:
 - Reads each `.md` file from `.claude/agents/`
 - Converts Claude Code frontmatter fields (model aliases, tool names, colors) to
   OpenCode equivalents
-- Writes transformed files to `.opencode/agent/`
+- Writes transformed files to `.opencode/agents/`
 - Is idempotent: safe to re-run at any time
 
 After regenerating, re-run the sync to push the updated agents to target projects:
@@ -251,7 +251,7 @@ Understanding how these two directories relate is important for maintenance:
        |
        | generate-agents.sh
        v
-.opencode/agent/         <- DO NOT EDIT (auto-generated, will be overwritten)
+.opencode/agents/         <- DO NOT EDIT (auto-generated, will be overwritten)
 
 
 .claude/rules/           <- SHARED (referenced by both tools)
@@ -270,7 +270,7 @@ AGENTS.md                <- OpenCode orchestrator instructions
 ### Key Principle: Single Source of Truth
 
 - All agent logic lives in `.claude/agents/` - edit there, then regenerate
-- The `.opencode/agent/` directory is a build artifact - never edit it directly
+- The `.opencode/agents/` directory is a build artifact - never edit it directly
 - The `.claude/rules/` files are shared between both tools - changes there affect both
 - `AGENTS.md` and `CLAUDE.md` contain the same pipeline table but are formatted
   for their respective tools (OpenCode uses lowercase tool names, Claude Code uses
@@ -284,7 +284,7 @@ AGENTS.md                <- OpenCode orchestrator instructions
 
 Verify that `AGENTS.md` is present in the project root (not just `.opencode/`).
 OpenCode reads this file as the system prompt and discovers agents from the
-`.opencode/agent/` directory.
+`.opencode/agents/` directory.
 
 **Pipeline fails with "agent not found" errors**
 
