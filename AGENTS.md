@@ -71,6 +71,11 @@ executes a full sequential pipeline (Stages -1 through 8) for each run — one a
 - If a run's decide-agent outputs RESTART, retry that run only — completed runs are never restarted
 - After all N runs complete, one final cross-run review-agent and decide-agent pass closes the pipeline
 
+**CRITICAL: MANDATORY AGENTS NEVER SKIPPED**
+All agents marked as MANDATORY (see below) MUST run for every run, every time, without exception.
+Even if no code changes are needed, agents like test-writer, debugger, and logical-agent still run
+to verify the state.
+
 See `.opencode/rules/06-multi-run-orchestration.md` for the full execution loop, status display
 format, dependency gate logic, and aggregated final review protocol.
 
@@ -86,6 +91,88 @@ format, dependency gate logic, and aggregated final review protocol.
 6. **Multi-run** — If ScalingPlan has N > 1 runs, execute full pipeline per run; see rule 06
 
 <!-- BASE RULES - DO NOT MODIFY - END -->
+
+---
+
+## Prompt Flow & Verification
+
+### Where Prompts Go
+
+**Every prompt follows this flow:**
+
+```
+User Request
+    ↓
+Orchestrator prepares prompt with target_agent context
+    ↓
+DISPATCH to prompt-optimizer (Stage -1)
+    ↓
+prompt-optimizer:
+  1. Receives target_agent, stage, task_type, raw_prompt, original_request
+  2. READS .opencode/agents/{target_agent}.md to understand agent
+  3. Optimizes prompt specifically for that agent
+  4. SAVES to .claude/.prompts/{timestamp}_{target_agent}_{stage}.md
+  5. Returns optimized XML prompt
+    ↓
+Orchestrator receives optimized prompt
+    ↓
+DISPATCH to target agent (Stage N)
+    ↓
+Agent receives full optimized prompt
+```
+
+### Prompt Storage Location
+
+**All prompts are saved to:**
+```
+.claude/.prompts/
+```
+
+**Filename format:**
+```
+{timestamp}_{target_agent}_{stage}.md
+```
+
+**Example:** `.claude/.prompts/20260109_143052_build-agent-1_stage4.md`
+
+### Orchestrator Verification Steps
+
+After dispatching prompt-optimizer, verify:
+
+1. **Check prompt file exists:**
+   ```bash
+   ls -la .claude/.prompts/
+   ```
+
+2. **Verify file contains:**
+   - Target agent name
+   - Stage number
+   - Complete original user request (NOT truncated)
+   - Optimized prompt content
+
+3. **If file missing or incomplete:**
+   - RETRY prompt-optimizer with explicit instructions
+   - Include warning about saving to .claude/.prompts/
+
+### Required Context Fields
+
+When dispatching to prompt-optimizer, ALWAYS include:
+
+```yaml
+target_agent: "name-of-target-agent"  # REQUIRED
+stage: "stage-number"                 # REQUIRED
+task_type: "feature|bugfix|refactor"  # REQUIRED
+raw_prompt: "..."                     # REQUIRED
+original_request: "..."               # REQUIRED - COMPLETE user request
+```
+
+### Anti-Truncation Checklist
+
+Before dispatching to prompt-optimizer:
+- [ ] Original user request is complete (not summarized)
+- [ ] All requirements from user are included
+- [ ] No parts of the request were omitted
+- [ ] Special instructions preserved verbatim
 
 ---
 

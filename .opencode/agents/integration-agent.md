@@ -1,7 +1,7 @@
 ---
 description: "Integration testing specialist that verifies components work together correctly. Runs integration tests, checks API contracts, and validates end-to-end workflows."
 mode: subagent
-model: anthropic/claude-opus-4-6
+model: zai-coding-plan/glm-5
 hidden: true
 color: "#008000"
 tools:

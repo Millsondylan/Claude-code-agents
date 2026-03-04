@@ -1,7 +1,7 @@
 ---
 description: "DEPRECATED - use docs-researcher instead. Researches APIs, frameworks, and syntax patterns via web search."
 mode: subagent
-model: anthropic/claude-opus-4-6
+model: zai-coding-plan/glm-5
 hidden: true
 color: "#FFC0CB"
 tools:

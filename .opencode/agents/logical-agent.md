@@ -1,7 +1,7 @@
 ---
 description: "Verifies code logic correctness using deep analysis. Detects algorithmic errors, off-by-one bugs, race conditions, edge cases, and logical flaws. Read-only verification."
 mode: subagent
-model: anthropic/claude-opus-4-6
+model: zai-coding-plan/glm-5
 hidden: true
 color: "#800080"
 tools:

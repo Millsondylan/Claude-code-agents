@@ -1,7 +1,7 @@
 ---
 description: "Stage -2 meta-orchestrator. Analyzes raw user request complexity to determine how many full sequential pipeline runs are needed. Runs BEFORE prompt-optimizer."
 mode: subagent
-model: anthropic/claude-opus-4-6
+model: zai-coding-plan/glm-5
 hidden: false
 color: "#800080"
 tools:

@@ -22,21 +22,27 @@ ScalingPlan received (N runs)
 │     ├── Check dependency gate (R > 1 only)
 │     ├── Extract run R features from ScalingPlan
 │     ├── Execute full inner pipeline for run R:
-│     │     Stage -1: prompt-optimizer
-│     │     Stage  0: task-breakdown  ← receives ONLY run R features
-│     │     Stage 0+: user confirmation (Run 1 only — see below)
-│     │     Stage  1: code-discovery  ← sees all files including prior runs
-│     │     Stage  2: plan-agent      ← knows what prior runs completed
-│     │     Stage  3: docs-researcher
-│     │     Stage 3.5: pre-flight-checker
-│     │     Stage  4: build-agent-N   ← implements run R features only
-│     │     Stage 4.5: test-writer
-│     │     Stage  5: debugger        ← if errors
-│     │     Stage 5.5: logical-agent
-│     │     Stage  6: test-agent
-│     │     Stage 6.5: integration-agent
-│     │     Stage  7: review-agent
-│     │     Stage  8: decide-agent    ← outputs COMPLETE or RESTART
+│     │
+│     │     MANDATORY AGENTS (ALWAYS RUN - NO EXCEPTIONS):
+│     │     Stage -1: prompt-optimizer   ← ALWAYS optimizes for next agent
+│     │     Stage  0: task-breakdown     ← receives ONLY run R features
+│     │     Stage 0+: user confirmation  ← Run 1 only (see below)
+│     │     Stage  1: code-discovery     ← ALWAYS scans codebase
+│     │     Stage  2: plan-agent         ← ALWAYS creates implementation plan
+│     │     Stage  3: docs-researcher    ← ALWAYS researches if libs used
+│     │     Stage 3.5: pre-flight-checker ← ALWAYS validates environment
+│     │
+│     │     CONDITIONAL AGENTS (run based on plan):
+│     │     Stage  4: build-agent-N      ← ONLY if plan has files to implement
+│     │
+│     │     MANDATORY POST-BUILD AGENTS (ALWAYS RUN):
+│     │     Stage 4.5: test-writer       ← ALWAYS writes tests for any changes
+│     │     Stage  5: debugger           ← ALWAYS (even if no errors found)
+│     │     Stage 5.5: logical-agent     ← ALWAYS verifies logic
+│     │     Stage  6: test-agent         ← ALWAYS runs test suite
+│     │     Stage 6.5: integration-agent ← ALWAYS tests integrations
+│     │     Stage  7: review-agent       ← ALWAYS reviews all changes
+│     │     Stage  8: decide-agent       ← ALWAYS outputs COMPLETE/RESTART
 │     │
 │     ├── If decide-agent → RESTART: retry run R only (do not restart prior runs)
 │     └── If decide-agent → COMPLETE: proceed to run R+1
@@ -170,27 +176,61 @@ Display after each agent dispatch:
 ## Multi-Run Pipeline Status
 Runs: [R of N complete] | Current: Run R — "[title]"
 
-### Run R Inner Pipeline
-- [x] Stage -1: prompt-optimizer
-- [x] Stage  0: task-breakdown
-- [ ] Stage  1: code-discovery (IN PROGRESS)
-- [ ] Stage  2: plan-agent
-- [ ] Stage  3: docs-researcher
-- [ ] Stage 3.5: pre-flight-checker
-- [ ] Stage  4: build-agent
-- [ ] Stage 4.5: test-writer
-- [ ] Stage  5: debugger
-- [ ] Stage 5.5: logical-agent
-- [ ] Stage  6: test-agent
-- [ ] Stage 6.5: integration-agent
-- [ ] Stage  7: review-agent
-- [ ] Stage  8: decide-agent
+### Run R Inner Pipeline (MANDATORY agents marked with *)
+- [x] Stage -1: prompt-optimizer *
+- [x] Stage  0: task-breakdown *
+- [ ] Stage  1: code-discovery * (IN PROGRESS)
+- [ ] Stage  2: plan-agent *
+- [ ] Stage  3: docs-researcher *
+- [ ] Stage 3.5: pre-flight-checker *
+- [ ] Stage  4: build-agent-N (conditional - only if plan has files)
+- [ ] Stage 4.5: test-writer *
+- [ ] Stage  5: debugger *
+- [ ] Stage 5.5: logical-agent *
+- [ ] Stage  6: test-agent *
+- [ ] Stage 6.5: integration-agent *
+- [ ] Stage  7: review-agent *
+- [ ] Stage  8: decide-agent *
+
+* = NEVER SKIP - These agents ALWAYS run for every run
 
 ### Completed Runs
 - [x] Run 1: [title] — COMPLETE
 - [ ] Run 2: [title] — IN PROGRESS
 - [ ] Run 3: [title] — PENDING
 ```
+
+---
+
+## MANDATORY VS CONDITIONAL AGENTS
+
+### AGENTS THAT MUST ALWAYS RUN (NEVER SKIP)
+
+These agents run for **EVERY** run in **EVERY** pipeline, regardless of circumstances:
+
+| Stage | Agent | Why Mandatory |
+|-------|-------|---------------|
+| -1 | prompt-optimizer | Must optimize prompt for every target agent |
+| 0 | task-breakdown | Must create TaskSpec for each run's scope |
+| 1 | code-discovery | Must scan codebase for current state |
+| 2 | plan-agent | Must create implementation plan |
+| 3 | docs-researcher | Must verify library documentation |
+| 3.5 | pre-flight-checker | Must validate environment before implementation |
+| 4.5 | test-writer | Must write tests for ANY changes made |
+| 5 | debugger | Must verify no errors exist (even if none found) |
+| 5.5 | logical-agent | Must verify logic correctness |
+| 6 | test-agent | Must run full test suite |
+| 6.5 | integration-agent | Must test integrations |
+| 7 | review-agent | Must review all changes |
+| 8 | decide-agent | Must make final COMPLETE/RESTART decision |
+
+### CONDITIONAL AGENTS (Run Only If Needed)
+
+| Stage | Agent | When to Run |
+|-------|-------|-------------|
+| 4 | build-agent-1 through build-agent-55 | Only if plan-agent output contains files to implement |
+
+**Rule:** Check plan-agent output - if it lists files to implement, dispatch build-agent. If no files listed, skip to test-writer (which verifies nothing changed).
 
 ---
 
@@ -202,3 +242,5 @@ Runs: [R of N complete] | Current: Run R — "[title]"
 4. **Dependency gates are blocking** — Never start a run before its declared dependencies are complete.
 5. **Aggregated review is mandatory** — Even if each run passed its own review, run the final cross-run review-agent.
 6. **ONE task call per response** — The sequential dispatch rule from 01-pipeline-orchestration.md applies inside every run.
+7. **NEVER skip mandatory agents** — The mandatory agents listed above MUST run for every run, every time, without exception.
+8. **No "if no changes" shortcuts** — Even if a run has no code changes, mandatory agents still run (test-writer verifies no tests needed, debugger verifies no errors, etc.).

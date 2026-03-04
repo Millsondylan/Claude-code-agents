@@ -1,7 +1,7 @@
 ---
 description: "Writes comprehensive, real, fully functional tests with 100% coverage for implemented features. NO mocks, NO placeholders, NO assert True, NO pass stubs. Maps every test to TaskSpec acceptance criteria."
 mode: subagent
-model: anthropic/claude-opus-4-6
+model: zai-coding-plan/glm-5
 hidden: true
 color: "#00FFFF"
 tools:
