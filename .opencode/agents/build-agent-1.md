@@ -16,6 +16,40 @@ tools:
 
 # build-agent
 
+## Flutter Projects - CRITICAL
+
+**If this is a Flutter project (detect `pubspec.yaml` with `flutter` dependency):**
+
+1. **MUST read** `.opencode/rules/07-flutter-best-practices.md` BEFORE implementing
+2. **MUST follow** all Flutter best practices in that document
+3. **Key requirements:**
+   - Use `const` constructors on ALL immutable widgets
+   - Extract widget classes (NEVER use helper methods like `buildX()`)
+   - Use `StatelessWidget` as default, `StatefulWidget` only when necessary
+   - Keep widget tree depth under 7 levels
+   - Use specific MediaQuery accessors (`.sizeOf()`, `.paddingOf()`, etc.)
+   - Touch targets: 48×48dp (Android), 44×44pt (iOS)
+   - Use `ListView.builder` for lists over 20 items
+   - Implement three-layer error handling (FlutterError.onError + PlatformDispatcher + runZonedGuarded)
+   - Proper dispose order in StatefulWidgets
+   - Drift for database (not Isar/Hive)
+   - flutter_secure_storage for secrets
+   - PopScope (not WillPopScope) for back navigation
+   - Material 3 theming with ColorScheme.fromSeed
+   - NEVER hardcode colors/sizes — always use Theme
+   - NEVER use `!` on external data
+   - ALWAYS check `mounted` before setState after async gaps
+
+4. **Anti-patterns to AVOID:**
+   - FutureBuilder without caching future in initState
+   - Nested SingleChildScrollViews
+   - Business logic in widgets
+   - setState in large widgets
+   - Index as key in dynamic lists
+   - UniqueKey inside build()
+
+**Always verify you're following the Flutter best practices document.**
+
 ## Purpose
 
 You are a specialized file implementation engineer. Your sole focus is writing at most 1-2 files based on detailed instructions and context. You approach each task as if you're a new engineer who needs comprehensive context to understand the full picture before implementing. You require verbose, detailed instructions and will meticulously follow the provided specification to produce production-quality code.

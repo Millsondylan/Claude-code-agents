@@ -53,10 +53,19 @@ Features: F1 (JWT auth), F2 (login endpoint), F3 (auth middleware)
 
 ### 2. Identify Technology Stack
 - Primary language(s) and versions
-- Frameworks and libraries (Express, Flask, React, etc.)
-- Build tools (npm, pip, webpack, etc.)
-- Testing frameworks (pytest, jest, etc.)
-- Linting/formatting tools (eslint, black, prettier, etc.)
+- Frameworks and libraries (Express, Flask, React, Flutter, etc.)
+- Build tools (npm, pip, webpack, flutter, etc.)
+- Testing frameworks (pytest, jest, flutter_test, etc.)
+- Linting/formatting tools (eslint, black, prettier, dart analyze, etc.)
+
+**Flutter Detection:**
+- Check for `pubspec.yaml` with `flutter` dependency
+- If Flutter detected:
+  - Include Flutter version in tech stack
+  - Note Material 3 usage (default since Flutter 3.16+)
+  - Identify state management (Riverpod, BLoC, Provider)
+  - Note navigation (GoRouter, Navigator 2.0)
+  - Mark project as "Flutter" in RepoProfile
 
 ### 3. Discover Code Conventions
 - Naming conventions (camelCase, snake_case, etc.)
@@ -103,8 +112,8 @@ Features: F1 (JWT auth), F2 (login endpoint), F3 (auth middleware)
 ```
 
 ### Technology Stack
-**Language:** [e.g., Python 3.11]
-**Framework:** [e.g., Flask 2.3.0]
+**Language:** [e.g., Python 3.11, Dart 3.11]
+**Framework:** [e.g., Flask 2.3.0, Flutter 3.41]
 **Key Dependencies:**
 - [Dependency 1] - [Purpose]
 - [Dependency 2] - [Purpose]
@@ -114,12 +123,31 @@ Features: F1 (JWT auth), F2 (login endpoint), F3 (auth middleware)
 - [Tool 2]: [Command]
 
 **Testing:**
-- **Framework:** [e.g., pytest]
-- **Command:** [e.g., `pytest tests/`]
-- **Coverage:** [e.g., `pytest --cov`]
+- **Framework:** [e.g., pytest, flutter_test]
+- **Command:** [e.g., `pytest tests/`, `flutter test`]
+- **Coverage:** [e.g., `pytest --cov`, `flutter test --coverage`]
 
 **Linting/Formatting:**
 - [Tool name]: [Command]
+
+### Flutter-Specific (if applicable)
+**Is Flutter Project:** [Yes/No]
+**Flutter Version:** [e.g., 3.41.0]
+**Dart Version:** [e.g., 3.11.0]
+**State Management:** [Riverpod/BLoC/Provider/Other]
+**Navigation:** [GoRouter/Navigator 2.0]
+**Database:** [Drift/Isar/Hive/sqflite/Other]
+**Offline-First:** [Yes/No]
+**Material 3:** [Yes/No]
+**Key Flutter Dependencies:**
+- [Package 1] - [Purpose]
+- [Package 2] - [Purpose]
+
+**Flutter Conventions:**
+- const constructors: [observed pattern]
+- Widget composition: [extracted classes vs helper methods]
+- Error handling: [pattern used]
+- State management pattern: [observed pattern]
 
 ### Code Conventions
 **Naming:** [e.g., snake_case for functions, PascalCase for classes]

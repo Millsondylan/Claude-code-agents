@@ -236,11 +236,15 @@ These agents run for **EVERY** run in **EVERY** pipeline, regardless of circumst
 
 ## CRITICAL RULES (Multi-Run Specific)
 
-1. **Never restart prior runs** — A completed run stays complete. Only retry the failing run.
-2. **Single user confirmation** — Only after Run 1 task-breakdown. Runs 2+ are autonomous.
-3. **Always pass RunContext** — Every stage in every run must know which run it is and what prior runs completed.
-4. **Dependency gates are blocking** — Never start a run before its declared dependencies are complete.
-5. **Aggregated review is mandatory** — Even if each run passed its own review, run the final cross-run review-agent.
-6. **ONE task call per response** — The sequential dispatch rule from 01-pipeline-orchestration.md applies inside every run.
-7. **NEVER skip mandatory agents** — The mandatory agents listed above MUST run for every run, every time, without exception.
-8. **No "if no changes" shortcuts** — Even if a run has no code changes, mandatory agents still run (test-writer verifies no tests needed, debugger verifies no errors, etc.).
+1. **PIPELINE-SCALER IS MANDATORY** — The outer loop starts ONLY after pipeline-scaler (Stage -2) completes. NEVER skip pipeline-scaler even for multi-run scaling.
+2. **NEVER restart prior runs** — A completed run stays complete. Only retry the failing run.
+3. **Single user confirmation** — Only after Run 1 task-breakdown. Runs 2+ are autonomous.
+4. **Always pass RunContext** — Every stage in every run must know which run it is and what prior runs completed.
+5. **Dependency gates are blocking** — Never start a run before its declared dependencies are complete.
+6. **Aggregated review is mandatory** — Even if each run passed its own review, run the final cross-run review-agent.
+7. **ONE task call per response** — The sequential dispatch rule from 01-pipeline-orchestration.md applies inside every run.
+8. **NEVER skip mandatory agents** — The mandatory agents listed above MUST run for every run, every time, without exception.
+9. **No "if no changes" shortcuts** — Even if a run has no code changes, mandatory agents still run (test-writer verifies no tests needed, debugger verifies no errors, etc.).
+10. **AUTO-CONTINUE across runs** — After Run R's decide-agent outputs COMPLETE, immediately start Run R+1 without asking.
+11. **NO PARALLEL RUNS** — Runs execute sequentially, one at a time. NEVER run multiple runs in parallel.
+12. **QUALITY OVER SPEED** — Multi-run pipelines take time. Sequential execution ensures each run builds correctly on prior runs.
