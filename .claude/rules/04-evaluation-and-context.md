@@ -70,9 +70,9 @@ See full schema: `.ai/schemas/pipeline-context-schema.md`
 
 As each stage completes, its output is added to PipelineContext:
 ```
-Stage 0 completes -> stage_outputs.stage_0_taskspec = TaskSpec
-Stage 1 completes -> stage_outputs.stage_1_repoprofile = RepoProfile
-Stage 2 completes -> stage_outputs.stage_2_plan = ImplementationPlan
+Stage 3 completes -> stage_outputs.stage_0_taskspec = TaskSpec
+Stage 5 completes -> stage_outputs.stage_1_repoprofile = RepoProfile
+Stage 6 completes -> stage_outputs.stage_2_plan = ImplementationPlan
 ... and so on ...
 ```
 
@@ -82,17 +82,17 @@ Stage 2 completes -> stage_outputs.stage_2_plan = ImplementationPlan
 
 | Target Stage | Required Context |
 |--------------|-----------------|
-| Stage 0 | user_request |
-| Stage 1 | user_request, TaskSpec |
-| Stage 2 | user_request, TaskSpec, RepoProfile |
-| Stage 3 | user_request, TaskSpec, Plan |
-| Stage 4 | user_request, TaskSpec, RepoProfile, Plan, Docs |
-| Stage 4.5 | user_request, TaskSpec, RepoProfile, BuildReports |
-| Stage 5 | user_request, TaskSpec, BuildReports, TestReport |
-| Stage 5.5 | user_request, TaskSpec, BuildReports |
-| Stage 6 | user_request, TaskSpec, RepoProfile, BuildReports |
-| Stage 7 | All stage outputs |
-| Stage 8 | All stage outputs |
+| Stage 3 | user_request |
+| Stage 5 | user_request, TaskSpec |
+| Stage 6 | user_request, TaskSpec, RepoProfile |
+| Stage 7 | user_request, TaskSpec, Plan |
+| Stage 9 | user_request, TaskSpec, RepoProfile, Plan, Docs |
+| Stage 10 | user_request, TaskSpec, RepoProfile, BuildReports |
+| Stage 11 | user_request, TaskSpec, BuildReports, TestReport |
+| Stage 12 | user_request, TaskSpec, BuildReports |
+| Stage 13 | user_request, TaskSpec, RepoProfile, BuildReports |
+| Stage 15 | All stage outputs |
+| Stage 16 | All stage outputs |
 
 ### Loop-Back Trigger Format
 

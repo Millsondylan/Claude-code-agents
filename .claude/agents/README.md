@@ -8,90 +8,90 @@ All agents are configured with `model: inherit` so sub-agents follow the active 
 
 ## Agent Files
 
-### Stage -1: prompt-optimizer.md
+### Stage 2: prompt-optimizer.md
 **Role:** Intercepts and optimizes prompts before they reach target sub-agents
 **Always required:** YES (MANDATORY - runs FIRST before any agent dispatch)
 **Re-run eligible:** YES
 **Special:** Outputs ONLY the optimized prompt, uses opus model for thorough processing
 **Model:** Inherit (active model)
 
-### Stage 0: task-breakdown.md
+### Stage 3: task-breakdown.md
 **Role:** Analyzes user requests and creates structured TaskSpec
 **Always required:** YES
 **Re-run eligible:** YES
 
-### Stage 1: code-discovery.md
+### Stage 5: code-discovery.md
 **Role:** Discovers repository structure, tech stack, and conventions
 **Always required:** YES
 **Re-run eligible:** YES
 
-### Stage 2: plan-agent.md
+### Stage 6: plan-agent.md
 **Role:** Creates batched implementation plan with feature assignments
 **Always required:** YES
 **Re-run eligible:** YES
 
-### Stage 3: docs-researcher.md
+### Stage 7: docs-researcher.md
 **Role:** Researches library/framework documentation via Context7 MCP
 **Always required:** YES (MANDATORY before any build-agent)
 **Re-run eligible:** YES
 **Special:** Uses Context7 MCP for up-to-date documentation
 
-### Stage 3.5: pre-flight-checker.md
+### Stage 8: pre-flight-checker.md
 **Role:** Pre-implementation sanity checks before build agents
 **Always required:** YES (runs before any build-agent)
 **Re-run eligible:** YES
 
-### Stage 3b: web-syntax-researcher.md (DEPRECATED - use docs-researcher)
+### Stage 7b: web-syntax-researcher.md (DEPRECATED - use docs-researcher)
 **Role:** Researches uncertain APIs, frameworks, and syntax patterns
 **Always required:** NO (superseded by docs-researcher)
 **Re-run eligible:** YES
 **Status:** DEPRECATED
 
-### Stage 4: build-agent-1 through build-agent-55
+### Stage 9: build-agent-1 through build-agent-55
 **Role:** Implements assigned features per the plan
 **Always required:** NO (triggered when code changes needed)
 **Re-run eligible:** YES
 **Instances:** 55 active build agents (build-agent-1 through build-agent-55)
 **Note:** build-agent.md is a deprecated template; use numbered instances
 
-### Stage 4.5: test-writer.md
+### Stage 10: test-writer.md
 **Role:** Writes comprehensive, real test files for newly implemented features
 **Always required:** YES (when build-agent runs)
 **Re-run eligible:** YES
 **Special:** Creates unit tests, edge case tests, and error path tests. NO mocks, NO placeholders, NO assert True. Maps tests to acceptance criteria. Targets 100% coverage.
 **Model:** Inherit (active model)
 
-### Stage 5: debugger through debugger-11
+### Stage 11: debugger through debugger-11
 **Role:** Diagnoses and fixes errors, test failures, and bugs
 **Always required:** NO (triggered on errors)
 **Re-run eligible:** YES
 **Instances:** 11 debugger agents (debugger, debugger-2 through debugger-11)
 
-### Stage 5.5: logical-agent.md
+### Stage 12: logical-agent.md
 **Role:** Verifies code logic correctness with deep reasoning
 **Always required:** NO (triggered after build-agent, before test-agent)
 **Re-run eligible:** YES
 **Special:** Read-only verification, detects off-by-one, race conditions, null handling, edge cases
 **Model:** Inherit (active model)
 
-### Stage 6: test-agent.md
+### Stage 13: test-agent.md
 **Role:** Runs test suite and reports results (NEVER blocks)
 **Always required:** YES
 **Re-run eligible:** YES
 **Special:** MUST request debugger on ANY failure
 
-### Stage 6.5: integration-agent.md
+### Stage 14: integration-agent.md
 **Role:** Integration testing specialist
 **Always required:** YES (runs after test-agent)
 **Re-run eligible:** YES
 **Special:** Tests integration between components and systems
 
-### Stage 7: review-agent.md
+### Stage 15: review-agent.md
 **Role:** Reviews changes against acceptance criteria and quality standards
 **Always required:** YES
 **Re-run eligible:** YES
 
-### Stage 8: decide-agent.md
+### Stage 16: decide-agent.md
 **Role:** Makes final decision (COMPLETE, RESTART, or ESCALATE)
 **Always required:** YES
 **Re-run eligible:** NO (terminal stage only)
@@ -143,23 +143,23 @@ To use these agents in your repository:
 
 ### Mandatory Stages
 These stages MUST run for EVERY request:
-- Stage -1: prompt-optimizer (ALWAYS FIRST - optimizes prompt before any dispatch)
-- Stage 0: task-breakdown (after prompt-optimizer)
-- Stage 1: code-discovery
-- Stage 2: plan-agent
-- Stage 3: docs-researcher (MANDATORY before any build-agent)
-- Stage 3.5: pre-flight-checker (pre-implementation sanity checks)
-- Stage 6: test-agent (ALWAYS REQUIRED)
-- Stage 6.5: integration-agent (integration testing)
-- Stage 7: review-agent (ALWAYS REQUIRED)
-- Stage 8: decide-agent (ALWAYS FINAL)
+- Stage 2: prompt-optimizer (ALWAYS FIRST - optimizes prompt before any dispatch)
+- Stage 3: task-breakdown (after prompt-optimizer)
+- Stage 5: code-discovery
+- Stage 6: plan-agent
+- Stage 7: docs-researcher (MANDATORY before any build-agent)
+- Stage 8: pre-flight-checker (pre-implementation sanity checks)
+- Stage 13: test-agent (ALWAYS REQUIRED)
+- Stage 14: integration-agent (integration testing)
+- Stage 15: review-agent (ALWAYS REQUIRED)
+- Stage 16: decide-agent (ALWAYS FINAL)
 
 ### Conditional Stages
 These stages run only when needed:
-- Stage 4: build-agent-1 through build-agent-55 (when code changes needed)
-- Stage 4.5: test-writer (ALWAYS - writes tests for implemented features)
-- Stage 5: debugger through debugger-11 (when errors occur)
-- Stage 5.5: logical-agent (after build, verifies logic correctness)
+- Stage 9: build-agent-1 through build-agent-55 (when code changes needed)
+- Stage 10: test-writer (ALWAYS - writes tests for implemented features)
+- Stage 11: debugger through debugger-11 (when errors occur)
+- Stage 12: logical-agent (after build, verifies logic correctness)
 
 ### Deprecated Agents
 - web-syntax-researcher.md (superseded by docs-researcher)

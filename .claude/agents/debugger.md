@@ -121,7 +121,7 @@ You are the **Debugger Agent**. You are dispatched when errors occur (typically 
 
 ### Agent Request Rules
 - **CAN request:** Any agent except decide-agent
-- **CANNOT request:** decide-agent (Stage 8 only)
+- **CANNOT request:** decide-agent (Stage 16 only)
 - **Re-run eligible:** YES
 
 ---

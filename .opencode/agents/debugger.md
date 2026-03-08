@@ -1,7 +1,7 @@
 ---
 description: "Diagnoses and fixes errors, test failures, and bugs. Dispatched when errors occur. Makes minimal fixes."
 mode: subagent
-model: anthropic/claude-opus-4-6
+model: anthropic/claude-sonnet-4-6
 hidden: true
 color: "#FF0000"
 tools:
@@ -125,7 +125,7 @@ You are the **Debugger Agent**. You are dispatched when errors occur (typically 
 
 ### Agent Request Rules
 - **CAN request:** Any agent except decide-agent
-- **CANNOT request:** decide-agent (Stage 8 only)
+- **CANNOT request:** decide-agent (Stage 16 only)
 - **Re-run eligible:** YES
 
 ---

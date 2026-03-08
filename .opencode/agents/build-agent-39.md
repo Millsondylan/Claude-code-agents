@@ -1,7 +1,7 @@
 ---
 description: "Implements 1-2 files as part of the sequential build pipeline. Specialist for writing 1-2 specific files based on detailed instructions and context. Dispatched by the orchestrator only."
 mode: subagent
-model: zai-coding-plan/glm-5
+model: kimi-for-coding/k2p5
 hidden: true
 color: "#0000FF"
 tools:

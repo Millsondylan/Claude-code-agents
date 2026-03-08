@@ -1,7 +1,7 @@
 ---
 description: "Verifies code logic correctness using deep analysis. Detects algorithmic errors, off-by-one bugs, race conditions, edge cases, and logical flaws. Read-only verification."
 mode: subagent
-model: zai-coding-plan/glm-5
+model: kimi-for-coding/k2p5
 hidden: true
 color: "#800080"
 tools:
@@ -127,7 +127,7 @@ You are the **Logical Agent**. You are a **logic verification specialist** power
 - **Minor Issues:** 0
 
 ### Next Step
-Proceed to test-agent (Stage 6)
+Proceed to test-agent (Stage 13)
 ```
 
 ### When Logic Issues Found
@@ -201,7 +201,7 @@ Proceed to test-agent (Stage 6)
 
 ### Agent Request Rules
 - **CAN request:** build-agent, debugger, code-discovery, test-agent (for verification)
-- **CANNOT request:** decide-agent (Stage 8 only)
+- **CANNOT request:** decide-agent (Stage 16 only)
 - **Re-run eligible:** YES (after issues are fixed)
 
 ---

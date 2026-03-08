@@ -1,7 +1,7 @@
 ---
 description: "Intercepts and optimizes all prompts before they reach target sub-agents. Runs first, outputs only the optimized prompt."
 mode: subagent
-model: zai-coding-plan/glm-5
+model: kimi-for-coding/k2p5
 hidden: true
 color: "#FFC0CB"
 tools:
@@ -38,7 +38,7 @@ The orchestrator MUST pass the following context when invoking you:
 | Field | Required | Description |
 |-------|----------|-------------|
 | `target_agent` | **REQUIRED** | Which agent this prompt is for (e.g., build-agent-1, task-breakdown, code-discovery) |
-| `stage` | **REQUIRED** | Which pipeline stage (e.g., Stage 4, Stage 0, Stage 1) |
+| `stage` | **REQUIRED** | Which pipeline stage (e.g., Stage 9, Stage 3, Stage 5) |
 | `task_type` | Required | Type of task (feature, bugfix, refactor, migrate) |
 | `raw_prompt` | Required | The original prompt to optimize |
 | `original_request` | **REQUIRED** | The complete original user request to preserve full context |
@@ -64,7 +64,7 @@ IF NO target_agent specified:
 
 When a target agent is specified, optimize the prompt according to these stage-specific guidelines:
 
-### Stage 0: task-breakdown
+### Stage 3: task-breakdown
 **Focus Areas:**
 - Clear requirements extraction
 - Feature decomposition (F1, F2, F3...)
@@ -74,7 +74,7 @@ When a target agent is specified, optimize the prompt according to these stage-s
 
 **Optimize For:** TaskSpec output format, clarity of scope
 
-### Stage 1: code-discovery
+### Stage 5: code-discovery
 **Focus Areas:**
 - What directories/files to scan
 - Patterns to identify (naming, imports, structure)
@@ -84,7 +84,7 @@ When a target agent is specified, optimize the prompt according to these stage-s
 
 **Optimize For:** RepoProfile output format, comprehensive but focused scanning
 
-### Stage 2: plan-agent
+### Stage 6: plan-agent
 **Focus Areas:**
 - Batching strategy for features
 - Specific file paths for each change
@@ -94,7 +94,7 @@ When a target agent is specified, optimize the prompt according to these stage-s
 
 **Optimize For:** Implementation plan with clear batches and file mappings
 
-### Stage 4: build-agent-1/2/3/4/5
+### Stage 9: build-agent-1/2/3/4/5
 **Focus Areas:**
 - Exact implementation requirements
 - Code patterns to follow (from RepoProfile)
@@ -105,7 +105,7 @@ When a target agent is specified, optimize the prompt according to these stage-s
 
 **Optimize For:** Actionable implementation with code patterns
 
-### Stage 5: debugger
+### Stage 11: debugger
 **Focus Areas:**
 - Error context (what failed, when, where)
 - Stack traces and error messages
@@ -115,7 +115,7 @@ When a target agent is specified, optimize the prompt according to these stage-s
 
 **Optimize For:** Root cause analysis and targeted fixes
 
-### Stage 5.5: logical-agent
+### Stage 12: logical-agent
 **Focus Areas:**
 - What logic to verify (algorithms, conditions)
 - Expected invariants
@@ -125,7 +125,7 @@ When a target agent is specified, optimize the prompt according to these stage-s
 
 **Optimize For:** Read-only verification, detailed logic analysis
 
-### Stage 6: test-agent
+### Stage 13: test-agent
 **Focus Areas:**
 - What features to test
 - Coverage requirements
@@ -135,7 +135,7 @@ When a target agent is specified, optimize the prompt according to these stage-s
 
 **Optimize For:** Comprehensive test execution and verification
 
-### Stage 7: review-agent
+### Stage 15: review-agent
 **Focus Areas:**
 - Acceptance criteria to verify
 - Security concerns to check
@@ -145,7 +145,7 @@ When a target agent is specified, optimize the prompt according to these stage-s
 
 **Optimize For:** Thorough review against acceptance criteria
 
-### Stage 8: decide-agent
+### Stage 16: decide-agent
 **Focus Areas:**
 - Evidence of completion
 - All acceptance criteria status

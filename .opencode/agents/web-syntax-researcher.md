@@ -1,7 +1,7 @@
 ---
 description: "DEPRECATED - use docs-researcher instead. Researches APIs, frameworks, and syntax patterns via web search."
 mode: subagent
-model: zai-coding-plan/glm-5
+model: kimi-for-coding/k2p5
 hidden: true
 color: "#FFC0CB"
 tools:
@@ -140,7 +140,7 @@ REQUEST: [agent-name] - [reason]
 
 ### Agent Request Rules
 - **CAN request:** Any agent for clarification
-- **CANNOT request:** decide-agent (decide-agent is Stage 8 only)
+- **CANNOT request:** decide-agent (decide-agent is Stage 16 only)
 - **Re-run eligible:** YES
 
 ---

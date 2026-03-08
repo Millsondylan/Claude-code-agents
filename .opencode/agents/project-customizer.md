@@ -1,7 +1,7 @@
 ---
 description: "Updates project-specific sections in CLAUDE.md and ACM. Can ONLY modify PROJECT-SPECIFIC sections (between markers), NEVER base rules."
 mode: subagent
-model: zai-coding-plan/glm-5
+model: kimi-for-coding/k2p5
 hidden: true
 color: "#FFC0CB"
 tools:

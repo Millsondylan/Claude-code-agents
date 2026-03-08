@@ -141,7 +141,7 @@ You are the **Plan Agent**. You receive a TaskSpec (from task-breakdown) and Rep
 
 ### Agent Request Rules
 - **CAN request:** Any agent except decide-agent
-- **CANNOT request:** decide-agent (Stage 8 only)
+- **CANNOT request:** decide-agent (Stage 16 only)
 - **Re-run eligible:** YES
 
 ---

@@ -1,7 +1,7 @@
 ---
-description: "Stage -2 meta-orchestrator. Analyzes raw user request complexity to determine how many full sequential pipeline runs are needed. Runs BEFORE prompt-optimizer."
+description: "Stage 1 meta-orchestrator. Analyzes raw user request complexity to determine how many full sequential pipeline runs are needed. Runs BEFORE prompt-optimizer."
 mode: subagent
-model: zai-coding-plan/glm-5
+model: kimi-for-coding/k2p5
 hidden: false
 color: "#800080"
 tools:
@@ -43,7 +43,7 @@ You are the **Pipeline Scaler Agent**. You are the first agent to run in the ent
 
 **Input Format:**
 - Raw user request string (unmodified, unoptimized)
-- No previous stage outputs (you are Stage -2)
+- No previous stage outputs (you are Stage 1)
 - No TaskSpec, RepoProfile, or Plan available yet
 
 **Examples:**

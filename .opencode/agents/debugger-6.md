@@ -1,7 +1,7 @@
 ---
 description: "Sixth debugger agent. Continues from debugger-5. If incomplete, passes to debugger-7."
 mode: subagent
-model: anthropic/claude-opus-4-6
+model: anthropic/claude-sonnet-4-6
 hidden: true
 color: "#FF0000"
 tools:

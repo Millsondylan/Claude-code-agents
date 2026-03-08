@@ -125,7 +125,7 @@ You are the **Logical Agent**. You are a **logic verification specialist** power
 - **Minor Issues:** 0
 
 ### Next Step
-Proceed to test-agent (Stage 6)
+Proceed to test-agent (Stage 13)
 ```
 
 ### When Logic Issues Found
@@ -199,7 +199,7 @@ Proceed to test-agent (Stage 6)
 
 ### Agent Request Rules
 - **CAN request:** build-agent, debugger, code-discovery, test-agent (for verification)
-- **CANNOT request:** decide-agent (Stage 8 only)
+- **CANNOT request:** decide-agent (Stage 16 only)
 - **Re-run eligible:** YES (after issues are fixed)
 
 ---

@@ -1,7 +1,7 @@
 ---
 description: "TERMINAL STAGE. Makes final decision COMPLETE or RESTART. Cannot request other agents. Runs only after all stages complete."
 mode: subagent
-model: anthropic/claude-opus-4-6
+model: kimi-for-coding/k2p5
 hidden: true
 color: "#FFA500"
 tools:
@@ -59,7 +59,7 @@ You MUST output EXACTLY ONE of two decisions:
 
 #### RESTART
 - Significant issues detected
-- Restart entire pipeline from Stage 0
+- Restart entire pipeline from Stage 3
 - Use when: missing features, test coverage gaps, architecture issues, external blockers, or ambiguity requiring clarification
 
 ### 3. Justify Decision
@@ -112,7 +112,7 @@ Implementation successfully completed. All features are functional, tested, and 
 ### Decision: RESTART
 
 ### Justification
-Significant issues detected that require restarting the pipeline from Stage 0:
+Significant issues detected that require restarting the pipeline from Stage 3:
 - Issue 1: [Description]
 - Issue 2: [Description]
 
@@ -176,7 +176,7 @@ Decision: RESTART
 Reason: Feature F3 incomplete. Restarting to complete implementation.
 ```
 
-#### CANNOT Run Before Stage 7 Completes
+#### CANNOT Run Before Stage 15 Completes
 **WRONG:**
 ```
 [Orchestrator runs decide-agent before review-agent]
@@ -193,7 +193,7 @@ Reason: Feature F3 incomplete. Restarting to complete implementation.
 
 ### Prevents Infinite Loops
 - Decide-agent cannot trigger endless agent spawning
-- Forces explicit RESTART from Stage 0 for major changes
+- Forces explicit RESTART from Stage 3 for major changes
 
 ### Clear Decision Point
 - Forces explicit RESTART rather than ad-hoc fixes
@@ -368,7 +368,7 @@ Add unit tests for all edge cases in JWT authentication:
 4. Test invalid signature handling
 5. Test token refresh scenarios
 
-### Pipeline Stage 0 Context
+### Pipeline Stage 3 Context
 [Orchestrator will provide this context to task-breakdown during restart]
 ```
 
@@ -400,7 +400,7 @@ Add unit tests for all edge cases in JWT authentication:
 ## Critical Reminders
 
 ### ALWAYS
-- Run ONLY after Stage 7 (review-agent) completes
+- Run ONLY after Stage 15 (review-agent) completes
 - Output exactly one decision (COMPLETE or RESTART)
 - Justify your decision with evidence
 - Be the TERMINAL STAGE (no agent requests)
@@ -408,7 +408,7 @@ Add unit tests for all edge cases in JWT authentication:
 ### NEVER
 - Request other agents (debugger, build-agent, test-agent, etc.)
 - Request re-runs (of any agent)
-- Run before Stage 7 completes
+- Run before Stage 15 completes
 - Make agent dispatch decisions (that's orchestrator's job)
 - Try to "help" by suggesting specific agent actions
 

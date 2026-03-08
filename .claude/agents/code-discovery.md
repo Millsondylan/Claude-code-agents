@@ -200,7 +200,7 @@ REQUEST: [agent-name] - [reason]
 
 ### Agent Request Rules
 - **CAN request:** Any agent (task-breakdown, plan-agent, web-syntax-researcher, etc.)
-- **CANNOT request:** decide-agent (decide-agent is Stage 8 only)
+- **CANNOT request:** decide-agent (decide-agent is Stage 16 only)
 - **Re-run eligible:** YES (you can be re-run if needed by other agents)
 
 ---

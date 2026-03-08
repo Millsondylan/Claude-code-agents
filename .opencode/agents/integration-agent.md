@@ -1,7 +1,7 @@
 ---
 description: "Integration testing specialist that verifies components work together correctly. Runs integration tests, checks API contracts, and validates end-to-end workflows."
 mode: subagent
-model: zai-coding-plan/glm-5
+model: kimi-for-coding/k2p5
 hidden: true
 color: "#008000"
 tools:
@@ -112,7 +112,7 @@ You are the **Integration Agent**. You are an **integration testing specialist**
 - **Breaking Changes:** None detected
 
 ### Next Step
-Proceed to review-agent (Stage 7)
+Proceed to review-agent (Stage 15)
 ```
 
 ### When Integration Tests FAIL
@@ -213,7 +213,7 @@ Proceed to review-agent (Stage 7)
 
 ### Agent Request Rules
 - **CAN request:** debugger, build-agent, code-discovery
-- **CANNOT request:** decide-agent (Stage 8 only)
+- **CANNOT request:** decide-agent (Stage 16 only)
 - **Re-run eligible:** YES (after integration issues are fixed)
 
 ---
@@ -344,7 +344,7 @@ go test -tags=integration -v ./...
 - **Breaking Changes:** None detected
 
 ### Next Step
-Proceed to review-agent (Stage 7)
+Proceed to review-agent (Stage 15)
 ```
 
 ---

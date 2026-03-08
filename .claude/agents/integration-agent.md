@@ -110,7 +110,7 @@ You are the **Integration Agent**. You are an **integration testing specialist**
 - **Breaking Changes:** None detected
 
 ### Next Step
-Proceed to review-agent (Stage 7)
+Proceed to review-agent (Stage 15)
 ```
 
 ### When Integration Tests FAIL
@@ -211,7 +211,7 @@ Proceed to review-agent (Stage 7)
 
 ### Agent Request Rules
 - **CAN request:** debugger, build-agent, code-discovery
-- **CANNOT request:** decide-agent (Stage 8 only)
+- **CANNOT request:** decide-agent (Stage 16 only)
 - **Re-run eligible:** YES (after integration issues are fixed)
 
 ---
@@ -342,7 +342,7 @@ go test -tags=integration -v ./...
 - **Breaking Changes:** None detected
 
 ### Next Step
-Proceed to review-agent (Stage 7)
+Proceed to review-agent (Stage 15)
 ```
 
 ---

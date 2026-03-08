@@ -5,20 +5,20 @@
 **EVERY prompt you create for ANY sub-agent MUST go through prompt-optimizer first.**
 
 This applies to ALL pipeline stages:
-- Stage -2: pipeline-scaler
-- Stage 0: task-breakdown
-- Stage 1: code-discovery
-- Stage 2: plan-agent
-- Stage 3: docs-researcher
-- Stage 3.5: pre-flight-checker
-- Stage 4: build-agent-1 through build-agent-55
-- Stage 4.5: test-writer
-- Stage 5: debugger
-- Stage 5.5: logical-agent
-- Stage 6: test-agent
-- Stage 6.5: integration-agent
-- Stage 7: review-agent
-- Stage 8: decide-agent
+- Stage 1: pipeline-scaler
+- Stage 3: task-breakdown
+- Stage 5: code-discovery
+- Stage 6: plan-agent
+- Stage 7: docs-researcher
+- Stage 8: pre-flight-checker
+- Stage 9: build-agent-1 through build-agent-55
+- Stage 10: test-writer
+- Stage 11: debugger
+- Stage 12: logical-agent
+- Stage 13: test-agent
+- Stage 14: integration-agent
+- Stage 15: review-agent
+- Stage 16: decide-agent
 
 ### The Flow (MANDATORY)
 ```

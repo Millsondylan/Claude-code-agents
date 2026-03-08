@@ -11,23 +11,23 @@ task tool:
 ```
 
 **Available agents (defined in .opencode/agents/):**
-- `pipeline-scaler` - Stage -2 (scales pipeline resources based on task complexity)
-- `prompt-optimizer` - Stage -1 (ALWAYS FIRST - optimizes prompts before any agent dispatch)
-- `task-breakdown` - Stage 0 (after prompt-optimizer)
-- `code-discovery` - Stage 1
-- `plan-agent` - Stage 2
-- `docs-researcher` - Stage 3
-- `pre-flight-checker` - Stage 3.5 (pre-implementation sanity checks)
-- `build-agent-1` through `build-agent-55` - Stage 4 (implementation agents, chain sequentially)
-- `test-writer` - Stage 4.5 (writes tests for implemented features)
-- `debugger` through `debugger-11` - Stage 5 (debugging agents, chain sequentially)
-- `logical-agent` - Stage 5.5 (verifies code logic correctness)
-- `test-agent` - Stage 6
-- `integration-agent` - Stage 6.5 (integration testing specialist)
-- `review-agent` - Stage 7
-- `decide-agent` - Stage 8
+- `pipeline-scaler` - Stage 1 (scales pipeline resources based on task complexity)
+- `prompt-optimizer` - Stage 2 (ALWAYS FIRST - optimizes prompts before any agent dispatch)
+- `task-breakdown` - Stage 3 (after prompt-optimizer)
+- `code-discovery` - Stage 5
+- `plan-agent` - Stage 6
+- `docs-researcher` - Stage 7
+- `pre-flight-checker` - Stage 8 (pre-implementation sanity checks)
+- `build-agent-1` through `build-agent-55` - Stage 9 (implementation agents, chain sequentially)
+- `test-writer` - Stage 10 (writes tests for implemented features)
+- `debugger` through `debugger-11` - Stage 11 (debugging agents, chain sequentially)
+- `logical-agent` - Stage 12 (verifies code logic correctness)
+- `test-agent` - Stage 13
+- `integration-agent` - Stage 14 (integration testing specialist)
+- `review-agent` - Stage 15
+- `decide-agent` - Stage 16
 
-**Build Agent Chaining (Stage 4) - CYCLES:**
+**Build Agent Chaining (Stage 9) - CYCLES:**
 ```
 build-agent-1 → build-agent-2 → ... → build-agent-55
      ↑                                       |
@@ -39,7 +39,7 @@ build-agent-1 → build-agent-2 → ... → build-agent-55
 - Cycle continues until work is COMPLETE
 - Agents continue until task is finished (no artificial limits)
 
-**Debugger Agent Chaining (Stage 5) - CYCLES:**
+**Debugger Agent Chaining (Stage 11) - CYCLES:**
 ```
 debugger → debugger-2 → ... → debugger-11
     ↑                              |

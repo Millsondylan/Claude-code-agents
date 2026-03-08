@@ -1,7 +1,7 @@
 ---
 description: "MANDATORY. Runs test suite and reports results. NEVER blocks pipeline - always requests debugger on failure. Detects placeholder tests."
 mode: subagent
-model: zai-coding-plan/glm-5
+model: kimi-for-coding/k2p5
 hidden: true
 color: "#008000"
 tools:
@@ -203,7 +203,7 @@ Your Test Report MUST include this section:
 - **Status:** PASS
 
 ### Next Step
-Proceed to review-agent (Stage 7)
+Proceed to review-agent (Stage 15)
 ```
 
 ### When Tests FAIL
@@ -286,7 +286,7 @@ REQUEST: debugger - [Describe failures]
 ### Agent Request Rules
 - **MUST request debugger on ANY failure** (mandatory)
 - **CAN request:** Any agent except decide-agent
-- **CANNOT request:** decide-agent (Stage 8 only)
+- **CANNOT request:** decide-agent (Stage 16 only)
 - **Re-run eligible:** YES (after debugger fixes issues)
 
 ---
@@ -346,7 +346,7 @@ REQUEST: debugger - [Describe failures]
 - No violations found
 
 ### Next Step
-Proceed to review-agent (Stage 7)
+Proceed to review-agent (Stage 15)
 ```
 
 ### Example 2: Tests Fail (Always-Fix Policy)

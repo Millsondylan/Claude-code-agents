@@ -2,11 +2,11 @@
 
 ## PROMPT-OPTIMIZER DISPATCH RULES
 
-**Prompt-optimizer runs ONCE after pipeline-scaler (Stage -1), NOT before every agent.**
+**Prompt-optimizer runs ONCE after pipeline-scaler (Stage 2), NOT before every agent.**
 
 The prompt-optimizer's job is to:
 1. Take the raw user request after pipeline-scaler
-2. Optimize it into a structured format for task-breakdown (Stage 0)
+2. Optimize it into a structured format for task-breakdown (Stage 3)
 3. Save the optimized prompt for reference
 4. Return the XML-structured prompt to the orchestrator
 
@@ -16,42 +16,42 @@ The prompt-optimizer's job is to:
 
 ## When to Use Prompt-Optimizer
 
-### ALWAYS Use (Stage -1 → Stage 0)
+### ALWAYS Use (Stage 2 → Stage 3)
 ```
 User Request
     ↓
-Stage -2: pipeline-scaler
+Stage 1: pipeline-scaler
     ↓
-Stage -1: DISPATCH to prompt-optimizer
+Stage 2: DISPATCH to prompt-optimizer
     ↓
 prompt-optimizer optimizes for task-breakdown
     ↓
-Stage 0: task-breakdown receives optimized prompt
+Stage 3: task-breakdown receives optimized prompt
 ```
 
 ### NEVER Use (Stages 1+)
 For subsequent agents, the orchestrator prepares prompts directly:
 ```
-Stage 0: task-breakdown completes
+Stage 3: task-breakdown completes
     ↓
-Orchestrator prepares prompt for Stage 1 (code-discovery)
+Orchestrator prepares prompt for Stage 5 (code-discovery)
     ↓
 DISPATCH directly to code-discovery (no prompt-optimizer)
     ↓
-Stage 1 completes
+Stage 5 completes
     ↓
-Orchestrator prepares prompt for Stage 2 (plan-agent)
+Orchestrator prepares prompt for Stage 6 (plan-agent)
     ↓
 DISPATCH directly to plan-agent (no prompt-optimizer)
 ```
 
-**The orchestrator acts as the prompt router after Stage 0.**
+**The orchestrator acts as the prompt router after Stage 3.**
 
 ---
 
 ## The Flow
 
-### Stage -1: Prompt Optimizer (MANDATORY)
+### Stage 2: Prompt Optimizer (MANDATORY)
 
 ```
 1. Orchestrator prepares prompt with:
@@ -94,13 +94,13 @@ DISPATCH directly to plan-agent (no prompt-optimizer)
 
 ---
 
-## REQUIRED Fields for Stage -1 (Prompt Optimizer)
+## REQUIRED Fields for Stage 2 (Prompt Optimizer)
 
-When dispatching to prompt-optimizer (Stage -1), include:
+When dispatching to prompt-optimizer (Stage 2), include:
 
 ```yaml
 target_agent: "task-breakdown"           # REQUIRED - Always task-breakdown
-stage: "0"                                # REQUIRED - Stage 0
+stage: "0"                                # REQUIRED - Stage 3
 task_type: "feature|bugfix|refactor|migrate"  # REQUIRED
 raw_prompt: "..."                         # REQUIRED - Your prepared prompt
 original_request: "..."                   # REQUIRED - COMPLETE user request
@@ -110,9 +110,9 @@ original_request: "..."                   # REQUIRED - COMPLETE user request
 
 ---
 
-## Example: Stage -1 → Stage 0 Flow
+## Example: Stage 2 → Stage 3 Flow
 
-**Step 1: Dispatch to prompt-optimizer (Stage -1)**
+**Step 1: Dispatch to prompt-optimizer (Stage 2)**
 ```
 task tool:
   subagent_type: "prompt-optimizer"
@@ -133,7 +133,7 @@ task tool:
 ls -la .claude/.prompts/
 ```
 
-**Step 4: Dispatch optimized prompt to task-breakdown (Stage 0)**
+**Step 4: Dispatch optimized prompt to task-breakdown (Stage 3)**
 ```
 task tool:
   subagent_type: "task-breakdown"
@@ -142,7 +142,7 @@ task tool:
 
 ---
 
-## Example: Stage 1+ (Orchestrator Prepares Directly)
+## Example: Stage 5+ (Orchestrator Prepares Directly)
 
 **After task-breakdown completes, dispatch to code-discovery:**
 ```
@@ -168,7 +168,7 @@ task tool:
 | Stage | Use Prompt-Optimizer? | Who Prepares Prompt |
 |-------|----------------------|-------------------|
 | -2 | N/A (pipeline-scaler) | Orchestrator |
-| -1 | YES (optimizes for Stage 0) | Orchestrator → Prompt-Optimizer |
+| -1 | YES (optimizes for Stage 3) | Orchestrator → Prompt-Optimizer |
 | 0 | Receives optimized prompt | Prompt-Optimizer output |
 | 1+ | NO | Orchestrator prepares directly |
 

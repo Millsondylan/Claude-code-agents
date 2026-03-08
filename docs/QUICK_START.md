@@ -70,7 +70,7 @@ Simply make a request to Claude Code. The orchestrator will:
 
 - `/pipeline` - Start the multi-agent pipeline
 - `/status` - Show current pipeline status
-- `/restart` - Restart from Stage 0
+- `/restart` - Restart from Stage 3
 
 ### Example Session
 
@@ -79,7 +79,7 @@ User: Add a health check endpoint to the API
 
 Orchestrator:
 ## Pipeline Status
-- [ ] Stage -1: prompt-optimizer (IN PROGRESS)
+- [ ] Stage 2: prompt-optimizer (IN PROGRESS)
 ...
 
 Dispatching to prompt-optimizer...
@@ -87,8 +87,8 @@ Dispatching to prompt-optimizer...
 [prompt-optimizer completes]
 
 ## Pipeline Status
-- [x] Stage -1: prompt-optimizer
-- [ ] Stage 0: task-breakdown (IN PROGRESS)
+- [x] Stage 2: prompt-optimizer
+- [ ] Stage 3: task-breakdown (IN PROGRESS)
 ...
 
 Dispatching to task-breakdown...
@@ -96,9 +96,9 @@ Dispatching to task-breakdown...
 [task-breakdown completes]
 
 ## Pipeline Status
-- [x] Stage -1: prompt-optimizer
-- [x] Stage 0: task-breakdown
-- [ ] Stage 1: code-discovery (IN PROGRESS)
+- [x] Stage 2: prompt-optimizer
+- [x] Stage 3: task-breakdown
+- [ ] Stage 5: code-discovery (IN PROGRESS)
 ...
 
 [continues through all stages until decide-agent outputs COMPLETE]
@@ -169,7 +169,7 @@ The loop continues until tests pass or escalate.
 
 ### Decide-Agent Outputs RESTART
 
-This restarts the entire pipeline from Stage 0 with fresh context.
+This restarts the entire pipeline from Stage 3 with fresh context.
 
 ### Decide-Agent Outputs ESCALATE
 

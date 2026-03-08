@@ -2,7 +2,7 @@
 
 ## OVERVIEW
 
-When pipeline-scaler (Stage -2) outputs a ScalingPlan with N > 1 runs, the orchestrator
+When pipeline-scaler (Stage 1) outputs a ScalingPlan with N > 1 runs, the orchestrator
 executes N complete sequential pipeline runs — one after another — before issuing a final
 aggregated review. Each run is a full pipeline (Stages -1 through 8) scoped to that run's
 features only.
@@ -22,19 +22,19 @@ ScalingPlan received (N runs)
 │     ├── Check dependency gate (R > 1 only)
 │     ├── Extract run R features from ScalingPlan
 │     ├── Execute full inner pipeline for run R:
-│     │     Stage -1: prompt-optimizer
+│     │     Stage 2: prompt-optimizer
 │     │     Stage  0: task-breakdown  ← receives ONLY run R features
-│     │     Stage 0+: user confirmation (Run 1 only — see below)
+│     │     Stage 4: user confirmation (Run 1 only — see below)
 │     │     Stage  1: code-discovery  ← sees all files including prior runs
 │     │     Stage  2: plan-agent      ← knows what prior runs completed
 │     │     Stage  3: docs-researcher
-│     │     Stage 3.5: pre-flight-checker
+│     │     Stage 8: pre-flight-checker
 │     │     Stage  4: build-agent-N   ← implements run R features only
-│     │     Stage 4.5: test-writer
+│     │     Stage 10: test-writer
 │     │     Stage  5: debugger        ← if errors
-│     │     Stage 5.5: logical-agent
+│     │     Stage 12: logical-agent
 │     │     Stage  6: test-agent
-│     │     Stage 6.5: integration-agent
+│     │     Stage 14: integration-agent
 │     │     Stage  7: review-agent
 │     │     Stage  8: decide-agent    ← outputs COMPLETE or RESTART
 │     │
@@ -171,18 +171,18 @@ Display after each agent dispatch:
 Runs: [R of N complete] | Current: Run R — "[title]"
 
 ### Run R Inner Pipeline
-- [x] Stage -1: prompt-optimizer
+- [x] Stage 2: prompt-optimizer
 - [x] Stage  0: task-breakdown
 - [ ] Stage  1: code-discovery (IN PROGRESS)
 - [ ] Stage  2: plan-agent
 - [ ] Stage  3: docs-researcher
-- [ ] Stage 3.5: pre-flight-checker
+- [ ] Stage 8: pre-flight-checker
 - [ ] Stage  4: build-agent
-- [ ] Stage 4.5: test-writer
+- [ ] Stage 10: test-writer
 - [ ] Stage  5: debugger
-- [ ] Stage 5.5: logical-agent
+- [ ] Stage 12: logical-agent
 - [ ] Stage  6: test-agent
-- [ ] Stage 6.5: integration-agent
+- [ ] Stage 14: integration-agent
 - [ ] Stage  7: review-agent
 - [ ] Stage  8: decide-agent
 

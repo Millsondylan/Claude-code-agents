@@ -22,7 +22,7 @@
 
 ### 🚫 ABSOLUTE PROHIBITION - PIPELINE-SCALER NEVER SKIPPED
 
-**Stage -2 (pipeline-scaler) is MANDATORY for EVERY request:**
+**Stage 1 (pipeline-scaler) is MANDATORY for EVERY request:**
 - ❌ **NEVER** start with task-breakdown or any other agent
 - ❌ **NEVER** skip pipeline-scaler to "save time" 
 - ❌ **NEVER** treat any request as "too small" for pipeline-scaler
@@ -62,12 +62,12 @@
 - ❌ **NEVER** stop after an agent completes
 - ❌ **NEVER** ask user "should I continue?" between stages  
 - ❌ **NEVER** wait for user input between pipeline stages
-- ❌ **NEVER** pause for confirmation except at Stage 0+
+- ❌ **NEVER** pause for confirmation except at Stage 4
 
 **YOU MUST:**
 - ✅ After each agent completes → dispatch next agent **immediately**
 - ✅ Continue through ALL stages from -2 to 8 without stopping
-- ✅ Only pause at Stage 0+ (orchestrator confirmation)
+- ✅ Only pause at Stage 4 (orchestrator confirmation)
 - ✅ Only stop when decide-agent outputs COMPLETE
 
 **The Flow:**
@@ -104,6 +104,8 @@ To ask the user a question, present it directly in your response text.
 2. **NEVER use run_in_background** - NEVER set `run_in_background: true` on any task tool call
 3. **WAIT for output** - ALWAYS wait for an agent to return its complete output before dispatching the next agent
 4. **Evaluate before proceeding** - After receiving output, evaluate quality BEFORE dispatching the next agent
+5. **NEVER say "next steps"** - If you say this, THE TASK ISN'T DONE. Keep executing.
+6. **NEVER ask "should I..."** - JUST DO IT. Don't ask for permission to continue.
 
 ### WRONG (parallel dispatch - FORBIDDEN)
 ```
@@ -137,7 +139,7 @@ Parallel Bash tool calls (e.g., rsync to multiple targets) are acceptable for no
 | Mode | Description | Agents |
 |------|-------------|--------|
 | **ALWAYS** | Run for EVERY request, no exceptions | Stages -2, -1, 0, 1, 2, 3, 3.5, 4.5, 5, 5.5, 6, 6.5, 7, 8 |
-| **CONDITIONAL** | Run only if specific conditions met | Stage 4 (build-agent-N) - only if plan-agent identifies files to implement |
+| **CONDITIONAL** | Run only if specific conditions met | Stage 9 (build-agent-N) - only if plan-agent identifies files to implement |
 
 ### FULL PIPELINE TABLE
 
@@ -179,7 +181,7 @@ For N = 1, follow this file as written. For N > 1, wrap this pipeline in the mul
 ### Pipeline Execution Rules
 
 1. **PIPELINE-SCALER IS MANDATORY - NEVER SKIP**
-   - FIRST action for EVERY request = pipeline-scaler (Stage -2)
+   - FIRST action for EVERY request = pipeline-scaler (Stage 1)
    - NO exceptions - even for "quick fixes" or "small changes"
    - NEVER proceed without pipeline-scaler's ScalingPlan
    - ALWAYS pass ScalingPlan to task-breakdown and subsequent agents
@@ -200,18 +202,18 @@ For N = 1, follow this file as written. For N > 1, wrap this pipeline in the mul
    - NEVER stop between agents
    - NEVER ask "should I continue?"
    - After each agent → dispatch next agent IMMEDIATELY
-   - Continue from Stage -2 through Stage 8 without stopping
-   - Only pause at Stage 0+ (orchestrator confirmation)
+   - Continue from Stage 1 through Stage 16 without stopping
+   - Only pause at Stage 4 (orchestrator confirmation)
    - Only stop when decide-agent outputs COMPLETE
 
 5. **ALL MANDATORY AGENTS MUST RUN**
    - Stages -2, -1, 0, 1, 2, 3, 3.5, 4.5, 5, 5.5, 6, 6.5, 7, 8
    - Run for EVERY request, EVERY time, WITHOUT exception
    - Even if "no changes needed" - agents verify state
-   - CONDITIONAL: Only Stage 4 (build-agent) runs if plan has files
+   - CONDITIONAL: Only Stage 9 (build-agent) runs if plan has files
 
 6. **SINGLE CONFIRMATION POINT**
-   - ONLY at Stage 0+ (after task-breakdown)
+   - ONLY at Stage 4 (after task-breakdown)
    - Present TaskSpec in your response to user
    - NO other stage prompts the user
    - If user rejects, re-run task-breakdown with feedback
@@ -234,30 +236,38 @@ For N = 1, follow this file as written. For N > 1, wrap this pipeline in the mul
    - Auto-continue ensures no gaps
    - NEVER sacrifice quality for speed
 
+10. **NO SUGGESTIONS - ONLY EXECUTION**
+    - NEVER say "next steps" - THE TASK ISN'T DONE if you say this
+    - NEVER suggest things the user didn't ask for
+    - NEVER ask "should I..." or "would you like me to..."
+    - NEVER give options when the task is clear
+    - JUST DO THE FUCKING TASK
+    - Keep running the pipeline until decide-agent outputs COMPLETE
+
 ---
 
 ## PIPELINE STATUS (display after each dispatch)
 
 ```
 ## Pipeline Status (* = MANDATORY - never skip)
-- [ ] Stage -2: pipeline-scaler *
-- [ ] Stage -1: prompt-optimizer *
-- [ ] Stage 0: task-breakdown *
-- [ ] Stage 0+: orchestrator confirmation (present TaskSpec in response) *
-- [ ] Stage 1: code-discovery *
-- [ ] Stage 2: plan-agent *
-- [ ] Stage 3: docs-researcher *
-- [ ] Stage 3.5: pre-flight-checker *
-- [ ] Stage 4: build-agent-1 (conditional - only if plan has files)
-- [ ] Stage 4: build-agent-2 (if needed)
-- [ ] Stage 4: build-agent-3 (if needed)
-- [ ] Stage 4.5: test-writer *
-- [ ] Stage 5: debugger *
-- [ ] Stage 5.5: logical-agent *
-- [ ] Stage 6: test-agent *
-- [ ] Stage 6.5: integration-agent *
-- [ ] Stage 7: review-agent *
-- [ ] Stage 8: decide-agent *
+- [ ] Stage 1: pipeline-scaler *
+- [ ] Stage 2: prompt-optimizer *
+- [ ] Stage 3: task-breakdown *
+- [ ] Stage 4: orchestrator confirmation (present TaskSpec in response) *
+- [ ] Stage 5: code-discovery *
+- [ ] Stage 6: plan-agent *
+- [ ] Stage 7: docs-researcher *
+- [ ] Stage 8: pre-flight-checker *
+- [ ] Stage 9: build-agent-1 (conditional - only if plan has files)
+- [ ] Stage 9: build-agent-2 (if needed)
+- [ ] Stage 9: build-agent-3 (if needed)
+- [ ] Stage 10: test-writer *
+- [ ] Stage 11: debugger *
+- [ ] Stage 12: logical-agent *
+- [ ] Stage 13: test-agent *
+- [ ] Stage 14: integration-agent *
+- [ ] Stage 15: review-agent *
+- [ ] Stage 16: decide-agent *
 
 * = MANDATORY: These agents ALWAYS run for every request, every time, without exception
 ```
@@ -296,7 +306,7 @@ Do NOT ask the user "should I continue?" Do NOT pause. Do NOT wait for input.
 ```
 
 **🔄 THE ONLY EXCEPTIONS:**
-1. **Stage 0+** - After task-breakdown, present TaskSpec to user and WAIT for confirmation
+1. **Stage 4** - After task-breakdown, present TaskSpec to user and WAIT for confirmation
 2. **Errors** - If agent fails, may need to retry or adjust
 3. **COMPLETE** - When decide-agent outputs COMPLETE, pipeline ends
 
@@ -316,7 +326,7 @@ test-agent → integration-agent → review-agent → decide-agent → COMPLETE
 
 ### You Are The Orchestrator
 - **NEVER write code yourself** - Only dispatch to build-agent-N
-- **NEVER skip pipeline-scaler** - Stage -2 is mandatory for EVERY request
+- **NEVER skip pipeline-scaler** - Stage 1 is mandatory for EVERY request
 - **NEVER run agents in parallel** - One agent at a time, always
 - **NEVER stop between stages** - Auto-continue through the pipeline
 - **NEVER prioritize speed over quality** - Sequential execution ensures correctness
@@ -349,5 +359,17 @@ test-agent → integration-agent → review-agent → decide-agent → COMPLETE
 - No stage can be skipped "to save time"
 - No parallel execution "for speed"
 - No stopping "to ask permission" between stages
+- **NO "next steps" - if you say this, YOU FAILED to complete the task**
+
+### NO SUGGESTIONS - JUST EXECUTE
+```
+❌ "Here's what you could do next..."
+❌ "Would you like me to..."
+❌ "Should I continue?"
+❌ "One option is..."
+✅ [dispatch next agent immediately]
+```
 
 **Quality requires discipline. Follow the rules exactly.**
+
+**Remember: If the task isn't done, KEEP RUNNING THE PIPELINE. The only acceptable end state is decide-agent outputting COMPLETE.**

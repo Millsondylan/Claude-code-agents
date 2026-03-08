@@ -53,21 +53,21 @@ task tool:
 ```
 
 **Available agents (defined in .opencode/agents/):**
-- `pipeline-scaler` - Stage -2
-- `prompt-optimizer` - Stage -1
-- `task-breakdown` - Stage 0
-- `code-discovery` - Stage 1
-- `plan-agent` - Stage 2
-- `docs-researcher` - Stage 3
-- `pre-flight-checker` - Stage 3.5
-- `build-agent-1` through `build-agent-55` - Stage 4
-- `test-writer` - Stage 4.5
-- `debugger` through `debugger-11` - Stage 5
-- `logical-agent` - Stage 5.5
-- `test-agent` - Stage 6
-- `integration-agent` - Stage 6.5
-- `review-agent` - Stage 7
-- `decide-agent` - Stage 8
+- `pipeline-scaler` - Stage 1
+- `prompt-optimizer` - Stage 2
+- `task-breakdown` - Stage 3
+- `code-discovery` - Stage 5
+- `plan-agent` - Stage 6
+- `docs-researcher` - Stage 7
+- `pre-flight-checker` - Stage 8
+- `build-agent-1` through `build-agent-55` - Stage 9
+- `test-writer` - Stage 10
+- `debugger` through `debugger-11` - Stage 11
+- `logical-agent` - Stage 12
+- `test-agent` - Stage 13
+- `integration-agent` - Stage 14
+- `review-agent` - Stage 15
+- `decide-agent` - Stage 16
 
 ---
 
@@ -90,7 +90,7 @@ All agents read `.ai/README.md` at session start for safety protocols and qualit
 
 ## Multi-Run Orchestration
 
-When pipeline-scaler (Stage -2) outputs a ScalingPlan with N > 1 runs, the orchestrator
+When pipeline-scaler (Stage 1) outputs a ScalingPlan with N > 1 runs, the orchestrator
 executes a full sequential pipeline (Stages -1 through 8) for each run — one after another.
 
 **How it works:**
@@ -155,30 +155,30 @@ Before using the edit tool on any file, you MUST have read that file earlier in 
 
 ```
 ## Pipeline Status
-- [ ] Stage -2: pipeline-scaler
-- [ ] Stage -1: prompt-optimizer
-- [ ] Stage 0: task-breakdown
-- [ ] Stage 0+: orchestrator confirmation
-- [ ] Stage 1: code-discovery
-- [ ] Stage 2: plan-agent
-- [ ] Stage 3: docs-researcher
-- [ ] Stage 3.5: pre-flight-checker
-- [ ] Stage 4: build-agent-1
-- [ ] Stage 4: build-agent-2 (if needed)
-- [ ] Stage 4.5: test-writer
-- [ ] Stage 5: debugger (if needed)
-- [ ] Stage 5.5: logical-agent
-- [ ] Stage 6: test-agent
-- [ ] Stage 6.5: integration-agent
-- [ ] Stage 7: review-agent
-- [ ] Stage 8: decide-agent
+- [ ] Stage 1: pipeline-scaler
+- [ ] Stage 2: prompt-optimizer
+- [ ] Stage 3: task-breakdown
+- [ ] Stage 4: orchestrator confirmation
+- [ ] Stage 5: code-discovery
+- [ ] Stage 6: plan-agent
+- [ ] Stage 7: docs-researcher
+- [ ] Stage 8: pre-flight-checker
+- [ ] Stage 9: build-agent-1
+- [ ] Stage 9: build-agent-2 (if needed)
+- [ ] Stage 10: test-writer
+- [ ] Stage 11: debugger (if needed)
+- [ ] Stage 12: logical-agent
+- [ ] Stage 13: test-agent
+- [ ] Stage 14: integration-agent
+- [ ] Stage 15: review-agent
+- [ ] Stage 16: decide-agent
 ```
 
 ---
 
 ## Quick Reference
 
-1. **FIRST ACTION = pipeline-scaler** — Stage -2 scales the task, then prompt-optimizer, then task-breakdown
+1. **FIRST ACTION = pipeline-scaler** — Stage 1 scales the task, then prompt-optimizer, then task-breakdown
 2. **Sequential execution** — ONE task call per response, never parallel, never background
 3. **Single confirmation** — After task-breakdown only, present TaskSpec to user in response
 4. **Evaluate every output** — ACCEPT / RETRY / CONTINUE / HANDLE REQUEST

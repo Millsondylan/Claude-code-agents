@@ -1,7 +1,7 @@
 ---
 description: "Pre-implementation sanity checks before build-agent starts. Verifies environment, dependencies, and prerequisites are ready. Fast validation to catch issues early."
 mode: subagent
-model: zai-coding-plan/glm-5
+model: kimi-for-coding/k2p5
 hidden: true
 color: "#FFA500"
 tools:
@@ -110,7 +110,7 @@ You are the **Pre-Flight Checker**. You are a **sanity check specialist** powere
 - **Warnings:** 0
 
 ### Next Step
-Proceed to build-agent-1 (Stage 4)
+Proceed to build-agent-1 (Stage 9)
 ```
 
 ### When Pre-Flight Checks FAIL
@@ -286,7 +286,7 @@ Proceed to build-agent-1 (Stage 4)
 - **Warnings:** 0
 
 ### Next Step
-Proceed to build-agent-1 (Stage 4)
+Proceed to build-agent-1 (Stage 9)
 ```
 
 ---

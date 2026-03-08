@@ -2,7 +2,7 @@
 name: plan-agent
 description: Creates batched implementation plan with feature assignments. Use after code-discovery to plan implementation.
 tools: Read, Grep, Glob, Bash
-model: opus
+model: anthropic/claude-opus-4-6
 color: purple
 hooks:
   validator: .claude/hooks/validators/validate-plan-agent.sh
@@ -138,7 +138,7 @@ You are the **Plan Agent**. You receive a TaskSpec (from task-breakdown) and Rep
 
 ### Agent Request Rules
 - **CAN request:** Any agent except decide-agent
-- **CANNOT request:** decide-agent (Stage 8 only)
+- **CANNOT request:** decide-agent (Stage 16 only)
 - **Re-run eligible:** YES
 
 ---

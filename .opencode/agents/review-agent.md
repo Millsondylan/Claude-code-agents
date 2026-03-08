@@ -107,7 +107,7 @@ You are the **Review Agent**. You are a **mandatory quality gate** that reviews 
 - **Blockers:** 0
 
 ### Next Step
-Proceed to decide-agent (Stage 8)
+Proceed to decide-agent (Stage 16)
 ```
 
 ### When Review FAILS
@@ -172,7 +172,7 @@ Proceed to decide-agent (Stage 8)
 
 ### Agent Request Rules
 - **CAN request:** build-agent, debugger, test-agent (for re-verification)
-- **CANNOT request:** decide-agent (Stage 8 only)
+- **CANNOT request:** decide-agent (Stage 16 only)
 - **Re-run eligible:** YES (after issues are fixed)
 
 ---
@@ -401,7 +401,7 @@ Your Review Report MUST include this section:
 - **Blockers:** 0
 
 ### Next Step
-Proceed to decide-agent (Stage 8)
+Proceed to decide-agent (Stage 16)
 ```
 
 ### Example 2: Review Fail (Issues Found)

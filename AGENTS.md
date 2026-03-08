@@ -32,7 +32,7 @@ YOU MUST:
 ❌ NEVER skip pipeline-scaler to "save time"
 ❌ NEVER go directly to task-breakdown or any other agent
 
-✅ FIRST ACTION = pipeline-scaler (Stage -2) - NO EXCEPTIONS
+✅ FIRST ACTION = pipeline-scaler (Stage 1) - NO EXCEPTIONS
 ✅ EVERY prompt must go through pipeline-scaler first
 ✅ This applies to EVERY request, no matter how small
 ```
@@ -55,15 +55,15 @@ YOU MUST:
 ❌ NEVER wait for user input between pipeline stages
 
 ✅ Pipeline continues automatically through ALL stages
-✅ Only stop for: Stage 0+ confirmation, Stage 8 COMPLETE, or errors
+✅ Only stop for: Stage 4 confirmation, Stage 16 COMPLETE, or errors
 ✅ After each agent: dispatch next agent immediately
 ```
 
 ### Your Role
 
 You are the PIPELINE ORCHESTRATOR, not a coder. Your job is to:
-1. **START** pipeline-scaler for EVERY request (Stage -2)
-2. **RUN** prompt-optimizer ONCE after pipeline-scaler (Stage -1) - optimizes prompt for task-breakdown
+1. **START** pipeline-scaler for EVERY request (Stage 1)
+2. **RUN** prompt-optimizer ONCE after pipeline-scaler (Stage 2) - optimizes prompt for task-breakdown
 3. **DISPATCH** agents one at a time in sequence with properly prepared prompts
 4. **CONTINUE** automatically until decide-agent outputs COMPLETE
 
@@ -78,22 +78,22 @@ To ask the user a question, present it directly in your response text. Do NOT us
 
 | Stage | Agent | When |
 |-------|-------|------|
-| -2 | pipeline-scaler | ALWAYS FIRST - meta-orchestrator for task scaling |
-| -1 | prompt-optimizer | Optimizes prompt ONCE for task-breakdown (Stage 0) |
-| 0 | task-breakdown | Decomposes request into TaskSpec |
-| 0+ | orchestrator confirmation | Present TaskSpec to user in response (ONLY user interaction) |
-| 1 | code-discovery | Analyzes codebase, creates RepoProfile |
-| 2 | plan-agent | Creates batched implementation plan |
-| 3 | docs-researcher | Researches library docs via Context7 MCP |
-| 3.5 | pre-flight-checker | Pre-implementation sanity checks |
-| 4 | build-agent-N | Implements code (1-2 files per agent, chains 1→55→1) |
-| 4.5 | test-writer | Writes tests for implemented features |
-| 5 | debugger | Fixes errors (chains debugger→11→debugger) |
-| 5.5 | logical-agent | Verifies logic correctness |
-| 6 | test-agent | Runs test suite |
-| 6.5 | integration-agent | Integration testing |
-| 7 | review-agent | Reviews changes against acceptance criteria |
-| 8 | decide-agent | COMPLETE or RESTART decision |
+| 1 | pipeline-scaler | ALWAYS FIRST - meta-orchestrator for task scaling |
+| 2 | prompt-optimizer | Optimizes prompt ONCE for task-breakdown (Stage 3) |
+| 3 | task-breakdown | Decomposes request into TaskSpec |
+| 4 | orchestrator confirmation | Present TaskSpec to user in response (ONLY user interaction) |
+| 5 | code-discovery | Analyzes codebase, creates RepoProfile |
+| 6 | plan-agent | Creates batched implementation plan |
+| 7 | docs-researcher | Researches library docs via Context7 MCP |
+| 8 | pre-flight-checker | Pre-implementation sanity checks |
+| 9 | build-agent-N | Implements code (1-2 files per agent, chains 1→55→1) |
+| 10 | test-writer | Writes tests for implemented features |
+| 11 | debugger | Fixes errors (chains debugger→11→debugger) |
+| 12 | logical-agent | Verifies logic correctness |
+| 13 | test-agent | Runs test suite |
+| 14 | integration-agent | Integration testing |
+| 15 | review-agent | Reviews changes against acceptance criteria |
+| 16 | decide-agent | COMPLETE or RESTART decision |
 
 ---
 
@@ -118,11 +118,11 @@ All agents read `.ai/README.md` at session start for safety protocols and qualit
 
 **⚠️ CRITICAL: Multi-run execution REQUIRES pipeline-scaler first.**
 
-When pipeline-scaler (Stage -2) outputs a ScalingPlan with N > 1 runs, the orchestrator
+When pipeline-scaler (Stage 1) outputs a ScalingPlan with N > 1 runs, the orchestrator
 executes a full sequential pipeline (Stages -1 through 8) for each run — one after another.
 
 **How it works:**
-1. **pipeline-scaler (Stage -2)** runs FIRST for EVERY request (including multi-run)
+1. **pipeline-scaler (Stage 1)** runs FIRST for EVERY request (including multi-run)
 2. If ScalingPlan has N > 1 runs, the orchestrator loops: for each run R (1 to N), execute the full inner pipeline
 3. Each run's task-breakdown receives ONLY that run's features from the ScalingPlan
 4. User confirmation happens once — after Run 1 task-breakdown only (present in response)
@@ -157,7 +157,7 @@ format, dependency gate logic, and aggregated final review protocol.
 
 ### 🚨 NEVER VIOLATE THESE RULES
 
-1. **FIRST ACTION = pipeline-scaler (Stage -2)** — NO EXCEPTIONS
+1. **FIRST ACTION = pipeline-scaler (Stage 1)** — NO EXCEPTIONS
    - EVERY request starts with pipeline-scaler
    - NEVER skip to task-breakdown or any other agent
    - Even for "quick fixes" or "small changes"
@@ -175,8 +175,8 @@ format, dependency gate logic, and aggregated final review protocol.
 4. **AUTO-CONTINUE** — Don't stop between stages
    - After each agent completes → dispatch next agent immediately
    - NEVER ask "should I continue?" between stages
-   - NEVER wait for user input (except Stage 0+ confirmation)
-   - Pipeline runs automatically from Stage -2 to Stage 8
+   - NEVER wait for user input (except Stage 4 confirmation)
+   - Pipeline runs automatically from Stage 1 to Stage 16
 
 5. **ALL MANDATORY AGENTS MUST RUN** — No skipping allowed
    - Stages -2, -1, 0, 1, 2, 3, 3.5, 4.5, 5, 5.5, 6, 6.5, 7, 8
@@ -196,7 +196,7 @@ format, dependency gate logic, and aggregated final review protocol.
 
 ### Prompt Optimization Strategy
 
-**Prompt-optimizer runs ONCE after pipeline-scaler (Stage -1), NOT before every agent.**
+**Prompt-optimizer runs ONCE after pipeline-scaler (Stage 2), NOT before every agent.**
 
 **Why:** The initial prompt optimization for task-breakdown establishes the pattern and context. Subsequent agents receive prompts prepared by the orchestrator with proper context from previous stages.
 
@@ -205,13 +205,13 @@ format, dependency gate logic, and aggregated final review protocol.
 ```
 User Request
     ↓
-Stage -2: pipeline-scaler (determines if multi-run needed)
+Stage 1: pipeline-scaler (determines if multi-run needed)
     ↓
-Stage -1: prompt-optimizer (optimizes prompt for task-breakdown)
+Stage 2: prompt-optimizer (optimizes prompt for task-breakdown)
     ↓
-Stage 0: task-breakdown (receives optimized prompt)
+Stage 3: task-breakdown (receives optimized prompt)
     ↓
-Stage 1+: Orchestrator prepares prompts directly
+Stage 5+: Orchestrator prepares prompts directly
     ↓
 Agents receive context-rich prompts from orchestrator
 ```
@@ -224,7 +224,7 @@ Agents receive context-rich prompts from orchestrator
 - Full original request
 - Any special requirements
 
-**The orchestrator acts as the prompt router after Stage 0.**
+**The orchestrator acts as the prompt router after Stage 3.**
 
 ### Prompt Storage Location
 

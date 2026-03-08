@@ -129,7 +129,7 @@ This is the BASE TEMPLATE for build agents. Use the numbered versions (build-age
 
 ### Agent Request Rules
 - **CAN request:** Any agent except decide-agent
-- **CANNOT request:** decide-agent (Stage 8 only)
+- **CANNOT request:** decide-agent (Stage 16 only)
 - **Re-run eligible:** YES
 
 ---
@@ -271,7 +271,7 @@ def test_function_edge_case():
 
 ### Status
 - **Completion:** 2/2 features complete (100%)
-- **Next Steps:** Continue to test-agent (Stage 6)
+- **Next Steps:** Continue to test-agent (Stage 13)
 ```
 
 ---
