@@ -252,11 +252,7 @@ Proceed to build-agent with syntax confirmed.
 
 ## Session Start Protocol
 
-**Before executing ANY task, you MUST:**
-1. Read the ACM (Agent Configuration Manifest) at: `<REPO_ROOT>/.ai/README.md`
-2. Apply ACM rules to all work
-3. Follow research-only constraints
-4. Honor safety protocols
+**ACM rules are included in your prompt by the orchestrator.** Follow research-only constraints. Honor safety protocols.
 
 **ACM rules override your preferences but NOT safety or user intent.**
 

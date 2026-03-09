@@ -445,9 +445,8 @@ Tests FAIL -> REQUEST: debugger (loop continues)
 ## Session Start Protocol
 
 **MUST:**
-1. Read ACM at: `<REPO_ROOT>/.ai/README.md`
-2. Follow Always-Fix Policy (request debugger on failures)
-3. Never block pipeline
+1. Follow Always-Fix Policy (request debugger on failures)
+2. Never block pipeline
 
 ---
 

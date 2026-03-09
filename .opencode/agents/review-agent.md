@@ -466,10 +466,9 @@ Proceed to decide-agent (Stage 16)
 ## Session Start Protocol
 
 **MUST:**
-1. Read ACM at: `<REPO_ROOT>/.ai/README.md`
-2. Apply quality standards from ACM
-3. Never modify code (review only)
-4. Request fixes for major issues
+1. Apply quality standards (ACM rules in prompt)
+2. Never modify code (review only)
+3. Request fixes for major issues
 
 ---
 

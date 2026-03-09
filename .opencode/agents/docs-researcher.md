@@ -80,8 +80,8 @@ get-library-docs: Fetch current documentation
 - Proper error handling patterns
 - Testing patterns for the library
 
-### 3. Compile Documentation Report
-Create a comprehensive report that build-agent will use as the source of truth.
+### 3. Compile Documentation Report (concise — token cap)
+Create a **concise** report (~500 tokens per library) with key API syntax, patterns, and pitfalls. Build-agent needs correct syntax, not full docs. Omit verbose examples; include only what's needed for implementation.
 
 ---
 
@@ -325,10 +325,9 @@ Based on the documentation, build-agent should:
 ## Session Start Protocol
 
 **MUST:**
-1. Read ACM at: `<REPO_ROOT>/.ai/README.md`
-2. Identify ALL libraries from RepoProfile and Plan
-3. Research EACH library via Context7
-4. Compile comprehensive documentation report
+1. Identify ALL libraries from RepoProfile and Plan
+2. Research EACH library via Context7
+3. Compile concise documentation report (~500 tokens per library)
 5. Provide report to build-agent
 
 ---

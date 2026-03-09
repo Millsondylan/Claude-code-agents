@@ -221,8 +221,22 @@ The orchestrator parses this and creates a LoopBackTrigger:
 | Stage 5 | user_request, stage_0_taskspec, stage_4_builds, stage_6_tests (if available) |
 | Stage 5.5 | user_request, stage_0_taskspec, stage_4_builds |
 | Stage 6 | user_request, stage_0_taskspec, stage_1_repoprofile, stage_4_builds |
-| Stage 7 | All stage outputs |
-| Stage 8 | All stage outputs |
+| Stage 7 | user_request, TaskSpec summary, StageSummaries, acceptance criteria status |
+| Stage 8 | user_request, TaskSpec summary, StageSummaries, acceptance criteria status, decision evidence |
+
+### Stage Summaries (for Stage 7 and 8 — token reduction)
+Pass **summaries** instead of full raw outputs to review-agent and decide-agent:
+
+| Summary Field | Required Content |
+|---------------|------------------|
+| taskspec_summary | Features F1..Fn, acceptance criteria list, risks |
+| repoprofile_summary | Tech stack, key conventions, test commands |
+| plan_summary | Batches, file paths, order |
+| builds_summary | Files modified/created, status per feature |
+| test_summary | Pass/fail, failure count, key failures |
+| review_summary | (Stage 8 only) Review verdict, issues found |
+
+**Full outputs** remain in PipelineContext for loop-backs; **summaries** go in prompts to Stage 7/8.
 
 ### Minimal Context Principle
 - Pass only what the agent needs

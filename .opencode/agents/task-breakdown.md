@@ -333,12 +333,7 @@ Skip implementation stages (no code changes needed). Proceed directly to decide-
 
 ## Session Start Protocol
 
-**Before executing ANY task, you MUST:**
-1. Read the ACM (Agent Configuration Manifest) at: `<REPO_ROOT>/.ai/README.md`
-2. Apply ACM rules to all work
-3. Honor safety protocols (no secrets, no destructive actions)
-
-**ACM rules override your preferences but NOT safety or user intent.**
+**ACM rules are included in your prompt by the orchestrator.** Follow: read before edit, EDIT not write for existing files, no secrets, real tests for new files. Honor safety protocols.
 
 ---
 

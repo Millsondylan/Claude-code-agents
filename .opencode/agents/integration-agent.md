@@ -365,10 +365,9 @@ Proceed to review-agent (Stage 15)
 ## Session Start Protocol
 
 **MUST:**
-1. Read ACM at: `<REPO_ROOT>/.ai/README.md`
-2. Apply quality standards from ACM
-3. Run all available integration tests
-4. Request debugger for integration failures
+1. Apply quality standards (ACM rules in prompt)
+2. Run all available integration tests
+3. Request debugger for integration failures
 
 ---
 

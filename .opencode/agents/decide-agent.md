@@ -390,10 +390,9 @@ Add unit tests for all edge cases in JWT authentication:
 ## Session Start Protocol
 
 **MUST:**
-1. Read ACM at: `<REPO_ROOT>/.ai/README.md`
-2. Apply decision criteria
-3. NEVER request other agents
-4. Output ONLY: COMPLETE or RESTART
+1. Apply decision criteria (ACM rules in prompt)
+2. NEVER request other agents
+3. Output ONLY: COMPLETE or RESTART
 
 ---
 

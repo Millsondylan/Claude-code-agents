@@ -51,7 +51,7 @@ When context usage grows high, Claude Code automatically compacts the conversati
 export CLAUDE_AUTOCOMPACT_PCT_OVERRIDE=70
 ```
 
-This triggers compaction when context usage reaches 70% (default varies by runtime). Lower values compact more aggressively, preserving headroom for long pipelines. For multi-stage pipelines, a value between 50-70 is recommended to avoid mid-stage compaction.
+This triggers compaction when context usage reaches 70% (default varies by runtime). Lower values compact more aggressively, preserving headroom for long pipelines. **For token reduction:** use `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE=50` to compact earlier. For multi-stage pipelines, 50-70 is recommended.
 
 ### Environment Variables
 

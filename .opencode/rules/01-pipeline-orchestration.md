@@ -154,13 +154,15 @@ Parallel Bash tool calls (e.g., rsync to multiple targets) are acceptable for no
 | 3 | docs-researcher | **ALWAYS** | Researches library docs via Context7 MCP |
 | 3.5 | pre-flight-checker | **ALWAYS** | Pre-implementation sanity checks |
 | 4 | build-agent-N | CONDITIONAL | Implements code - ONLY if plan has files to implement |
-| 4.5 | test-writer | **ALWAYS** | Writes tests for implemented features |
+| 4.5 | test-writer | CONDITIONAL | Writes tests - SKIP if no files implemented (e.g. greeting, question) |
 | 5 | debugger | **ALWAYS** | Fixes errors - runs even if "no errors" to verify |
-| 5.5 | logical-agent | **ALWAYS** | Verifies logic correctness |
-| 6 | test-agent | **ALWAYS** | Runs test suite |
-| 6.5 | integration-agent | **ALWAYS** | Integration testing specialist |
+| 5.5 | logical-agent | CONDITIONAL | Verifies logic - SKIP if no code changes |
+| 6 | test-agent | CONDITIONAL | Runs test suite - SKIP if no code changes |
+| 6.5 | integration-agent | CONDITIONAL | Integration testing - SKIP if no code changes |
 | 7 | review-agent | **ALWAYS** | Reviews changes against acceptance criteria |
 | 8 | decide-agent | **ALWAYS** | Makes COMPLETE/RESTART decision |
+
+**Skip condition for 4.5, 5.5, 6, 6.5:** When TaskSpec says "Skip implementation stages" or Plan has no files to implement, skip these agents. **Order preserved** — proceed directly to review-agent (Stage 7), then decide-agent (Stage 8).
 
 ---
 
@@ -206,11 +208,11 @@ For N = 1, follow this file as written. For N > 1, wrap this pipeline in the mul
    - Only pause at Stage 4 (orchestrator confirmation)
    - Only stop when decide-agent outputs COMPLETE
 
-5. **ALL MANDATORY AGENTS MUST RUN**
-   - Stages -2, -1, 0, 1, 2, 3, 3.5, 4.5, 5, 5.5, 6, 6.5, 7, 8
-   - Run for EVERY request, EVERY time, WITHOUT exception
-   - Even if "no changes needed" - agents verify state
-   - CONDITIONAL: Only Stage 9 (build-agent) runs if plan has files
+5. **MANDATORY vs CONDITIONAL AGENTS**
+   - **ALWAYS run:** Stages -2, -1, 0, 1, 2, 3, 3.5, 5, 7, 8 (pipeline-scaler through pre-flight, debugger, review, decide)
+   - **CONDITIONAL:** Stage 4 (build-agent) — only if plan has files
+   - **CONDITIONAL:** Stages 4.5, 5.5, 6, 6.5 (test-writer, logical-agent, test-agent, integration-agent) — SKIP when no code changes (e.g. greeting, question, "Skip implementation stages")
+   - **Order preserved** — when skipping conditionals, proceed directly to review-agent (7) then decide-agent (8)
 
 6. **SINGLE CONFIRMATION POINT**
    - ONLY at Stage 4 (after task-breakdown)

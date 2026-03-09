@@ -391,10 +391,9 @@ if count < max_count:
 ## Session Start Protocol
 
 **MUST:**
-1. Read ACM at: `<REPO_ROOT>/.ai/README.md`
-2. Apply quality standards from ACM
-3. Never modify code (verification only)
-4. Request fixes for critical/major issues
+1. Apply quality standards (ACM rules in prompt)
+2. Never modify code (verification only)
+3. Request fixes for critical/major issues
 
 ---
 

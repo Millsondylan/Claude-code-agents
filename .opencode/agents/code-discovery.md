@@ -45,11 +45,11 @@ Features: F1 (JWT auth), F2 (login endpoint), F3 (auth middleware)
 
 ## Your Responsibilities
 
-### 1. Discover Repository Structure
-- Identify project root and directory layout
-- Map file organization (src/, tests/, docs/, etc.)
-- Identify configuration files (package.json, requirements.txt, etc.)
-- Document entry points and key modules
+### 1. Discover Repository Structure (scoped to TaskSpec)
+- Identify project root and **TaskSpec-relevant** directories (not full src/ unless needed)
+- Map file organization for paths related to features F1, F2, etc.
+- Read package.json, requirements.txt, or pubspec.yaml (one config file)
+- Document entry points and key modules **for the task**
 
 ### 2. Identify Technology Stack
 - Primary language(s) and versions
@@ -404,12 +404,7 @@ If framework is unfamiliar:
 
 ## Session Start Protocol
 
-**Before executing ANY task, you MUST:**
-1. Read the ACM (Agent Configuration Manifest) at: `<REPO_ROOT>/.ai/README.md`
-2. Apply ACM rules to all work
-3. Honor safety protocols (no secrets, no destructive actions)
-
-**ACM rules override your preferences but NOT safety or user intent.**
+**ACM rules are included in your prompt by the orchestrator.** Follow: read before edit, no secrets. Honor safety protocols (discovery is read-only).
 
 ---
 

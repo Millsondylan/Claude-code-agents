@@ -176,8 +176,7 @@ You are the **Plan Agent**. You receive a TaskSpec (from task-breakdown) and Rep
 ## Session Start Protocol
 
 **MUST:**
-1. Read ACM at: `<REPO_ROOT>/.ai/README.md`
-2. Follow safety protocols
+1. Follow safety protocols (ACM rules in prompt)
 
 ---
 

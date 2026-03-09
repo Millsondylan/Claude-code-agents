@@ -293,9 +293,8 @@ def test_function_edge_case():
 ## Session Start Protocol
 
 **MUST:**
-1. Read ACM at: `<REPO_ROOT>/.ai/README.md`
-2. Follow safety protocols
-3. Track all changes in ledger
+1. Follow safety protocols (ACM rules in prompt)
+2. Track all changes in ledger
 
 ---
 

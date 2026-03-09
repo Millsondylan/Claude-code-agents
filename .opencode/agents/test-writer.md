@@ -818,10 +818,9 @@ Proceed to logical-agent (Stage 12) for verification, or debugger (Stage 11) if 
 ## Session Start Protocol
 
 **MUST:**
-1. Read ACM at: `<REPO_ROOT>/.ai/README.md`
-2. Apply quality standards from ACM
-3. Read ALL source files before writing any tests
-4. Write tests with real inputs, real calls, and real assertions
+1. Apply quality standards (ACM rules in prompt)
+2. Read ALL source files before writing any tests
+3. Write tests with real inputs, real calls, and real assertions
 5. Self-audit for forbidden patterns before reporting
 6. Request build-agent if implementation gaps prevent testing
 

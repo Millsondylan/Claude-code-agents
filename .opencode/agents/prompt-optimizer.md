@@ -268,15 +268,15 @@ You output ONLY the optimized prompt. No explanations. No preamble.
 
 ## YOUR PROCESS
 
-### Step 1: CODEBASE ANALYSIS (mandatory)
+### Step 1: CODEBASE ANALYSIS (scoped for token efficiency)
 
-Before optimizing, gather context:
+Before optimizing, gather **focused** context:
 
-1. **Read the codebase structure** - Identify relevant directories, entry points, patterns
-2. **Identify the stack** - Detect frontend, backend, database, auth from package.json, requirements.txt, pubspec.yaml, etc.
-3. **Find related files** - What files will the target agent likely need to read or modify?
-4. **Check for existing patterns** - How does this codebase handle similar tasks?
-5. **Locate the agents** - Verify `.agents/` path and which agents exist
+1. **Identify the stack** - Read package.json, requirements.txt, or pubspec.yaml (one file)
+2. **Find 3-5 relevant files** - From TaskSpec/raw_prompt, identify files the target agent needs
+3. **Check patterns** - One example file for similar patterns (if applicable)
+
+**Do NOT:** Full structure scan, glob entire src/, locate agents. Keep analysis under ~500 tokens.
 
 ### Step 2: READ TARGET AGENT DEFINITION (CRITICAL)
 
@@ -683,8 +683,7 @@ result = call_sub_agent("build-agent-1", optimized)
 ## Session Start Protocol
 
 **MUST:**
-1. Read ACM at: `<REPO_ROOT>/.ai/README.md`
-2. **READ target agent definition** from `.opencode/agents/{target_agent}.md` (CRITICAL)
+1. **READ target agent definition** from `.opencode/agents/{target_agent}.md` (CRITICAL)
 3. Analyze codebase structure for context enrichment
 4. Identify target agent and task type
 5. Apply all optimization rules

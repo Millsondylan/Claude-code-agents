@@ -307,10 +307,9 @@ Proceed to build-agent-1 (Stage 9)
 ## Session Start Protocol
 
 **MUST:**
-1. Read ACM at: `<REPO_ROOT>/.ai/README.md`
-2. Apply quality standards from ACM
-3. Never modify code (sanity checks only)
-4. Report all blockers before build starts
+1. Apply quality standards (ACM rules in prompt)
+2. Never modify code (sanity checks only)
+3. Report all blockers before build starts
 
 ---
 
