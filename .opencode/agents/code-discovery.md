@@ -1,7 +1,7 @@
 ---
 description: "Discovers repository structure, tech stack, conventions, and test infrastructure. Creates RepoProfile for downstream agents. Use after task-breakdown."
 mode: subagent
-model: zai-coding-plan/glm-5
+model: kimi-for-coding/k2p5
 hidden: true
 color: "#00FFFF"
 tools:
