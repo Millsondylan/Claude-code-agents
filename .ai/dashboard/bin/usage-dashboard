@@ -1,0 +1,240 @@
+#!/usr/bin/env node
+/**
+ * OpenCode Terminal Usage Dashboard - CLI Entry Point
+ *
+ * Executable wrapper for the usage dashboard that handles:
+ * - CLI argument parsing
+ * - Environment setup
+ * - Error handling
+ * - Process lifecycle
+ *
+ * Usage: usage-dashboard [options]
+ *
+ * Options:
+ *   --interval, -i <seconds>  Auto-refresh interval (default: 30)
+ *   --compact, -c             Compact display mode
+ *   --once, -o                Run once and exit
+ *   --help, -h                Show help
+ */
+
+const { spawn } = require('child_process');
+const path = require('path');
+const fs = require('fs');
+
+// Colors for terminal output
+const colors = {
+  red: '\x1b[31m',
+  yellow: '\x1b[33m',
+  reset: '\x1b[0m',
+  bold: '\x1b[1m',
+};
+
+/**
+ * Show help message
+ */
+function showHelp() {
+  console.log(`
+${colors.bold}OpenCode Terminal Usage Dashboard${colors.reset}
+
+Usage: usage-dashboard [options]
+
+Display real-time provider usage statistics in the terminal.
+
+Options:
+  -i, --interval <seconds>  Auto-refresh interval in seconds (default: 30)
+  -c, --compact             Enable compact mode (single line per provider)
+  -o, --once                Run once and exit (no auto-refresh)
+  -d, --data <path>         Path to provider usage data JSON file
+  -h, --help                Show this help message
+
+Keyboard Controls (while running):
+  r        Refresh data immediately
+  q        Quit dashboard
+  Ctrl+C   Quit dashboard
+
+Environment Variables:
+  OPENCODE_DATA_PATH    Override default data file path
+  NO_COLOR              Disable colored output
+
+Examples:
+  usage-dashboard                    # Run with default settings (30s refresh)
+  usage-dashboard -i 60              # Refresh every 60 seconds
+  usage-dashboard --compact          # Compact display mode
+  usage-dashboard -o                 # Display once and exit
+  usage-dashboard -d ./data.json     # Use custom data file
+
+Data Source:
+  By default, reads from: .ai/extracted/provider-usage-data.json
+  Generate fresh data with: opencode utils extract-provider-usage
+`);
+}
+
+/**
+ * Check if tsx is available (globally or locally)
+ */
+function checkTsx() {
+  try {
+    require.resolve('tsx');
+    return true;
+  } catch {
+    // Check if available via npx/node_modules
+    try {
+      const { execSync } = require('child_process');
+      execSync('npx --yes tsx --version', { stdio: 'pipe' });
+      return 'npx';
+    } catch {
+      return false;
+    }
+  }
+}
+
+/**
+ * Check if ts-node is available (globally or locally)
+ */
+function checkTsNode() {
+  try {
+    require.resolve('ts-node');
+    return true;
+  } catch {
+    // Check if available via npx/node_modules
+    try {
+      const { execSync } = require('child_process');
+      execSync('npx ts-node --version', { stdio: 'pipe' });
+      return 'npx';
+    } catch {
+      return false;
+    }
+  }
+}
+
+/**
+ * Find the dashboard.ts file
+ */
+function findDashboardScript() {
+  // Check relative to this script's location
+  const scriptDir = __dirname;
+  const possiblePaths = [
+    path.join(scriptDir, '..', 'dashboard.ts'),
+    path.join(scriptDir, '..', '..', 'dashboard.ts'),
+    path.join(process.cwd(), '.ai', 'dashboard', 'dashboard.ts'),
+  ];
+
+  for (const p of possiblePaths) {
+    if (fs.existsSync(p)) {
+      return p;
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Run the dashboard
+ */
+function runDashboard(args) {
+  const dashboardScript = findDashboardScript();
+
+  if (!dashboardScript) {
+    console.error(`${colors.red}Error: Could not find dashboard.ts${colors.reset}`);
+    console.error('Make sure you\'re running from the project root directory.');
+    process.exit(1);
+  }
+
+  // Determine TypeScript execution method
+  let runner;
+  let runnerArgs;
+
+  const tsxAvailable = checkTsx();
+  const tsNodeAvailable = checkTsNode();
+
+  if (tsxAvailable === true) {
+    runner = 'tsx';
+    runnerArgs = [dashboardScript, ...args];
+  } else if (tsxAvailable === 'npx') {
+    runner = 'npx';
+    runnerArgs = ['--yes', 'tsx', dashboardScript, ...args];
+  } else if (tsNodeAvailable === true) {
+    runner = 'ts-node';
+    runnerArgs = ['--transpile-only', dashboardScript, ...args];
+  } else if (tsNodeAvailable === 'npx') {
+    runner = 'npx';
+    runnerArgs = ['ts-node', '--transpile-only', dashboardScript, ...args];
+  } else if (fs.existsSync(dashboardScript.replace('.ts', '.js'))) {
+    // Use compiled JavaScript if available
+    runner = 'node';
+    runnerArgs = [dashboardScript.replace('.ts', '.js'), ...args];
+  } else {
+    console.error(`${colors.red}Error: No TypeScript runtime found${colors.reset}`);
+    console.error('Please install tsx or ts-node:');
+    console.error('  npm install -g tsx');
+    console.error('  # or');
+    console.error('  npm install -g ts-node');
+    process.exit(1);
+  }
+
+  // Set up environment
+  const env = { ...process.env };
+  
+  // Check for custom data path
+  if (process.env.OPENCODE_DATA_PATH) {
+    args.push('--data', process.env.OPENCODE_DATA_PATH);
+  }
+
+  // Spawn the dashboard process
+  const child = spawn(runner, runnerArgs, {
+    stdio: 'inherit',
+    env,
+    cwd: process.cwd(),
+  });
+
+  // Handle process exit
+  child.on('exit', (code) => {
+    process.exit(code || 0);
+  });
+
+  // Handle errors
+  child.on('error', (err) => {
+    console.error(`${colors.red}Error starting dashboard:${colors.reset}`, err.message);
+    process.exit(1);
+  });
+
+  // Forward signals to child process
+  process.on('SIGINT', () => {
+    child.kill('SIGINT');
+  });
+
+  process.on('SIGTERM', () => {
+    child.kill('SIGTERM');
+  });
+}
+
+/**
+ * Parse arguments and run
+ */
+function main() {
+  const args = process.argv.slice(2);
+
+  // Check for help
+  if (args.includes('--help') || args.includes('-h')) {
+    showHelp();
+    process.exit(0);
+  }
+
+  // Check for version
+  if (args.includes('--version') || args.includes('-v')) {
+    const pkgPath = path.join(__dirname, '..', 'package.json');
+    if (fs.existsSync(pkgPath)) {
+      const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
+      console.log(`v${pkg.version || 'unknown'}`);
+    } else {
+      console.log('v1.0.0');
+    }
+    process.exit(0);
+  }
+
+  // Run the dashboard
+  runDashboard(args);
+}
+
+// Run main
+main();

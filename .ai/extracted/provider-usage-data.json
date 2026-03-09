@@ -1,0 +1,264 @@
+{
+  "generatedAt": "2026-03-08T20:12:00.289Z",
+  "extractionVersion": "1.0.0",
+  "dataSource": {
+    "databasePath": "/Users/dyl/.local/share/opencode/opencode.db",
+    "authPath": "/Users/dyl/.local/share/opencode/auth.json",
+    "messageCount": 25075,
+    "partCount": 117279
+  },
+  "providers": [
+    {
+      "provider": "anthropic",
+      "displayName": "Claude (Anthropic)",
+      "tokensUsed": 418099055,
+      "tokensInput": 7485,
+      "tokensOutput": 3491581,
+      "tokensReasoning": 0,
+      "tokensCacheRead": 384763971,
+      "tokensCacheWrite": 29836018,
+      "messageCount": 6670,
+      "partCount": 0,
+      "windowType": "5-hour",
+      "timeWindow": {
+        "start": "2026-03-03T14:39:32.746Z",
+        "end": "2026-03-08T20:06:10.417Z"
+      },
+      "knownLimits": {
+        "tokensPerWindow": 100000
+      },
+      "notes": [
+        "Current 5-hour window (last 5h): 12,858 tokens"
+      ],
+      "rollingWindows": [
+        {
+          "windowStart": "2026-03-06T17:39:32.746Z",
+          "windowEnd": "2026-03-06T22:39:32.746Z",
+          "tokensUsed": 5799636,
+          "percentageOfLimit": 5799.6
+        },
+        {
+          "windowStart": "2026-03-06T22:39:32.746Z",
+          "windowEnd": "2026-03-07T03:39:32.746Z",
+          "tokensUsed": 2765584,
+          "percentageOfLimit": 2765.6
+        },
+        {
+          "windowStart": "2026-03-07T08:39:32.746Z",
+          "windowEnd": "2026-03-07T13:39:32.746Z",
+          "tokensUsed": 33435477,
+          "percentageOfLimit": 33435.5
+        },
+        {
+          "windowStart": "2026-03-07T13:39:32.746Z",
+          "windowEnd": "2026-03-07T18:39:32.746Z",
+          "tokensUsed": 26803987,
+          "percentageOfLimit": 26804
+        },
+        {
+          "windowStart": "2026-03-07T18:39:32.746Z",
+          "windowEnd": "2026-03-07T23:39:32.746Z",
+          "tokensUsed": 55397387,
+          "percentageOfLimit": 55397.4
+        },
+        {
+          "windowStart": "2026-03-07T23:39:32.746Z",
+          "windowEnd": "2026-03-08T04:39:32.746Z",
+          "tokensUsed": 17763635,
+          "percentageOfLimit": 17763.6
+        },
+        {
+          "windowStart": "2026-03-08T04:39:32.746Z",
+          "windowEnd": "2026-03-08T09:39:32.746Z",
+          "tokensUsed": 5662652,
+          "percentageOfLimit": 5662.7
+        },
+        {
+          "windowStart": "2026-03-08T09:39:32.746Z",
+          "windowEnd": "2026-03-08T14:39:32.746Z",
+          "tokensUsed": 63956546,
+          "percentageOfLimit": 63956.5
+        },
+        {
+          "windowStart": "2026-03-08T14:39:32.746Z",
+          "windowEnd": "2026-03-08T19:39:32.746Z",
+          "tokensUsed": 558855,
+          "percentageOfLimit": 558.9
+        },
+        {
+          "windowStart": "2026-03-08T19:39:32.746Z",
+          "windowEnd": "2026-03-09T00:39:32.746Z",
+          "tokensUsed": 12858,
+          "percentageOfLimit": 12.9
+        }
+      ],
+      "usagePercentageOfLimit": 12.9
+    },
+    {
+      "provider": "kimi-for-coding",
+      "displayName": "Kimi",
+      "tokensUsed": 402305046,
+      "tokensInput": 32757031,
+      "tokensOutput": 4891523,
+      "tokensReasoning": 0,
+      "tokensCacheRead": 364656492,
+      "tokensCacheWrite": 0,
+      "messageCount": 9737,
+      "partCount": 0,
+      "windowType": "5-hour",
+      "timeWindow": {
+        "start": "2026-03-03T14:43:24.504Z",
+        "end": "2026-03-08T20:11:47.726Z"
+      },
+      "knownLimits": {
+        "tokensPerWindow": 1000000
+      },
+      "notes": [
+        "Current 5-hour window (last 5h): 24,134,441 tokens"
+      ],
+      "rollingWindows": [
+        {
+          "windowStart": "2026-03-06T22:43:24.504Z",
+          "windowEnd": "2026-03-07T03:43:24.504Z",
+          "tokensUsed": 1936535,
+          "percentageOfLimit": 193.7
+        },
+        {
+          "windowStart": "2026-03-07T03:43:24.504Z",
+          "windowEnd": "2026-03-07T08:43:24.504Z",
+          "tokensUsed": 16561215,
+          "percentageOfLimit": 1656.1
+        },
+        {
+          "windowStart": "2026-03-07T08:43:24.504Z",
+          "windowEnd": "2026-03-07T13:43:24.504Z",
+          "tokensUsed": 20230876,
+          "percentageOfLimit": 2023.1
+        },
+        {
+          "windowStart": "2026-03-07T13:43:24.504Z",
+          "windowEnd": "2026-03-07T18:43:24.504Z",
+          "tokensUsed": 31344417,
+          "percentageOfLimit": 3134.4
+        },
+        {
+          "windowStart": "2026-03-07T18:43:24.504Z",
+          "windowEnd": "2026-03-07T23:43:24.504Z",
+          "tokensUsed": 92737609,
+          "percentageOfLimit": 9273.8
+        },
+        {
+          "windowStart": "2026-03-07T23:43:24.504Z",
+          "windowEnd": "2026-03-08T04:43:24.504Z",
+          "tokensUsed": 18773904,
+          "percentageOfLimit": 1877.4
+        },
+        {
+          "windowStart": "2026-03-08T04:43:24.504Z",
+          "windowEnd": "2026-03-08T09:43:24.504Z",
+          "tokensUsed": 64592141,
+          "percentageOfLimit": 6459.2
+        },
+        {
+          "windowStart": "2026-03-08T09:43:24.504Z",
+          "windowEnd": "2026-03-08T14:43:24.504Z",
+          "tokensUsed": 88224224,
+          "percentageOfLimit": 8822.4
+        },
+        {
+          "windowStart": "2026-03-08T14:43:24.504Z",
+          "windowEnd": "2026-03-08T19:43:24.504Z",
+          "tokensUsed": 19848917,
+          "percentageOfLimit": 1984.9
+        },
+        {
+          "windowStart": "2026-03-08T19:43:24.504Z",
+          "windowEnd": "2026-03-09T00:43:24.504Z",
+          "tokensUsed": 4297415,
+          "percentageOfLimit": 429.7
+        }
+      ],
+      "usagePercentageOfLimit": 2413.4
+    },
+    {
+      "provider": "zai-coding-plan",
+      "displayName": "GLM (Zhipu)",
+      "tokensUsed": 125512425,
+      "tokensInput": 13676961,
+      "tokensOutput": 2242312,
+      "tokensReasoning": 0,
+      "tokensCacheRead": 109593152,
+      "tokensCacheWrite": 0,
+      "messageCount": 3843,
+      "partCount": 0,
+      "windowType": "weekly",
+      "timeWindow": {
+        "start": "2026-03-03T14:38:35.340Z",
+        "end": "2026-03-08T19:59:09.033Z"
+      },
+      "knownLimits": {
+        "tokensPerWindow": 1000000
+      },
+      "notes": [
+        "Current week (since Sunday): 21,397,155 tokens"
+      ],
+      "usagePercentageOfLimit": 2139.7
+    },
+    {
+      "provider": "google",
+      "displayName": "Gemini (Google)",
+      "tokensUsed": 0,
+      "tokensInput": 0,
+      "tokensOutput": 0,
+      "tokensReasoning": 0,
+      "tokensCacheRead": 0,
+      "tokensCacheWrite": 0,
+      "messageCount": 1,
+      "partCount": 0,
+      "windowType": "weekly",
+      "timeWindow": {
+        "start": "2026-03-03T21:41:44.364Z",
+        "end": "2026-03-03T21:41:44.364Z"
+      },
+      "knownLimits": {
+        "tokensPerWindow": 1000000
+      },
+      "notes": [
+        "Current week (since Sunday): 0 tokens",
+        "No token data found - provider may not report usage in message/part tables"
+      ],
+      "usagePercentageOfLimit": 0
+    },
+    {
+      "provider": "openai",
+      "displayName": "GPT (OpenAI)",
+      "tokensUsed": 246521414,
+      "tokensInput": 22958578,
+      "tokensOutput": 1343188,
+      "tokensReasoning": 449282,
+      "tokensCacheRead": 222219648,
+      "tokensCacheWrite": 0,
+      "messageCount": 2553,
+      "partCount": 0,
+      "windowType": "weekly",
+      "timeWindow": {
+        "start": "2026-03-06T18:11:49.069Z",
+        "end": "2026-03-08T19:58:33.249Z"
+      },
+      "knownLimits": {
+        "tokensPerWindow": 1000000
+      },
+      "notes": [
+        "Current week (since Sunday): 113,218,211 tokens"
+      ],
+      "usagePercentageOfLimit": 11321.8
+    }
+  ],
+  "summary": {
+    "totalTokensUsed": 1192437940,
+    "totalMessagesAnalyzed": 22804,
+    "totalPartsAnalyzed": 0,
+    "providersConnected": 5,
+    "providersWithUsage": 4
+  }
+}
