@@ -1,8 +1,13 @@
 #!/bin/bash
 # generate-agents.sh
-# Generates all OpenCode agent .md files from Claude Code agent files.
-# Reads from .claude/agents/ and writes to .opencode/agents/
-# Idempotent: safe to re-run (overwrites existing output files).
+# DEPRECATED: This repo uses OpenCode (.opencode/agents/) as the source of truth.
+# Edit agents directly in .opencode/agents/ — do NOT use .claude/agents/.
+#
+# Legacy: This script converted .claude/agents/ -> .opencode/agents/.
+# It is kept for reference only. Running it would overwrite .opencode/agents/
+# with stale .claude/ content. Do not run.
+echo "DEPRECATED: This repo uses .opencode/agents/ as source of truth. Do not run generate-agents.sh." >&2
+exit 1
 
 set -euo pipefail
 

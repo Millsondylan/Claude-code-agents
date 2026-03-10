@@ -52,6 +52,17 @@ debugger → debugger-2 → ... → debugger-11
 
 ---
 
+## Anti-Orchestration Rules
+
+**Subagents do NOT orchestrate. Only the orchestrator dispatches agents.**
+
+- **NEVER** use the Task tool to dispatch other agents
+- **NEVER** run multiple agents in parallel or in one response
+- **Only** output a REQUEST tag when you need another agent — the orchestrator parses and dispatches
+- **Only** the orchestrator decides which agent runs next
+
+---
+
 ## BUILD AGENT DEEP-DIVE
 
 **Purpose:** Build agents are specialized file implementation engineers. Each agent focuses on writing at most 1-2 files of production-quality code based on detailed instructions.
@@ -262,7 +273,7 @@ tools:
 ---
 ```
 
-Note: OpenCode uses structured YAML `tools:` map (not comma-separated string) and full model IDs like `anthropic/claude-opus-4-6`, `kimi-for-coding/k2p5`, `zai-coding-plan/glm-5` (not shorthand like `opus`, `sonnet`, `haiku`).
+Note: OpenCode uses structured YAML `tools:` map (not comma-separated string) and full model IDs like `kimi-for-coding/k2p5` and `alibaba-coding-plan/glm-5` (not shorthand like `opus`, `sonnet`, `haiku`). The only exception in this repo is `plan-agent`, which may stay on `anthropic/claude-opus-4-6`.
 
 ### Agent Capabilities by Type
 
@@ -340,6 +351,13 @@ REQUEST: build-agent-2 - F3 implementation incomplete
 Context: F1 and F2 complete, need to continue with F3
 Priority: normal
 ```
+
+### REQUEST Semantics
+
+- **REQUEST is output text**, not a tool call. Subagents output `REQUEST: [agent] - [reason]` in their response.
+- **Orchestrator parses** REQUEST tags and dispatches the target agent via the Task tool.
+- **Subagents must NOT** use the Task tool. They only output the REQUEST tag.
+- **CAN request** lists are agent-specific; use the canonical list per agent (see Agent Request Rules in each agent definition). Do not use vague "any agent" — specify the target agent by name.
 
 ### Quality Enforcement
 

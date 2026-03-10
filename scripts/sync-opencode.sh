@@ -4,23 +4,19 @@
 #
 # Usage: ./scripts/sync-opencode.sh /path/to/target/project
 #
-# What gets copied:
+# What gets copied (OpenCode setup only):
 #   AGENTS.md                     <- OpenCode orchestrator instructions
 #   .ai/README.md                 <- ACM: safety protocols and quality standards
 #   .ai/schemas/                  <- 15 agent output schema files
-#   .claude/rules/                <- 5 shared orchestration rule files
 #   .opencode/opencode.json       <- OpenCode config (model, permissions, MCP)
-#   .opencode/agents/              <- 83 generated agent definitions
-#   .opencode/command/            <- 4 pipeline commands
+#   .opencode/agents/             <- 84 agent definitions (source of truth)
+#   .opencode/rules/             <- 7 orchestration rule files
+#   .opencode/command/           <- 4 pipeline commands
 #   .opencode/skills/             <- 2 OpenCode skills
-#   .opencode/generate-agents.sh  <- Agent regeneration script
 #
 # What does NOT get copied:
-#   .claude/agents/   (Claude Code versions - source of truth for generation)
-#   .claude/commands/ (Claude Code commands)
-#   .claude/skills/   (Claude Code skills)
-#   .claude/hooks/    (Claude Code hooks)
-#   .claude/settings.json (Claude Code tool permissions)
+#   .claude/agents/   (deprecated - not used)
+#   .claude/commands/ .claude/skills/ .claude/settings.json
 #   model-switch/     (Go router proxy - this repo only)
 #   docs/             (this repo's docs)
 
@@ -98,24 +94,20 @@ sync_file "${SOURCE_DIR}/.ai/README.md" "${TARGET_DIR}/.ai/README.md"
 echo "Copying agent output schemas..."
 sync_dir "${SOURCE_DIR}/.ai/schemas" "${TARGET_DIR}/.ai/schemas"
 
-echo "Copying shared orchestration rules..."
-sync_dir "${SOURCE_DIR}/.claude/rules" "${TARGET_DIR}/.claude/rules"
-
 echo "Copying OpenCode config..."
 sync_file "${SOURCE_DIR}/.opencode/opencode.json" "${TARGET_DIR}/.opencode/opencode.json"
 
 echo "Copying OpenCode agents ($(ls -1 "${SOURCE_DIR}/.opencode/agents/"*.md 2>/dev/null | wc -l | tr -d ' ') files)..."
 sync_dir "${SOURCE_DIR}/.opencode/agents" "${TARGET_DIR}/.opencode/agents"
 
+echo "Copying OpenCode rules..."
+sync_dir "${SOURCE_DIR}/.opencode/rules" "${TARGET_DIR}/.opencode/rules"
+
 echo "Copying OpenCode commands..."
 sync_dir "${SOURCE_DIR}/.opencode/command" "${TARGET_DIR}/.opencode/command"
 
 echo "Copying OpenCode skills..."
 sync_dir "${SOURCE_DIR}/.opencode/skills" "${TARGET_DIR}/.opencode/skills"
-
-echo "Copying agent generator script..."
-sync_file "${SOURCE_DIR}/.opencode/generate-agents.sh" "${TARGET_DIR}/.opencode/generate-agents.sh"
-chmod +x "${TARGET_DIR}/.opencode/generate-agents.sh"
 
 # ---------------------------------------------------------------------------
 # Summary.
@@ -125,12 +117,11 @@ echo "Sync complete. Files written:"
 echo "  ${TARGET_DIR}/AGENTS.md"
 echo "  ${TARGET_DIR}/.ai/README.md"
 echo "  ${TARGET_DIR}/.ai/schemas/  ($(ls -1 "${TARGET_DIR}/.ai/schemas/" 2>/dev/null | wc -l | tr -d ' ') files)"
-echo "  ${TARGET_DIR}/.claude/rules/  ($(ls -1 "${TARGET_DIR}/.claude/rules/" 2>/dev/null | wc -l | tr -d ' ') files)"
 echo "  ${TARGET_DIR}/.opencode/opencode.json"
+echo "  ${TARGET_DIR}/.opencode/rules/  ($(ls -1 "${TARGET_DIR}/.opencode/rules/" 2>/dev/null | wc -l | tr -d ' ') files)"
 echo "  ${TARGET_DIR}/.opencode/agents/  ($(ls -1 "${TARGET_DIR}/.opencode/agents/"*.md 2>/dev/null | wc -l | tr -d ' ') agents)"
 echo "  ${TARGET_DIR}/.opencode/command/  ($(ls -1 "${TARGET_DIR}/.opencode/command/" 2>/dev/null | wc -l | tr -d ' ') files)"
 echo "  ${TARGET_DIR}/.opencode/skills/  ($(ls -1 "${TARGET_DIR}/.opencode/skills/" 2>/dev/null | wc -l | tr -d ' ') files)"
-echo "  ${TARGET_DIR}/.opencode/generate-agents.sh"
 echo ""
 
 # ---------------------------------------------------------------------------
@@ -156,11 +147,11 @@ Next steps:
 
 2. Verify agent count.
      ls .opencode/agents/ | wc -l
-   Should print 83.
+   Should print 84.
 
 3. Verify rules are present.
-     ls .claude/rules/
-   Should list 5 files: 01- through 05-.
+     ls .opencode/rules/
+   Should list 7 files: 01- through 07-.
 
 4. Verify opencode.json is valid.
      python3 -m json.tool .opencode/opencode.json > /dev/null && echo OK
@@ -168,9 +159,7 @@ Next steps:
 5. Launch OpenCode and type @ to confirm agents load.
    You should see pipeline-scaler and task-breakdown in autocomplete.
 
-6. If you update .claude/agents/ in the source repo later, regenerate:
-     ./.opencode/generate-agents.sh
-   Then re-run this sync script.
+6. Edit agents in .opencode/agents/ in the source repo, then re-run this sync.
 
 See docs/OPENCODE_SYNC.md in the framework repo for the full reference.
 POST_SYNC

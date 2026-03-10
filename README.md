@@ -129,6 +129,17 @@ Only Stage 4 (after task-breakdown) pauses for your approval. Everything else ru
 
 ---
 
+## 🔒 Use Only This Repo's OpenCode Setup
+
+If you have multiple OpenCode configs elsewhere, force this repo to use only its local `.opencode/`:
+
+```bash
+source scripts/use-local-opencode.sh   # each terminal
+# or use direnv: direnv allow          # auto-loads on cd
+```
+
+---
+
 ## 📁 Repository Structure
 
 ```

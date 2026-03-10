@@ -32,11 +32,29 @@ echo ""
 # Track overall results
 SHELL_RESULT=0
 PYTHON_RESULT=0
+STRUCTURE_RESULT=0
+SCRIPTS_RESULT=0
+
+# ============================================
+# Run Agent Structure Verification
+# ============================================
+echo -e "${BLUE}[1/4] Running Agent Structure Verification${NC}"
+echo "------------------------------------------"
+
+if [ -f "$SCRIPT_DIR/test_agent_structure.sh" ]; then
+    bash "$SCRIPT_DIR/test_agent_structure.sh"
+    STRUCTURE_RESULT=$?
+else
+    echo -e "${RED}Agent structure test not found: $SCRIPT_DIR/test_agent_structure.sh${NC}"
+    STRUCTURE_RESULT=1
+fi
+
+echo ""
 
 # ============================================
 # Run Shell Validator Tests
 # ============================================
-echo -e "${BLUE}[1/2] Running Shell Validator Tests${NC}"
+echo -e "${BLUE}[2/4] Running Shell Validator Tests${NC}"
 echo "------------------------------------------"
 
 if [ -f "$SCRIPT_DIR/test_validators.sh" ]; then
@@ -52,7 +70,7 @@ echo ""
 # ============================================
 # Run Python Dispatcher Tests
 # ============================================
-echo -e "${BLUE}[2/2] Running Python Dispatcher Tests${NC}"
+echo -e "${BLUE}[3/4] Running Python Dispatcher Tests${NC}"
 echo "------------------------------------------"
 
 if [ -f "$HOOKS_DIR/test_validate_task_output.py" ]; then
@@ -72,28 +90,67 @@ fi
 echo ""
 
 # ============================================
+# Run Scripts Tests (merge-project-specific, sync-framework-run2)
+# ============================================
+echo -e "${BLUE}[4/4] Running Scripts Tests${NC}"
+echo "------------------------------------------"
+
+SCRIPTS_TESTS_DIR="$PROJECT_ROOT/scripts/tests"
+if [ -f "$SCRIPTS_TESTS_DIR/test_merge_project_specific.sh" ]; then
+    bash "$SCRIPTS_TESTS_DIR/test_merge_project_specific.sh"
+    MERGE_RESULT=$?
+else
+    MERGE_RESULT=1
+fi
+if [ -f "$SCRIPTS_TESTS_DIR/test_sync_framework_run2.sh" ]; then
+    bash "$SCRIPTS_TESTS_DIR/test_sync_framework_run2.sh"
+    SYNC_RESULT=$?
+else
+    SYNC_RESULT=1
+fi
+if [ $MERGE_RESULT -eq 0 ] && [ $SYNC_RESULT -eq 0 ]; then
+    SCRIPTS_RESULT=0
+else
+    SCRIPTS_RESULT=1
+fi
+
+echo ""
+
+# ============================================
 # Summary
 # ============================================
 echo "=========================================="
 echo "Overall Test Summary"
 echo "=========================================="
 
-if [ $SHELL_RESULT -eq 0 ]; then
-    echo -e "Shell Tests:  ${GREEN}PASSED${NC}"
+if [ $STRUCTURE_RESULT -eq 0 ]; then
+    echo -e "Agent Structure: ${GREEN}PASSED${NC}"
 else
-    echo -e "Shell Tests:  ${RED}FAILED${NC}"
+    echo -e "Agent Structure: ${RED}FAILED${NC}"
+fi
+
+if [ $SHELL_RESULT -eq 0 ]; then
+    echo -e "Shell Tests:     ${GREEN}PASSED${NC}"
+else
+    echo -e "Shell Tests:     ${RED}FAILED${NC}"
 fi
 
 if [ $PYTHON_RESULT -eq 0 ]; then
-    echo -e "Python Tests: ${GREEN}PASSED${NC}"
+    echo -e "Python Tests:    ${GREEN}PASSED${NC}"
 else
-    echo -e "Python Tests: ${RED}FAILED${NC}"
+    echo -e "Python Tests:    ${RED}FAILED${NC}"
+fi
+
+if [ $SCRIPTS_RESULT -eq 0 ]; then
+    echo -e "Scripts Tests:   ${GREEN}PASSED${NC}"
+else
+    echo -e "Scripts Tests:   ${RED}FAILED${NC}"
 fi
 
 echo ""
 
 # Overall exit code
-if [ $SHELL_RESULT -eq 0 ] && [ $PYTHON_RESULT -eq 0 ]; then
+if [ $STRUCTURE_RESULT -eq 0 ] && [ $SHELL_RESULT -eq 0 ] && [ $PYTHON_RESULT -eq 0 ] && [ $SCRIPTS_RESULT -eq 0 ]; then
     echo -e "${GREEN}All test suites passed!${NC}"
     exit 0
 else

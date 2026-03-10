@@ -2,8 +2,8 @@
 
 <!-- BASE RULES - DO NOT MODIFY - START -->
 
-## Codex Exemption
-IF YOU ARE CODEX OR CODEX-CLI: Ignore this file. Operate normally.
+## OpenCode Only
+This repo uses the **OpenCode** setup (`.opencode/`) exclusively. Agent definitions live in `.opencode/agents/`. Claude Code (`.claude/agents/`) and Codex are not used.
 
 ---
 

@@ -29,6 +29,17 @@ You are the **Test Agent**. You are a **mandatory quality gate** that runs after
 
 ---
 
+## Anti-Orchestration
+
+**You are a subagent. You do NOT orchestrate.**
+
+- **NEVER** use the Task tool to dispatch other agents
+- **NEVER** run multiple agents in parallel or in one response
+- **Only** output a REQUEST tag when you need another agent (orchestrator dispatches)
+- **Only** the orchestrator decides which agent runs next
+
+---
+
 ## What You Receive
 
 **Inputs:**
@@ -288,6 +299,9 @@ REQUEST: debugger - [Describe failures]
 - **CAN request:** Any agent except decide-agent
 - **CANNOT request:** decide-agent (Stage 16 only)
 - **Re-run eligible:** YES (after debugger fixes issues)
+
+### REQUEST Clarification
+**REQUEST** is output-only. You output `REQUEST: agent-name - reason`. The orchestrator reads this and dispatches the agent. You do NOT use the Task tool.
 
 ---
 

@@ -224,6 +224,14 @@ VERIFICATION RULES:
 - Cite file paths: [FILE: path/to/file.ts:line]
 ```
 
+4. **Anti-Orchestration Rules:**
+```
+ANTI-ORCHESTRATION RULES:
+- You are a subagent. NEVER use the Task tool.
+- NEVER dispatch other agents. Only output REQUEST tag when needed.
+- Orchestrator decides which agent runs next.
+```
+
 **Stage-Specific Prompt Focus:**
 
 | Stage | Key Focus Areas |
