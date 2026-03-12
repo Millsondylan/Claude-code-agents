@@ -27,14 +27,14 @@ TARGET_DIR="${REPO_ROOT}/.opencode/agents"
 # ---------------------------------------------------------------------------
 # Model provider constants.
 # ---------------------------------------------------------------------------
-PROVIDER_OPUS="anthropic/claude-opus-4-6"
+PROVIDER_PRIMARY="alibaba-coding-plan/kimi-k2.5"
 PROVIDER_KIMI="kimi-for-coding/k2p5"
 PROVIDER_GLM="zai-coding-plan/glm-5"
 
 # ---------------------------------------------------------------------------
-# Agents that always use Claude Opus 4.6 regardless of their model alias.
+# Agents that always use the primary model (Kimi K2.5) regardless of their model alias.
 # ---------------------------------------------------------------------------
-is_opus_agent() {
+is_primary_agent() {
     local basename="$1"
     case "${basename}" in
         prompt-optimizer.md | code-discovery.md | plan-agent.md | test-writer.md | \
@@ -82,14 +82,14 @@ map_model() {
     local model="$1"
     local basename="${2:-}"
 
-    # Agents explicitly assigned to Opus 4.6 always get Opus, even if their
+    # Agents explicitly assigned to the primary model always get it, even if their
     # source frontmatter says "inherit".
-    if is_opus_agent "${basename}"; then
-        echo "${PROVIDER_OPUS}"
+    if is_primary_agent "${basename}"; then
+        echo "${PROVIDER_PRIMARY}"
         return
     fi
 
-    # "inherit" means no model field in output (for non-Opus agents).
+    # "inherit" means no model field in output (for non-primary agents).
     if [[ "${model}" == "inherit" ]]; then
         echo ""
         return
@@ -115,7 +115,7 @@ map_model() {
 
     # All remaining aliases: map by the alias value.
     case "${model}" in
-        opus)    echo "${PROVIDER_OPUS}" ;;
+        opus)    echo "${PROVIDER_PRIMARY}" ;;
         sonnet)  echo "${PROVIDER_KIMI}" ;;
         haiku)   echo "${PROVIDER_GLM}" ;;
         # Pass through any already-qualified model IDs unchanged.

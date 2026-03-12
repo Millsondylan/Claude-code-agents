@@ -27,25 +27,25 @@ Retrying with: "Include specific test file paths for each feature"
 
 ---
 
-## OPUS 4.6 CONTEXT WINDOW & TOKEN MANAGEMENT
+## KIMI K2.5 CONTEXT WINDOW & TOKEN MANAGEMENT
 
 ### Model Capabilities
 
 | Capability | Value | Notes |
 |------------|-------|-------|
-| Default context window | 200K tokens | Generally available |
-| Extended context window | 1M tokens | Beta only; requires `anthropic-beta: context-1m-2025-08-07` header and Tier 4 org |
-| Max output tokens | 128K tokens | Up from 64K on prior models |
+| Context window | 256K tokens | Fixed; no extended window |
+| Max output tokens | 33K tokens | Per response |
+| Subagent output cap | ~33K tokens | Task tool output may truncate at this limit |
 
 ### Context Management Strategy
 
-Claude Code manages context internally. There is no user-facing YAML configuration for the context window size. The orchestrator and agents do not need to set `contextWindow` or `max_tokens` in agent definition frontmatter -- these are handled automatically by the runtime.
+The orchestrator and agents do not need to set `contextWindow` or `max_tokens` in agent definition frontmatter -- these are handled automatically by the runtime.
 
-**Subagent output cap:** Subagent (task tool) output may be truncated at approximately 32K tokens regardless of environment variable settings. This is a known limitation. When dispatching build agents for large implementations, prefer smaller micro-batches (1-2 files) to keep output within the cap.
+**Subagent output cap:** Subagent (task tool) output may be truncated at approximately 33K tokens. When dispatching build agents for large implementations, prefer smaller micro-batches (1-2 files) to keep output within the cap.
 
 ### Compaction Strategy
 
-When context usage grows high, Claude Code automatically compacts the conversation. The compaction threshold can be overridden:
+When context usage grows high, the runtime may compact the conversation. The compaction threshold can be overridden:
 
 ```
 export CLAUDE_AUTOCOMPACT_PCT_OVERRIDE=70
@@ -60,14 +60,7 @@ This triggers compaction when context usage reaches 70% (default varies by runti
 | `CLAUDE_CODE_MAX_OUTPUT_TOKENS` | Set max output tokens per response | Runtime default |
 | `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE` | Override compaction threshold (percentage) | Runtime default |
 
-**Note:** `CLAUDE_CODE_MAX_OUTPUT_TOKENS` may not fully apply to subagent output due to the ~32K subagent cap. Use it for top-level responses only.
-
-### Deprecated Features on Opus 4.6
-
-The following features from prior Claude models are **not available** on Opus 4.6:
-
-- **`budget_tokens` parameter** -- Deprecated. Extended thinking on Opus 4.6 uses adaptive thinking, which automatically allocates thinking effort. Do not pass `budget_tokens` in API calls.
-- **Assistant message prefilling** -- Removed on Opus 4.6. You cannot pre-fill the assistant turn with partial content. Prompts that relied on prefilling must be restructured.
+**Note:** `CLAUDE_CODE_MAX_OUTPUT_TOKENS` may not fully apply to subagent output due to the ~33K subagent cap. Use it for top-level responses only.
 
 ---
 

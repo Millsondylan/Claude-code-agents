@@ -273,7 +273,7 @@ tools:
 ---
 ```
 
-Note: OpenCode uses structured YAML `tools:` map (not comma-separated string) and full model IDs like `kimi-for-coding/k2p5` and `alibaba-coding-plan/glm-5` (not shorthand like `opus`, `sonnet`, `haiku`). The only exception in this repo is `plan-agent`, which may stay on `anthropic/claude-opus-4-6`.
+Note: OpenCode uses structured YAML `tools:` map (not comma-separated string) and full model IDs like `kimi-for-coding/k2p5` and `alibaba-coding-plan/glm-5` (not shorthand like `opus`, `sonnet`, `haiku`). plan-agent uses `alibaba-coding-plan/kimi-k2.5` per default model.
 
 ### Agent Capabilities by Type
 

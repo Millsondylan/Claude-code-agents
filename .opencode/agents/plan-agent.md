@@ -1,7 +1,7 @@
 ---
 description: "Creates batched implementation plan with feature assignments. Use after code-discovery to plan implementation."
 mode: subagent
-model: anthropic/claude-opus-4-6
+model: kimi-for-coding/k2p5
 hidden: true
 color: "#800080"
 tools:

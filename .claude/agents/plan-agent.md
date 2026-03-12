@@ -2,7 +2,7 @@
 name: plan-agent
 description: Creates batched implementation plan with feature assignments. Use after code-discovery to plan implementation.
 tools: Read, Grep, Glob, Bash
-model: anthropic/claude-opus-4-6
+model: kimi-for-coding/k2p5
 color: purple
 hooks:
   validator: .claude/hooks/validators/validate-plan-agent.sh
